@@ -1,0 +1,149 @@
+import pandas as pd
+
+# 'replace'で文字エラーを処理しながらファイルを読み込む
+with open('/content/KSP-POSカップ麺_1全国_月次202301-202312.csv', 'r', encoding='shift_jis', errors='replace') as f:
+    data = f.read()
+
+# StringIOを使って文字列をデータフレームに変換
+from io import StringIO
+Zenkoku = pd.read_csv(StringIO(data))
+
+Zenkoku.head()
+
+import pandas as pd
+
+# 'replace'で文字エラーを処理しながらファイルを読み込む
+with open('/content/KSP-POSカップ麺_2首都圏・近畿_月次202301-202312.csv', 'r', encoding='shift_jis', errors='replace') as f:
+    data = f.read()
+
+# StringIOを使って文字列をデータフレームに変換
+from io import StringIO
+Shuto = pd.read_csv(StringIO(data))
+
+Shuto.head()
+
+import pandas as pd
+
+# 'replace'で文字エラーを処理しながらファイルを読み込む
+with open('/content/KSP-POSカップ麺_3東京・大阪_月次202301-202312.csv', 'r', encoding='shift_jis', errors='replace') as f:
+    data = f.read()
+
+# StringIOを使って文字列をデータフレームに変換
+from io import StringIO
+Tokyo_Osaka = pd.read_csv(StringIO(data))
+
+Tokyo_Osaka.head()
+
+print(Zenkoku.columns)
+print(Shuto.columns)
+print(Tokyo_Osaka.columns)
+
+print(Zenkoku.info())
+print(Shuto.info())
+print(Tokyo_Osaka.info())
+
+Zenkoku.describe()
+
+Shuto.describe()
+
+Tokyo_Osaka.describe()
+
+#Zenkoku
+
+Zenkoku_category_sales = Zenkoku.groupby('細分類名称')['金額'].sum().reset_index()
+
+# 全体の売上を計算
+Zenkoku_total_sales =Zenkoku_category_sales['金額'].sum()
+
+# 売上構成比を計算
+Zenkoku_category_sales['構成比 (%)'] = (Zenkoku_category_sales['金額'] / Zenkoku_total_sales) * 100
+
+Zenkoku_category_sales
+
+#Shuto
+
+Shuto_category_sales = Shuto.groupby('細分類名称')['金額'].sum().reset_index()
+
+# 全体の売上を計算
+Shuto_total_sales = Shuto_category_sales['金額'].sum()
+
+# 売上構成比を計算
+Shuto_category_sales['構成比 (%)'] = (Shuto_category_sales['金額'] / Shuto_total_sales) * 100
+
+Shuto_category_sales
+
+#Tokyo_Osaka
+
+Tokyo_Osaka_category_sales = Tokyo_Osaka.groupby('細分類名称')['金額'].sum().reset_index()
+
+# 全体の売上を計算
+Tokyo_Osaka_total_sales = Tokyo_Osaka_category_sales['金額'].sum()
+
+# 売上構成比を計算
+Tokyo_Osaka_category_sales['構成比 (%)'] = (Tokyo_Osaka_category_sales['金額'] / Tokyo_Osaka_total_sales) * 100
+
+Tokyo_Osaka_category_sales
+
+#Zenkoku
+
+Zenkoku_Merchandise_Sales_Composition = Zenkoku.groupby(['商品コード', '商品名称'])['金額'].sum().reset_index()
+
+# 全体の売上を計算
+Zenkoku_total_sales = Zenkoku_Merchandise_Sales_Composition['金額'].sum()
+
+# 売上構成比を計算
+Zenkoku_Merchandise_Sales_Composition['構成比 (%)'] = (Zenkoku_Merchandise_Sales_Composition['金額'] / Zenkoku_total_sales) * 100
+
+Zenkoku_Merchandise_Sales_Composition
+
+#Shuto
+
+Shuto_Merchandise_Sales_Composition = Shuto.groupby(['商品コード', '商品名称'])['金額'].sum().reset_index()
+
+# 全体の売上を計算
+Shuto_total_sales = Shuto_Merchandise_Sales_Composition['金額'].sum()
+
+# 売上構成比を計算
+Shuto_Merchandise_Sales_Composition['構成比 (%)'] = (Shuto_Merchandise_Sales_Composition['金額'] / Shuto_total_sales) * 100
+
+Shuto_Merchandise_Sales_Composition
+
+#Tokyo_Osaka
+
+Tokyo_Osaka_Merchandise_Sales_Composition = Tokyo_Osaka.groupby(['商品コード', '商品名称'])['金額'].sum().reset_index()
+
+# 全体の売上を計算
+Tokyo_Osaka_total_sales = Tokyo_Osaka_Merchandise_Sales_Composition['金額'].sum()
+
+# 売上構成比を計算
+Tokyo_Osaka_Merchandise_Sales_Composition['構成比 (%)'] = (Tokyo_Osaka_Merchandise_Sales_Composition['金額'] / Shuto_total_sales) * 100
+
+Tokyo_Osaka_Merchandise_Sales_Composition
+
+print(Zenkoku_Merchandise_Sales_Composition['構成比 (%)'].count())
+print(Shuto_Merchandise_Sales_Composition["構成比 (%)"].count())
+print(Tokyo_Osaka_Merchandise_Sales_Composition["構成比 (%)"].count())
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+
+"""円グラフ表示(商品名称、構成比)
+
+
+棒グラフで売上と構成比を可視化する
+
+Zenkoku_Merchandise_Sales_Composition
+
+Shuto_Merchandise_Sales_Composition
+
+Tokyo_Osaka_Merchandise_Sales_Composition
+
+
+これらを昇順/降順する
+
+
+"""
+
