@@ -1,0 +1,41 @@
+stateDiagram-v2
+direction TB
+reception : 登録受付中
+processing : 登録処理
+wait : 抽選待ち状態
+deside : 履修者確定
+work : 履修作業
+delite :履修削除
+change:教室変更
+lottery:抽選
+
+state node <<choice>>
+
+[*] --> reception
+reception --> processing : 受講登録
+processing --> reception
+reception --> node : 履修登録期間終了
+node --> wait : [定員超過]
+node --> work : [定員内]
+
+state node3 <<choice>>
+wait -->change
+change -->node3
+wait --> node3
+node3 --> work
+node3 -->lottery
+lottery --> work
+
+state node2 <<choice>>
+
+work --> node2 :履修修正期間
+node2 --> delite
+
+delite --> deside
+node2 --> processing
+
+
+processing --> deside 
+
+
+deside --> [*]
