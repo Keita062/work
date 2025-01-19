@@ -1,0 +1,10 @@
+int nenrei;
+double taiju;
+nenrei = 20;
+taiju = 50.5;
+Console.Write("年齢は");
+Console.Write(nenrei);
+Console.WriteLine("才です。");
+Console.Write("体重は");
+Console.Write(taiju);
+Console.WriteLine("kgです。");
