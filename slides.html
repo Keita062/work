@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データサイエンティストが語るデータ分析</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'MS Gothic', sans-serif;
+            background: #dde3ee;
+            overflow: hidden;
+        }
+
+        .slideshow {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            padding: 55px 80px 80px 80px;
+            color: #1a3a8f;
+            flex-direction: column;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        /* ===== Title Slide ===== */
+        .slide.title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-top: 12px solid #1a3a8f;
+        }
+
+        .title-slide h1 {
+            font-size: 2.8em;
+            color: #1a3a8f;
+            line-height: 1.5;
+            letter-spacing: 0.02em;
+        }
+
+        /* ===== Closing Slide ===== */
+        .slide.closing-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-top: 12px solid #1a3a8f;
+        }
+
+        .closing-slide h1 {
+            font-size: 2.6em;
+            color: #1a3a8f;
+        }
+
+        /* ===== Section Header ===== */
+        .slide h2 {
+            font-size: 1.8em;
+            color: #1a3a8f;
+            border-bottom: 3px solid #1a3a8f;
+            padding-bottom: 14px;
+            margin-bottom: 28px;
+            flex-shrink: 0;
+        }
+
+        .slide h3 {
+            font-size: 1.25em;
+            color: #1a3a8f;
+            margin-bottom: 14px;
+            margin-top: 4px;
+        }
+
+        /* ===== Lists ===== */
+        .slide ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .slide ul li {
+            padding: 6px 0 6px 22px;
+            position: relative;
+            font-size: 1.05em;
+            line-height: 1.65;
+            color: #1a3a8f;
+        }
+
+        .slide ul li::before {
+            content: '・';
+            position: absolute;
+            left: 0;
+            color: #1a3a8f;
+        }
+
+        .slide ul ul {
+            margin-top: 4px;
+        }
+
+        .slide ul ul li {
+            font-size: 1em;
+        }
+
+        /* ===== Paragraphs ===== */
+        .slide p {
+            font-size: 1.05em;
+            line-height: 1.75;
+            margin-bottom: 8px;
+            color: #1a3a8f;
+        }
+
+        /* ===== Note text ===== */
+        .note {
+            font-size: 0.88em;
+            color: #3a5aaf;
+            padding-left: 20px;
+            margin: 4px 0;
+            line-height: 1.6;
+        }
+
+        /* ===== Business box ===== */
+        .business-box {
+            background: #eef2fb;
+            border-left: 5px solid #1a3a8f;
+            padding: 18px 22px;
+            margin-top: 22px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .business-box h3 {
+            margin-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .business-box p {
+            font-size: 1em;
+            margin-bottom: 6px;
+        }
+
+        /* ===== Example box ===== */
+        .example-box {
+            background: #f5f7fc;
+            border: 1px solid #bbc8e8;
+            padding: 16px 20px;
+            margin-top: 14px;
+            border-radius: 8px;
+        }
+
+        .example-box p {
+            font-size: 1em;
+            margin: 0;
+        }
+
+        /* ===== Slide number badge ===== */
+        .slide-badge {
+            position: absolute;
+            top: 20px;
+            right: 36px;
+            background: #1a3a8f;
+            color: #ffffff;
+            padding: 4px 14px;
+            border-radius: 14px;
+            font-size: 0.78em;
+            letter-spacing: 0.03em;
+        }
+
+        /* ===== Navigation ===== */
+        .nav {
+            position: fixed;
+            bottom: 28px;
+            right: 40px;
+            display: flex;
+            gap: 12px;
+            z-index: 200;
+        }
+
+        .nav button {
+            padding: 10px 22px;
+            background: #1a3a8f;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+
+        .nav button:hover {
+            background: #2a50b0;
+        }
+
+        .nav button:disabled {
+            background: #b0b8cc;
+            cursor: default;
+        }
+
+        /* ===== Counter ===== */
+        .counter {
+            position: fixed;
+            bottom: 36px;
+            left: 40px;
+            color: #1a3a8f;
+            font-size: 0.88em;
+        }
+
+        /* ===== Progress bar ===== */
+        .progress {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: #1a3a8f;
+            transition: width 0.3s ease;
+            z-index: 200;
+        }
+    </style>
+</head>
+<body>
+
+<div class="slideshow">
+
+    <!-- ========== Slide 1: タイトル ========== -->
+    <div class="slide title-slide active">
+        <h1>データサイエンティストが語る<br>データ分析</h1>
+    </div>
+
+    <!-- ========== Slide 2: 1.目的 ========== -->
+    <div class="slide">
+        <span class="slide-badge">2 / 19</span>
+        <h2>1. 目的</h2>
+        <ul>
+            <li>データ分析のやり方とはどのようなやり方があるのかを知る。</li>
+            <li>データドリブンなやり方を知る。</li>
+        </ul>
+    </div>
+
+    <!-- ========== Slide 3: 2.目次 ========== -->
+    <div class="slide">
+        <span class="slide-badge">3 / 19</span>
+        <h2>2. 目次</h2>
+        <ul>
+            <li>データ分析技術の手法の紹介</li>
+            <li>データビジュアライゼーションについて</li>
+            <li>データ分析のやり方を知る。データドリブンを知る</li>
+        </ul>
+    </div>
+
+    <!-- ========== Slide 4: 3.データ分析技術の手法の紹介 ========== -->
+    <div class="slide">
+        <span class="slide-badge">4 / 19</span>
+        <h2>3. データ分析技術の手法の紹介</h2>
+        <ul>
+            <li>記述統計量</li>
+            <li>クロス集計</li>
+            <li>回帰分析</li>
+            <li>テキスト分析</li>
+            <li>ランダムフォレスト</li>
+        </ul>
+    </div>
+
+    <!-- ========== Slide 5: 3.1 記述統計量（基本編） ========== -->
+    <div class="slide">
+        <span class="slide-badge">5 / 19</span>
+        <h2>3.1 記述統計量</h2>
+        <h3>（基本編）</h3>
+        <ul>
+            <li>平均値→全てのデータ値を合計し、その個数で割る</li>
+            <li>最頻値→データ群の中で最も頻繁に出現する値</li>
+            <li>中央値→データを小さい順に並べた際に真ん中に来る値</li>
+            <li>分散→各データと平均値の差（偏差）を2乗し、その平均をとることで計算される</li>
+            <li>標準偏差→分散の平方根で求められ、単位が元のデータと同じにする</li>
+        </ul>
+    </div>
+
+    <!-- ========== Slide 6: 3.1 記述統計量（応用編）＋ビジネスの応用法 ========== -->
+    <div class="slide">
+        <span class="slide-badge">6 / 19</span>
+        <h2>3.1 記述統計量</h2>
+        <h3>（応用編）</h3>
+        <ul>
+            <li>分布の確認→ヒストグラムや散布図を描いたうえで、外れ値の有無や歪度の確認を行う。</li>
+        </ul>
+        <p class="note">※尖度→データの分布が正規分布からどれだけ尖っているか</p>
+        <p class="note">※歪度→データの分布が左右対称性からどれだけ歪んでいるか（偏っているか）を示す</p>
+        <p class="note">※正規分布→平均値を中心に左右対称な「釣鐘型（ベルカーブ）」をした連続確率分布</p>
+        <div class="business-box">
+            <h3>ビジネスの応用法</h3>
+            <p>分布の確認をすることによって、外れ値やどのような人がいるかを確認できる。</p>
+            <p>最小・最大の確認をすることで、ボリュームを確認することができるためニーズを確認できます。</p>
+        </div>
+    </div>
+
+    <!-- ========== Slide 7: 3.2 クロス集計 ========== -->
+    <div class="slide">
+        <span class="slide-badge">7 / 19</span>
+        <h2>3.2 クロス集計</h2>
+        <ul>
+            <li>クロス集計
+                <ul>
+                    <li>二つの質的変数、量的変数で集計を行う。</li>
+                </ul>
+            </li>
+        </ul>
+        <p class="note" style="margin-top: 10px;">※質的変数→数値の大小や比率に意味がない</p>
+        <p class="note">※量的変数→数で表され、計算（平均、合計、差）が可能。</p>
+        <div class="business-box">
+            <h3>ビジネスの応用法</h3>
+            <p>○○ごとに△△をとらえることが可能となります。</p>
+            <p>2変数間のかかわりを調査することができます。</p>
+        </div>
+    </div>
+
+    <!-- ========== Slide 8: 3.3 回帰分析（理論の紹介） ========== -->
+    <div class="slide">
+        <span class="slide-badge">8 / 19</span>
+        <h2>3.3 回帰分析</h2>
+        <h3>回帰分析の理論の紹介</h3>
+        <ul>
+            <li>目的変数→「予測・分析したい結果」となる変数</li>
+            <li>説明変数→結果（目的変数）に影響を与える「原因」や「要因」となる変数
+                <ul>
+                    <li>交絡因子→ある原因（曝露）と結果（アウトカム）の因果関係を歪める「第三の変数」</li>
+                    <li>交互作用→2つ以上の要因（因子）が組み合わさることで、単独の効果（主効果）</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ========== Slide 9: 3.3 回帰分析（ビジネスの応用法） ========== -->
+    <div class="slide">
+        <span class="slide-badge">9 / 19</span>
+        <h2>3.3 回帰分析</h2>
+        <div class="business-box">
+            <h3>ビジネスの応用法</h3>
+            <p>目的に対しての説明の要因が何なのかを特定することができます。</p>
+            <p>ただ、直線的なことしかとらえられないので注意。</p>
+        </div>
+    </div>
+
+    <!-- ========== Slide 10: 3.4 テキスト分析（理論の紹介＋ビジネスの応用法） ========== -->
+    <div class="slide">
+        <span class="slide-badge">10 / 19</span>
+        <h2>3.4 テキスト分析</h2>
+        <h3>テキスト分析の理論の紹介</h3>
+        <ul>
+            <li>量的変数に変形
+                <ul>
+                    <li>→トークン化</li>
+                    <li>→ダミー化</li>
+                    <li>→ベクトル化</li>
+                </ul>
+            </li>
+            <li>二次元プロット</li>
+        </ul>
+        <div class="business-box">
+            <h3>ビジネスの応用法</h3>
+            <p>単語の頻度の解析</p>
+            <p>質的変数をダミー変数化して量的変数化することができる。</p>
+            <p>質的変数を二次元のベクトル空間に置くことでセグメントすることができます。</p>
+        </div>
+    </div>
+
+    <!-- ========== Slide 11: 3.4 テキスト分析（事例） ========== -->
+    <div class="slide">
+        <span class="slide-badge">11 / 19</span>
+        <h2>3.4 テキスト分析</h2>
+        <h3>ex.）</h3>
+        <div class="example-box">
+            <p>数万件の電話応対記録を分析し、「最近急増している不満」を自動検知して炎上を防ぐ。</p>
+        </div>
+        <div class="example-box">
+            <p>優秀な社員の自己紹介文と、応募者のエントリーシートをベクトル比較し、相性の良さを判定する。</p>
+        </div>
+        <div class="example-box">
+            <p>自社と競合他社のレビューを同時にプロットし、「他社にはあって自社に足りないキーワード」を特定する。</p>
+        </div>
+    </div>
+
+    <!-- ========== Slide 12: 3.5 ランダムフォレスト（理論の紹介） ========== -->
+    <div class="slide">
+        <span class="slide-badge">12 / 19</span>
+        <h2>3.5 ランダムフォレスト</h2>
+        <h3>ランダムフォレストの理論の紹介</h3>
+        <ul>
+            <li>ランダムフォレスト→多数の「決定木」を独立して並列に作成し、その多数決（分類）や平均（回帰）によって最終予測を行う強力なアンサンブル学習アルゴリズム</li>
+        </ul>
+        <p class="note" style="margin-top: 16px;">※アンサンブル学習→複数の機械学習モデル（弱学習器）の予測を統合し、単一モデルよりも高精度で堅牢なモデルを構築する</p>
+        <p class="note">※決定木→データを「はい／いいえ」の条件分岐で木構造のように分類・整理し、予測や意思決定を行う</p>
+    </div>
+
+    <!-- ========== Slide 13: 3.5 ランダムフォレスト（ビジネスの応用法） ========== -->
+    <div class="slide">
+        <span class="slide-badge">13 / 19</span>
+        <h2>3.5 ランダムフォレスト</h2>
+        <h3>ランダムフォレストのできることの紹介</h3>
+        <div class="business-box">
+            <h3>ビジネスの応用法</h3>
+            <p>過去の膨大な返済データから、「この人は本当にお金を返してくれるか？」を多角的に判定。</p>
+        </div>
+    </div>
+
+    <!-- ========== Slide 14: 4.データビジュアライゼーションの紹介（1枚目） ========== -->
+    <div class="slide">
+        <span class="slide-badge">14 / 19</span>
+        <h2>4. データビジュアライゼーションの紹介</h2>
+        <h3>適切なビジュアライゼーションとは何か</h3>
+        <ul>
+            <li>各軸を記述すること。</li>
+            <li>各軸で0を用いること</li>
+            <li>3Dで描画しないこと</li>
+        </ul>
+    </div>
+
+    <!-- ========== Slide 15: 4.データビジュアライゼーションの紹介（2枚目） ========== -->
+    <div class="slide">
+        <span class="slide-badge">15 / 19</span>
+        <h2>4. データビジュアライゼーションの紹介</h2>
+        <ul>
+            <li>凡例をきじゅつすること</li>
+            <li>色覚に気をつけること</li>
+        </ul>
+    </div>
+
+    <!-- ========== Slide 16: 5.ワーク（1枚目） ========== -->
+    <div class="slide">
+        <span class="slide-badge">16 / 19</span>
+        <h2>5. ワーク</h2>
+        <p>実際の模擬データを解析して、発表</p>
+    </div>
+
+    <!-- ========== Slide 17: 5.ワーク（2枚目） ========== -->
+    <div class="slide">
+        <span class="slide-badge">17 / 19</span>
+        <h2>5. ワーク</h2>
+        <h3>ワーク内容</h3>
+        <p>チームで自由にテーマをきめて生成AIに分析をさせてアウトプットを出してください。</p>
+    </div>
+
+    <!-- ========== Slide 18: 5.ワーク（3枚目） ========== -->
+    <div class="slide">
+        <span class="slide-badge">18 / 19</span>
+        <h2>5. ワーク</h2>
+        <p>アウトプットはなんでもいいです！</p>
+    </div>
+
+    <!-- ========== Slide 19: 6.クロージング ========== -->
+    <div class="slide closing-slide">
+        <h1>6. クロージング</h1>
+    </div>
+
+</div>
+
+<!-- Counter -->
+<div class="counter" id="counter">1 / 19</div>
+
+<!-- Navigation buttons -->
+<div class="nav">
+    <button id="prevBtn" onclick="changeSlide(-1)" disabled>◀ 前へ</button>
+    <button id="nextBtn" onclick="changeSlide(1)">次へ ▶</button>
+</div>
+
+<!-- Progress bar -->
+<div class="progress" id="progress"></div>
+
+<script>
+    let current = 0;
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+
+    function changeSlide(direction) {
+        slides[current].classList.remove('active');
+        current = Math.max(0, Math.min(total - 1, current + direction));
+        slides[current].classList.add('active');
+        document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+        document.getElementById('prevBtn').disabled = current === 0;
+        document.getElementById('nextBtn').disabled = current === total - 1;
+        document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') changeSlide(1);
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
+    });
+
+    // Initialize
+    document.getElementById('progress').style.width = (1 / total * 100) + '%';
+</script>
+
+</body>
+</html>
