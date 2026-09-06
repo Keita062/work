@@ -6,6 +6,18 @@
 構成ドキュメントを修正 → このスクリプトを修正 → 再実行、の順で更新する。
 
     .venv\\Scripts\\python.exe projects\\persol-2030-strategy\\build_slides.py
+
+2026-09-07 改訂（第3版）：
+  - 「本日のゴール」の位置を上げ、「次回ご報告します」の1行はゴール側にだけ残す
+  - 「いただいた課題」からグレーの補足と出典を削除
+  - 「選ばれる」の定義を 法人視点／個人視点／結論 の3枚に分割
+  - 現状①（年間登録者数）を横棒バーから数値表示に変更
+  - 差分スライドに、リーチ率の算出式と出典を明記
+  - 差分の要因を「就職者数が足りない → 登録者数を増やす → 決定率を上げる」に整理
+  - 課題1・2／課題3・4・5 の2枚を削除（課題は発散マップの1枚のみ）
+  - Appendix の前に Appendix の目次を追加
+  - 2030年のあるべき決定率を 5.0% に確定（なりゆき2.4%・リクルート4.34%・
+    自社計画の延長5.3% の3水準から置いた。→ 冒頭の定数コメント）
 """
 from pathlib import Path
 
@@ -18,6 +30,26 @@ from pptx.oxml.ns import qn
 from pptx.util import Emu, Inches, Pt
 
 OUT = Path(__file__).parent / "output" / "内定者研修チームA_中間FB_20260907.pptx"
+
+# ------------------------------------------------------------ 2030年の目標値
+#
+# 決定率 ＝ 就職者数 ÷ 年間登録者数（実数2つからの逆算値）
+#
+#   As Is       パーソル 3.43% ／ リクルート 4.34%
+#   なりゆき    2.4%  … 就職者数の実績CAGR +3.4%/年（56,434→60,307）で分子を、
+#                       doda会員数の伸び +11.3%/年 で分母を5年延長した値
+#   会社計画    5.3%  … FY2028「登録決定率1.3倍」（＝4.45%）を同ペースで2030年度まで延長
+#   → 目標      5.0%  … リクルート4.34%を上回り、会社計画の延長5.3%の内側に収まる水準
+#
+# 算出スクリプト: scratchpad/calc_rate.py（このファイルのコメントと同じ計算）
+
+TO_BE_RATE = "5.0%"          # 2030年のあるべき決定率
+TO_BE_PLACED = "101,200 人"  # 2,024,000 × 5.0%
+GAP_PLACED = "40,893 人"     # 101,200 − 60,307
+GAP_PT = "1.57 pt"           # 5.00% − 3.43%
+
+RATE_NATURAL = "2.4%"        # なりゆき（このまま）
+RATE_PLAN = "5.3%"           # 会社計画（FY2028 1.3倍）の2030年延長
 
 # ---------------------------------------------------------------- 見た目の定義
 
@@ -150,25 +182,6 @@ def _footer(s):
          space_after=0, align=PP_ALIGN.RIGHT)
 
 
-def bullets(tf, items, size=13.5, gap=6, first_para=True):
-    """items: (level, chunks) のリスト。level 0=中黒, 1=ダッシュ, 2=平文"""
-    marks = {0: "● ", 1: "－ ", 2: "  "}
-    for i, (lv, chunks) in enumerate(items):
-        if isinstance(chunks, str):
-            chunks = [(chunks, {})]
-        chunks = [(c, {}) if isinstance(c, str) else c for c in chunks]
-        p = para(tf, first=(i == 0 and first_para), space_after=gap, line=1.3)
-        p.level = 0
-        r = p.add_run()
-        r.text = ("    " * lv) + marks[lv]
-        _set_font(r, size, color=(ACCENT if lv == 0 else MUTED))
-        for s_, opt in chunks:
-            opt = dict(opt)
-            rr = p.add_run()
-            rr.text = s_
-            _set_font(rr, opt.pop("size", size), **opt)
-
-
 def card(slide, x, y, w, h, title, lines, accent=ACCENT, fill=WHITE,
          tsize=14.5, bsize=11.8, dash=False, badge=None):
     sh = rect(slide, x, y, w, h, fill=fill, line_color=LINE, dash=dash)
@@ -206,33 +219,96 @@ def label(slide, x, y, w, s, size=12, bold=True, color=INK,
     return tf
 
 
-# --- 本日いただきたいFB（スライド3・14で同一のものを再掲する） -----------------
+def band(slide, y, h, lines, fill=PANEL, bar=None, x=ML, w=CW):
+    """帯。lines は text() に渡す chunks のリスト。"""
+    sh = rect(slide, x, y, w, h, fill=fill)
+    if bar:
+        rect(slide, x, y, Inches(0.06), h, fill=bar)
+    tf = sh.text_frame
+    tf.margin_left = Inches(0.30)
+    tf.margin_top = Inches(0.16)
+    for i, ln in enumerate(lines):
+        text(tf, ln, first=(i == 0), space_after=4, line=1.25)
+    return sh
+
+
+def scope_band(slide, y=TOP):
+    """データが取れている範囲／時間軸の帯。"""
+    sh = rect(slide, ML, y, CW, Inches(0.54), fill=PANEL)
+    sh.text_frame.margin_top = Inches(0.14)
+    text(sh.text_frame,
+         [("データが取れている範囲 ", dict(size=11, bold=True, color=ACCENT)),
+          ("リクルートエージェント ／ パーソル（doda）",
+           dict(size=13, bold=True, color=INK)),
+          ("　　｜　　", dict(size=13, color=LINE)),
+          ("時間軸 ", dict(size=11, bold=True, color=ACCENT)),
+          ("2030年度", dict(size=13, bold=True, color=INK))],
+         first=True, space_after=0, align=PP_ALIGN.CENTER)
+    return sh
+
+
+# --- セクション扉（大きなセクションの前に1枚はさむ） --------------------------
+
+SECTIONS = [("01", "前提"), ("02", "差分の要因"), ("03", "課題")]
+
+
+def section_slide(no, title, sub):
+    """中央に大きく1つだけ置く中扉。"""
+    sl = prs.slides.add_slide(BLANK)
+    _page["n"] += 1
+    rect(sl, Inches(0), Inches(0), SW, Inches(0.1), fill=ACCENT)
+
+    label(sl, ML, Inches(2.62), CW, no, size=15, color=ACCENT,
+          align=PP_ALIGN.CENTER)
+    tfs = tb(sl, ML, Inches(3.00), CW, Inches(0.9))
+    text(tfs, [(title, dict(size=44, bold=True, color=INK))], first=True,
+         space_after=0, align=PP_ALIGN.CENTER, line=1.15)
+    rect(sl, Inches(6.29), Inches(4.06), Inches(0.75), Inches(0.035), fill=ACCENT)
+    label(sl, ML, Inches(4.32), CW, sub, size=15, bold=False, color=BODY,
+          align=PP_ALIGN.CENTER)
+
+    # 下端に進行位置を示す
+    slot_ = Emu(int(CW / 3))
+    for i, (n_, t_) in enumerate(SECTIONS):
+        on = (n_ == no)
+        x = ML + Emu(int(slot_ * i))
+        label(sl, x, Inches(6.10), slot_, f"{n_}  {t_}", size=11.5,
+              bold=on, color=(ACCENT if on else LINE), align=PP_ALIGN.CENTER)
+        rect(sl, x + Emu(int(slot_ * 0.30)), Inches(6.40),
+             Emu(int(slot_ * 0.40)), Inches(0.03),
+             fill=(ACCENT if on else LINE))
+    _footer(sl)
+    return sl
+
+
+# --- 本日いただきたいFB（スライド4・17で同一のものを再掲する） -----------------
 
 FB_ITEMS = [
-    (ACCENT, "1", "「選ばれる」の定量定義は、これでよいか"),
-    (WARN, "2", "5つの課題のうち、どれを本命に絞るべきか"),
+    (ACCENT, "1", "「選ばれる」の定量定義は、これでよいか",
+     "法人視点の定量指標は、まだ定まっていません。"),
+    (WARN, "2", "5つの課題のうち、どれを本命に絞るべきか", None),
 ]
 
 
-def fb_cards(slide):
-    """本日いただきたいFB。縦に2項目の箇条書き（スライド3・12で共通）。"""
-    H, GAP = Inches(1.38), Inches(0.42)
-    for i, (ac, no, q) in enumerate(FB_ITEMS):
-        y = TOP + Inches(0.5) + i * (H + GAP)
-        rect(slide, ML, y, CW, H, fill=PANEL)
-        rect(slide, ML, y, Inches(0.06), H, fill=ac)
+def fb_body(slide):
+    """いただきたいFB 2点。スライド4・17で共通。"""
+    y = TOP + Inches(0.62)
+    for ac, no, q, sub in FB_ITEMS:
+        h = Inches(1.62) if sub else Inches(1.32)
+        rect(slide, ML, y, CW, h, fill=PANEL)
+        rect(slide, ML, y, Inches(0.06), h, fill=ac)
 
-        rect(slide, ML + Inches(0.46), y + Inches(0.38), Inches(0.62),
+        rect(slide, ML + Inches(0.46), y + Inches(0.36), Inches(0.62),
              Inches(0.62), fill=ac, shape=MSO_SHAPE.OVAL)
-        label(slide, ML + Inches(0.46), y + Inches(0.54), Inches(0.62), no,
+        label(slide, ML + Inches(0.46), y + Inches(0.52), Inches(0.62), no,
               size=17, color=WHITE, align=PP_ALIGN.CENTER)
 
-        label(slide, ML + Inches(1.42), y + Inches(0.45), CW - Inches(1.9), q,
-              size=24, color=INK, h=Inches(0.52))
-
-    label(slide, ML, TOP + Inches(4.34), CW,
-          "④解決策・⑤1か月の行動は、次回の中間FBでご報告します。", size=12,
-          bold=False, color=MUTED)
+        label(slide, ML + Inches(1.42), y + Inches(0.38 if sub else 0.44),
+              CW - Inches(1.9), q, size=24, color=INK, h=Inches(0.52))
+        if sub:
+            label(slide, ML + Inches(1.42), y + Inches(1.00), CW - Inches(1.9),
+                  sub, size=12.5, bold=False, color=BODY, h=Inches(0.36))
+        y += h + Inches(0.40)
 
 
 # ================================================================ スライド 1
@@ -267,30 +343,33 @@ label(s, CX, Inches(5.62), CXW, "2026年9月7日", size=11.5, bold=False,
 s = slide_new("本日お話しすること", kicker="AGENDA")
 
 agenda = [
-    ("01", "前提", "「選ばれる」をどう定義したか（あるべき姿／現状）"),
-    ("02", "リサーチ内容", "定義に基づいて集めたファクト"),
+    ("01", "前提", "「選ばれる」をどう定義したか（定義／あるべき姿／現状／差分）"),
+    ("02", "差分の要因", "なぜ差がついているのか（仮説）"),
     ("03", "課題", "いま我々が課題と捉えているもの（発散段階）"),
     ("04", "いただきたいフィードバック", "本日ご指摘いただきたい2点"),
 ]
 for i, (no, ttl, sub) in enumerate(agenda):
-    yy = TOP + Inches(i * 0.75)
-    rect(s, ML, yy, Inches(0.62), Inches(0.62), fill=ACCENT_L)
-    label(s, ML, yy + Inches(0.16), Inches(0.62), no, size=14, color=ACCENT,
+    yy = TOP + Inches(i * 0.74)
+    rect(s, ML, yy, Inches(0.6), Inches(0.6), fill=ACCENT_L)
+    label(s, ML, yy + Inches(0.16), Inches(0.6), no, size=13, color=ACCENT,
           align=PP_ALIGN.CENTER)
-    label(s, ML + Inches(0.85), yy + Inches(0.05), Inches(4), ttl, size=16)
-    label(s, ML + Inches(0.85), yy + Inches(0.33), Inches(8), sub, size=12,
+    label(s, ML + Inches(0.86), yy + Inches(0.02), Inches(4.4), ttl, size=16)
+    label(s, ML + Inches(0.86), yy + Inches(0.32), Inches(9), sub, size=11.5,
           bold=False, color=MUTED)
 
 # 研修課題5要素のうち、どこまでを本日扱うか（ステップライン）
-rect(s, ML, Inches(4.62), CW, Inches(0.015), fill=LINE)
-label(s, ML, Inches(4.86), Inches(8), "研修課題の5要素のうち、本日は ①〜③ まで",
+rect(s, ML, Inches(4.72), CW, Inches(0.015), fill=LINE)
+label(s, ML, Inches(4.92), Inches(8), "研修課題の5要素のうち、本日は ①〜③ まで",
       size=12, color=INK)
+label(s, ML, Inches(5.22), CW,
+      "②リサーチしたファクトは、前提でお話しする数字と Appendix に載せています。",
+      size=11.5, bold=False, color=MUTED)
 
 steps = [("① 前提", True), ("② リサーチ", True), ("③ 課題", True),
          ("④ 解決策", False), ("⑤ 1か月の行動", False)]
 slot = Emu(int(CW / 5))
 cx = [ML + Emu(int(slot * (i + 0.5))) for i in range(5)]
-LY = Inches(5.62)          # ライン中心
+LY = Inches(5.90)          # ライン中心
 DOT = Inches(0.24)
 
 rect(s, cx[0], LY - Inches(0.008), cx[4] - cx[0], Inches(0.016), fill=LINE)
@@ -301,227 +380,423 @@ for i, (name, on) in enumerate(steps):
          fill=(ACCENT if on else WHITE),
          line_color=(None if on else LINE), line_w=1.25,
          shape=MSO_SHAPE.OVAL)
-    label(s, cx[i] - slot / 2, LY + Inches(0.24), slot, name, size=12.5,
+    label(s, cx[i] - slot / 2, LY + Inches(0.20), slot, name, size=12.5,
           color=(ACCENT if on else MUTED), align=PP_ALIGN.CENTER)
 
-label(s, cx[0] - slot / 2, LY + Inches(0.66), cx[2] - cx[0] + slot,
+label(s, cx[0] - slot / 2, LY + Inches(0.54), cx[2] - cx[0] + slot,
       "本日はここまで", size=11.5, color=ACCENT, align=PP_ALIGN.CENTER)
-label(s, cx[3] - slot / 2, LY + Inches(0.66), cx[4] - cx[3] + slot,
+label(s, cx[3] - slot / 2, LY + Inches(0.54), cx[4] - cx[3] + slot,
       "次回の中間FBでご報告します", size=11.5, bold=False, color=MUTED,
       align=PP_ALIGN.CENTER)
 
 # ================================================================ スライド 3
-s = slide_new("本日いただきたいフィードバック", kicker="本日のゴール",
-              note="定義の詳細はスライド4、課題の詳細はスライド8〜10でご説明します。")
+s = slide_new("本日のゴール", kicker="GOAL")
 
-fb_cards(s)
+rect(s, ML, Inches(1.66), CW, Inches(2.10), fill=ACCENT_L)
+rect(s, ML, Inches(1.66), CW, Inches(0.05), fill=ACCENT)
+tfg = tb(s, ML + Inches(0.9), Inches(2.18), CW - Inches(1.8), Inches(1.3))
+text(tfg, [("前提（定義・あるべき姿・現状・差分）と、\nいま挙がっている課題について"
+            "ご指摘をいただき、\n次回の中間FBまでに何を詰めるかを決める",
+            dict(size=23, bold=True, color=INK))],
+     first=True, space_after=0, align=PP_ALIGN.CENTER, line=1.45)
+
+band(s, Inches(4.10), Inches(0.72),
+     [[("④解決策・⑤1か月の行動は、次回の中間FBでご報告します。",
+        dict(size=14, bold=True, color=ACCENT))]],
+     fill=PANEL)
 
 # ================================================================ スライド 4
-s = slide_new("「選ばれる」の定義 ── 法人／個人それぞれで置いた",
-              kicker="① 前提 ─ 定義",
-              note="出典：9/4 チーム共有ドキュメント「①前提（「選ばれる」の定義）」"
-                   "および 9/4 対面MTGのホワイトボード。")
+s = slide_new("本日いただきたいフィードバック", kicker="GOAL",
+              note="定義の詳細は P.7〜9、課題の詳細は P.19 でご説明します。")
+fb_body(s)
 
-# 上段：スコープを1本の帯に
-sh = rect(s, ML, TOP, CW, Inches(0.6), fill=PANEL)
-sh.text_frame.margin_top = Inches(0.17)
-text(sh.text_frame,
-     [("データが取れている範囲 ", dict(size=11, bold=True, color=ACCENT)),
-      ("リクルートエージェント ／ パーソル（doda）", dict(size=13, bold=True, color=INK)),
-      ("　　｜　　", dict(size=13, color=LINE)),
-      ("時間軸 ", dict(size=11, bold=True, color=ACCENT)),
-      ("2030年度", dict(size=13, bold=True, color=INK))],
-     first=True, space_after=0, align=PP_ALIGN.CENTER)
-
-# 中段：法人／個人
-LX, LW = ML, Inches(5.87)
-RX, RW = ML + Inches(6.02), Inches(5.87)
-views = [
-    (LX, "法人視点",
-     ["doda等人材サービスにおける就職率・定着率、",
-      "日本企業全体におけるパーソルサービスのシェア率"],
-     ["単なる採用にとどまらず、育成・人員配置・組織開発まで",
-      "一括して任される状態、および長期的・継続的な契約関係",
-      "（LTV・NPS向上）"]),
-    (RX, "個人視点",
-     ["登録者数、転職成功率、キャリア選択の幅、",
-      "プラットフォーム全体の生涯価値（LTV）"],
-     ["キャリアのあらゆるフェーズにおいて選ばれ、",
-      "中長期的に利用され続ける状態"]),
-]
-for x, head, quant, qual in views:
-    sh = rect(s, x, Inches(2.3), LW, Inches(2.9), fill=WHITE, line_color=LINE)
-    rect(s, x, Inches(2.3), LW, Inches(0.05), fill=ACCENT)
-    sh.text_frame.margin_left = Inches(0.26)
-    sh.text_frame.margin_top = Inches(0.24)
-    text(sh.text_frame, [(head, dict(size=18, bold=True, color=INK))],
-         first=True, space_after=13)
-    for ttl, lines in (("定量指標", quant), ("定性・状態", qual)):
-        text(sh.text_frame,
-             [(ttl, dict(size=10.5, bold=True, color=ACCENT))],
-             space_before=(0 if ttl == "定量指標" else 12), space_after=5)
-        for j, ln in enumerate(lines):
-            text(sh.text_frame, [(ln, dict(size=12.2, color=BODY))],
-                 space_after=(0 if j < len(lines) - 1 else 0), line=1.2)
-
-# 下段：9/4に収束させた結論
-rect(s, ML, Inches(5.42), CW, Inches(0.7), fill=ACCENT_L)
-label(s, ML, Inches(5.63), CW,
-      "9/4に収束させた結論　「選ばれる」＝ 決定率が高い状態（リクルートに数値で上回る状態）",
-      size=14.5, color=ACCENT, align=PP_ALIGN.CENTER)
-
-# ================================================================ スライド 5
-s = slide_new("あるべき姿（2030）と現状 ── GAPは 個人26.4万人／法人2.7万人",
-              kicker="① 前提 ─ To Be / As Is",
-              note="出典は Appendix 1。年度がそろっていない点（個人＝FY23、法人＝令和7年度）に"
-                   "ご留意ください。")
-
-hdr = ["", "あるべき姿 To Be 2030", "現状 As Is（パーソル）", "GAP"]
-colx = [ML, ML + Inches(3.5), ML + Inches(6.55), ML + Inches(9.5)]
-colw = [Inches(3.5), Inches(3.05), Inches(2.95), Inches(2.39)]
-for i, h in enumerate(hdr):
-    label(s, colx[i], TOP, colw[i], h, size=11.5,
-          color=(ACCENT if i == 1 else MUTED))
-rect(s, ML, TOP + Inches(0.3), CW, Inches(0.02), fill=INK)
-
-data = [
-    ("個人KPI：年間登録者数", "202万4,000人", "176万人", "（FY23）", "26万4,000人"),
-    ("法人KPI：就職者数", "87,754人", "60,307人", "（令和7年度）", "27,447人"),
-]
-for i, (k, b, a, note_, g) in enumerate(data):
-    yy = TOP + Inches(0.46 + i * 0.92)
-    label(s, colx[0], yy + Inches(0.12), colw[0], k, size=13.5)
-    label(s, colx[1], yy + Inches(0.05), colw[1], b, size=19, color=INK)
-    tfa = tb(s, colx[2], yy + Inches(0.05), colw[2], Inches(0.5))
-    text(tfa, [(a, dict(size=19, bold=True, color=INK)),
-               (" " + note_, dict(size=10.5, bold=False, color=MUTED))],
-         first=True, space_after=0)
-    label(s, colx[3], yy + Inches(0.05), colw[3], g, size=19, color=WARN)
-    rect(s, ML, yy + Inches(0.74), CW, Inches(0.012), fill=LINE)
-
-# 横棒バー
-bar_y = Inches(3.62)
-label(s, ML, bar_y, Inches(11.8), "あるべき姿に対する現在地", size=12)
-BX, BW = ML, Inches(9.4)
-for i, (name, cur, tot) in enumerate([("個人KPI 年間登録者数", 176.0, 202.4),
-                                      ("法人KPI 就職者数", 60307, 87754)]):
-    yy = bar_y + Inches(0.42 + i * 1.02)
-    label(s, BX, yy - Inches(0.02), Inches(3), name, size=11, bold=False,
-          color=MUTED)
-    w_cur = Emu(int(BW * (cur / tot)))
-    rect(s, BX, yy + Inches(0.24), BW, Inches(0.42), fill=WARN_L,
-         line_color=WARN, line_w=0.75, dash=True)
-    rect(s, BX, yy + Inches(0.24), w_cur, Inches(0.42), fill=ACCENT)
-    label(s, BX + Inches(0.14), yy + Inches(0.35), Inches(3),
-          f"現状 {'176万人' if i == 0 else '60,307人'}", size=11, color=WHITE)
-    label(s, BX + w_cur + Inches(0.12), yy + Inches(0.35), Inches(2.6),
-          f"GAP {'26.4万人' if i == 0 else '27,447人'}", size=11, color=WARN)
-
-sh = rect(s, ML + Inches(9.72), bar_y + Inches(0.36), Inches(2.17), Inches(2.05),
-          fill=PANEL)
-tf = sh.text_frame
-text(tf, [("To Be の置き方", dict(size=10.5, bold=True, color=ACCENT))],
-     first=True, space_after=4)
-text(tf, [("リクルートの現在値に並ぶことを2030年の到達点とする\n（リクルート横ばい前提）",
-           dict(size=10.5, color=BODY))], space_after=6, line=1.25)
-text(tf, [("Indeed統合で伸びれば目標は上振れする",
-           dict(size=10, color=MUTED))], space_after=0, line=1.25)
+# ================================================== スライド 5（セクション扉①）
+section_slide("01", "前提",
+              "「選ばれる」をどう定義したか ── 定義／あるべき姿／現状／差分")
 
 # ================================================================ スライド 6
-s = slide_new("GAPを、登録者数と決定率に分けて見る",
-              kicker="① 前提 ─ GAPの分解",
-              note="決定率は両社が公表している指標ではなく、実数2つからの逆算値です。")
+s = slide_new("いただいた課題", kicker="① 前提 ─ 課題内容")
 
-steps = [
-    ("① 式を置く", "就職者数 ＝ 年間登録者数 × 決定率"),
-    ("② 変形する", "決定率 ＝ 就職者数 ÷ 年間登録者数"),
-]
-for i, (k, v) in enumerate(steps):
-    yy = TOP + Inches(i * 0.66)
-    label(s, ML, yy + Inches(0.08), Inches(1.6), k, size=12, color=ACCENT)
-    label(s, ML + Inches(1.6), yy, Inches(8), v, size=18)
-label(s, ML + Inches(1.6), TOP + Inches(1.26), Inches(8),
-      "※ 公表指標ではなく、実数2つからの逆算値", size=11, bold=False, color=MUTED)
+rect(s, ML, Inches(2.30), CW, Inches(2.66), fill=PANEL)
+rect(s, ML, Inches(2.30), CW, Inches(0.05), fill=ACCENT)
 
-# ③ 代入する（全幅の表）
-label(s, ML, TOP + Inches(1.78), Inches(1.6), "③ 代入する", size=12, color=ACCENT)
-TX, TW = ML + Inches(1.6), Inches(10.29)
-cw = [Inches(2.4), Inches(2.63), Inches(2.63), Inches(2.63)]
-cxs = [TX, TX + cw[0], TX + cw[0] + cw[1], TX + cw[0] + cw[1] + cw[2]]
-for i, h in enumerate(["", "就職者数", "年間登録者数", "決定率"]):
-    label(s, cxs[i], TOP + Inches(1.78), cw[i], h, size=11.5, color=MUTED,
-          align=(PP_ALIGN.LEFT if i == 0 else PP_ALIGN.RIGHT))
-rect(s, TX, TOP + Inches(2.08), TW, Inches(0.018), fill=INK)
+tfq = tb(s, ML + Inches(0.9), Inches(2.86), CW - Inches(1.8), Inches(1.6))
+text(tfq, [("「パーソルキャリアが2030年までに\nリクルート様の人材サービスと比較し、\n"
+            "法人個人双方から", dict(size=25, bold=True, color=INK)),
+           ("選ばれる", dict(size=25, bold=True, color=ACCENT)),
+           ("ための戦略を考えよ」", dict(size=25, bold=True, color=INK))],
+     first=True, space_after=0, align=PP_ALIGN.CENTER, line=1.42)
 
-calc = [("パーソル", "60,307 人", "1,760,000 人", "3.43%"),
-        ("リクルート", "87,754 人", "2,024,000 人", "4.34%")]
-for i, row in enumerate(calc):
-    yy = TOP + Inches(2.24 + i * 0.66)
-    label(s, cxs[0], yy + Inches(0.07), cw[0], row[0], size=14)
-    for j in (1, 2, 3):
-        label(s, cxs[j], yy, cw[j], row[j], size=17, color=INK,
-              align=PP_ALIGN.RIGHT)
-    rect(s, TX, yy + Inches(0.5), TW, Inches(0.012), fill=LINE)
+# ======================================================== スライド 7・8（定義）
 
-# ④ 差を出す
-label(s, ML, TOP + Inches(3.72), Inches(1.6), "④ 差を出す", size=12, color=ACCENT)
-tfd = tb(s, TX, TOP + Inches(3.62), Inches(4.7), Inches(0.5))
-text(tfd, [("0.91", dict(size=26, bold=True, color=INK)),
-           (" ポイント", dict(size=14, bold=True, color=INK))], first=True,
-     space_after=0)
 
-# ================================================================ スライド 7
-s = slide_new("リサーチで分かったこと", kicker="② リサーチ内容 ─ ファクト",
-              note="出典：パーソル市場調査（2022年）／厚生労働省 令和4年版 労働経済の分析／"
-                   "パーソル総合研究所 人事部大研究／各社IR・公式サイト。")
+def definition_slide(no, view, items, foot_text, foot_fill, foot_bar):
+    sl = slide_new(f"「選ばれる」の定義 {no} {view}",
+                   kicker=f"① 前提 ─ 定義（{view}）")
+    y = TOP + Inches(0.34)
+    for k, v, nl in items:
+        rect(sl, ML, y, Inches(1.7), Inches(0.36), fill=ACCENT_L)
+        label(sl, ML, y + Inches(0.08), Inches(1.7), k, size=12, color=ACCENT,
+              align=PP_ALIGN.CENTER)
+        tfd = tb(sl, ML + Inches(2.0), y - Inches(0.06),
+                 CW - Inches(2.0), Inches(0.42 * nl))
+        text(tfd, [(v, dict(size=17, color=INK))], first=True, space_after=0,
+             line=1.34)
+        y += Inches(0.40 * nl + 0.44)
+    band(sl, Inches(4.60), Inches(0.86), [foot_text], fill=foot_fill,
+         bar=foot_bar)
+    return sl
 
-facts = [
-    ("個人", [
-        [("年間登録者数：リクルート 202万4,000人 vs パーソル 176万人",
-          dict(bold=True, color=INK)), ("（差 26万4,000人）", {})],
-        [("転職希望者の 67%（約358万人）が doda と接点なし",
-          dict(bold=True, color=INK))],
-        [("転職希望者のうち、実際に転職を実現するのは 1〜2割程度", {})],
-    ]),
-    ("法人", [
-        [("就職者数：リクルート 87,754人 vs パーソル 60,307人",
-          dict(bold=True, color=INK)), ("（差 27,447人）", {})],
-        [("求人掲載数：リクルート 約80万件 vs パーソル 約30万件", {})],
-        [("入社後7か月以上の定着率 94.5%", dict(bold=True, color=INK))],
-    ]),
-    ("市場", [
-        [("2030年に全国で 644万人 の人手不足", dict(bold=True, color=INK))],
-        [("企業の 約55% が「最適な人員配置」に課題", {})],
-    ]),
-]
-y = TOP
-for head, lines in facts:
-    label(s, ML, y, Inches(1.4), head, size=15, color=ACCENT)
-    rect(s, ML + Inches(1.4), y + Inches(0.14), CW - Inches(1.4), Inches(0.012),
-         fill=LINE)
-    y += Inches(0.42)
-    for ln in lines:
-        rect(s, ML + Inches(0.16), y + Inches(0.12), Inches(0.08), Inches(0.08),
-             fill=ACCENT, shape=MSO_SHAPE.OVAL)
-        tfl = tb(s, ML + Inches(0.48), y, CW - Inches(0.48), Inches(0.32))
-        p = para(tfl, first=True, space_after=0, line=1.2)
-        for s_, opt in ln:
-            opt = dict(opt)
-            r = p.add_run()
-            r.text = s_
-            _set_font(r, opt.pop("size", 14.5), **opt)
-        y += Inches(0.4)
-    y += Inches(0.2)
 
-label(s, ML, y + Inches(0.02), CW,
-      "原因ではないと確認できたもの：手数料率（両社に差なし）／6か月以内離職率"
-      "（むしろパーソルが優位）", size=12, bold=False, color=MUTED)
+definition_slide(
+    "①", "法人視点",
+    [("定量指標",
+      "doda等人材サービスにおける就職率・定着率、"
+      "日本企業全体におけるパーソルサービスのシェア率", 2),
+     ("定性・状態",
+      "単なる採用にとどまらず、育成・人員配置・組織開発まで一括して任される状態、"
+      "および長期的・継続的な契約関係（LTV・NPS向上）", 2)],
+    [("※ どの指標を主指標に置くかは、まだ定まっていません",
+      dict(size=16, bold=True, color=WARN))],
+    WARN_L, WARN)
+
+definition_slide(
+    "②", "個人視点",
+    [("定量指標",
+      "登録者数、転職成功率、キャリア選択の幅、"
+      "プラットフォーム全体の生涯価値（LTV）", 1),
+     ("定性・状態",
+      "キャリアのあらゆるフェーズにおいて選ばれ、中長期的に利用され続ける状態", 1)],
+    [("本日お話しする数字は、すべてこの個人視点の定義に沿って出しています",
+      dict(size=16, bold=True, color=ACCENT))],
+    ACCENT_L, ACCENT)
 
 # ================================================================ スライド 9
+s = slide_new("「選ばれる」の定義 ── 収束させた結論",
+              kicker="① 前提 ─ 定義（結論）",
+              note="出典：9/4 チーム共有ドキュメント memo「選ばれる定義 ＝ 決定率が高い状態／"
+                   "リクルートに数値で上回る状態」および 9/4 対面MTGのホワイトボード。")
+
+scope_band(s)
+
+rect(s, ML, Inches(2.86), CW, Inches(1.86), fill=ACCENT_L)
+rect(s, ML, Inches(2.86), CW, Inches(0.05), fill=ACCENT)
+tfc = tb(s, ML, Inches(3.38), CW, Inches(0.7))
+text(tfc, [("「選ばれる」 ＝ ", dict(size=27, bold=True, color=INK)),
+           ("決定率でリクルートを上回っている状態",
+            dict(size=27, bold=True, color=ACCENT))],
+     first=True, space_after=0, align=PP_ALIGN.CENTER)
+label(s, ML + Inches(1.0), Inches(4.16), CW - Inches(2.0),
+      "決定率が何%であるべきかを絶対値で定めるのは難しいため、"
+      "競合であるリクルートを上回っている状態を基準に置いています。",
+      size=14, bold=False, color=BODY, align=PP_ALIGN.CENTER)
+
+# ================================================================ スライド 10
+s = slide_new(f"あるべき姿（2030年）── 決定率 {TO_BE_RATE}",
+              kicker="① 前提 ─ あるべき姿 To Be 2030",
+              note="※ 決定率は両社の公表指標ではなく、実数2つからの逆算値です。"
+                   "なりゆきの分母は、年間登録者数の時系列が非開示のため doda会員数の伸び"
+                   "（+11.3%/年）で代用しています。リクルートは横ばい前提です。")
+
+label(s, ML, TOP, Inches(1.9), "決定率とは", size=12, color=ACCENT)
+tfv = tb(s, ML + Inches(1.9), TOP - Inches(0.06), Inches(9.9), Inches(0.4))
+text(tfv, [("決定率 ＝ 就職者数 ÷ 年間登録者数",
+            dict(size=17, bold=True, color=INK)),
+           ("　※ 実数2つからの逆算値", dict(size=11, color=MUTED))],
+     first=True, space_after=0)
+
+label(s, ML, Inches(2.06), Inches(4.0), "2030年に向けた3つの水準", size=12,
+      color=ACCENT)
+
+LVW = Inches(3.83)
+levels = [
+    ("なりゆき（このまま）", RATE_NATURAL,
+     "就職者数は実績CAGR +3.4%/年、\n登録者数は +11.3%/年。分母が先に伸びて下がる",
+     MUTED, PANEL),
+    ("リクルート（横ばい前提）", "4.34%",
+     "「上回っている状態」の下限。\n並ぶだけなら 202.4万人 × 4.34% ＝ 87,754人",
+     ACCENT, WHITE),
+    ("パーソルの計画を延長", RATE_PLAN,
+     "FY2028「登録決定率 1.3倍」（4.45%）を\n2030年度まで同ペースで延長した値",
+     ACCENT, WHITE),
+]
+for i, (head, val, sub, ac, fl) in enumerate(levels):
+    x = ML + i * (LVW + Inches(0.2))
+    rect(s, x, Inches(2.42), LVW, Inches(1.52), fill=fl, line_color=LINE)
+    rect(s, x, Inches(2.42), LVW, Inches(0.05), fill=ac)
+    label(s, x, Inches(2.62), LVW, head, size=11, color=ac,
+          align=PP_ALIGN.CENTER)
+    label(s, x, Inches(2.90), LVW, val, size=30, color=INK,
+          align=PP_ALIGN.CENTER, h=Inches(0.55))
+    tfl = tb(s, x + Inches(0.2), Inches(3.46), LVW - Inches(0.4), Inches(0.5))
+    text(tfl, [(sub, dict(size=10, color=MUTED))], first=True, space_after=0,
+         align=PP_ALIGN.CENTER, line=1.25)
+
+rect(s, ML, Inches(4.24), CW, Inches(1.42), fill=WARN_L, line_color=WARN,
+     line_w=1.5, dash=True)
+tfr = tb(s, ML, Inches(4.44), CW, Inches(0.66))
+text(tfr, [("あるべき姿　決定率 ＝ ", dict(size=22, bold=True, color=INK)),
+           (TO_BE_RATE, dict(size=40, bold=True, color=WARN))],
+     first=True, space_after=0, align=PP_ALIGN.CENTER)
+label(s, ML, Inches(5.22), CW,
+      "リクルートの現在値 4.34% を上回り、自社計画の延長線 5.3% の内側に収まる水準として置く",
+      size=13, bold=False, color=BODY, align=PP_ALIGN.CENTER)
+
+# ================================================================ スライド 11
+s = slide_new("現状① 年間登録者数 ── 26万4,000人の差",
+              kicker="① 前提 ─ 現状 As Is ①",
+              note="※ 定義がずれています：リクルート＝エージェント単体・FY2025 ／ "
+                   "パーソル＝Career SBU全体・FY2023。出典は Appendix 1。")
+
+band(s, TOP, Inches(0.58),
+     [[("比較対象　", dict(size=11, bold=True, color=ACCENT)),
+       ("リクルート側 ＝ リクルートエージェント　　／　　パーソル側 ＝ パーソル（doda）",
+        dict(size=13.5, bold=True, color=INK))]])
+
+for i, (name, val) in enumerate([("リクルートエージェント", "202万4,000人"),
+                                 ("パーソル（doda）", "176万人")]):
+    x = ML + i * (Inches(5.82) + Inches(0.25))
+    sh = rect(s, x, Inches(2.32), Inches(5.82), Inches(1.62), fill=WHITE,
+              line_color=LINE)
+    rect(s, x, Inches(2.32), Inches(5.82), Inches(0.05), fill=ACCENT)
+    label(s, x, Inches(2.60), Inches(5.82), name, size=13, color=ACCENT,
+          align=PP_ALIGN.CENTER)
+    label(s, x, Inches(3.02), Inches(5.82), val, size=36, color=INK,
+          align=PP_ALIGN.CENTER, h=Inches(0.7))
+
+rect(s, ML, Inches(4.26), CW, Inches(1.46), fill=WARN_L, line_color=WARN)
+tfg = tb(s, ML, Inches(4.46), CW, Inches(0.7))
+text(tfg, [("差　", dict(size=15, bold=True, color=WARN)),
+           ("26万4,000人", dict(size=36, bold=True, color=WARN))],
+     first=True, space_after=0, align=PP_ALIGN.CENTER)
+label(s, ML, Inches(5.26), CW,
+      "同じ市場に対して、パーソルは年間で26万4,000人ぶん少ない", size=14,
+      bold=False, color=INK, align=PP_ALIGN.CENTER)
+
+# ================================================================ スライド 12
+s = slide_new("現状② 決定率 ── 0.91ポイントの差",
+              kicker="① 前提 ─ 現状 As Is ②",
+              note="決定率は両社が公表している指標ではなく、実数2つからの逆算値です"
+                   "（P.10 で置いた式）。")
+
+label(s, ML, TOP, Inches(1.9), "代入する", size=12, color=ACCENT)
+TX, TW = ML + Inches(1.9), Inches(9.99)
+cw = [Inches(2.1), Inches(2.63), Inches(2.63), Inches(2.63)]
+cxs = [TX, TX + cw[0], TX + cw[0] + cw[1], TX + cw[0] + cw[1] + cw[2]]
+for i, h in enumerate(["", "就職者数", "年間登録者数", "決定率"]):
+    label(s, cxs[i], TOP, cw[i], h, size=11.5, color=MUTED,
+          align=(PP_ALIGN.LEFT if i == 0 else PP_ALIGN.RIGHT))
+rect(s, TX, TOP + Inches(0.30), TW, Inches(0.018), fill=INK)
+
+for i, row in enumerate([("パーソル", "60,307 人", "1,760,000 人", "3.43%"),
+                         ("リクルート", "87,754 人", "2,024,000 人", "4.34%")]):
+    yy = TOP + Inches(0.48 + i * 0.78)
+    label(s, cxs[0], yy + Inches(0.10), cw[0], row[0], size=15)
+    for j in (1, 2, 3):
+        label(s, cxs[j], yy, cw[j], row[j], size=20, color=INK,
+              align=PP_ALIGN.RIGHT)
+    rect(s, TX, yy + Inches(0.58), TW, Inches(0.012), fill=LINE)
+
+label(s, ML, TOP + Inches(2.34), Inches(1.9), "差を出す", size=12, color=ACCENT)
+tfd = tb(s, TX, TOP + Inches(2.22), Inches(6.0), Inches(0.5))
+text(tfd, [("0.91", dict(size=30, bold=True, color=WARN)),
+           (" ポイント", dict(size=15, bold=True, color=WARN))],
+     first=True, space_after=0)
+
+band(s, Inches(4.86), Inches(0.78),
+     [[("同じ人数を集めても、就職に至る割合そのものが 0.91ポイント 低い",
+        dict(size=15.5, bold=True, color=ACCENT))]],
+     fill=ACCENT_L, bar=ACCENT)
+
+# ================================================================ スライド 13
+s = slide_new(f"差分① 就職者数 ── {GAP_PLACED} 増やす必要がある",
+              kicker="① 前提 ─ 差分 GAP ①",
+              note="To Be 就職者数 ＝ 年間登録者数 202万4,000人（リクルートの現在値に並ぶ）"
+                   f"× 決定率 {TO_BE_RATE} ＝ {TO_BE_PLACED}。")
+
+gcx = [ML, ML + Inches(3.0), ML + Inches(6.0), ML + Inches(9.0)]
+gcw = [Inches(3.0), Inches(3.0), Inches(3.0), Inches(2.89)]
+for i, h in enumerate(["", "あるべき姿 To Be 2030", "現状 As Is", "GAP"]):
+    label(s, gcx[i], TOP + Inches(0.10), gcw[i], h, size=11.5,
+          color=(ACCENT if i == 1 else MUTED))
+rect(s, ML, TOP + Inches(0.40), CW, Inches(0.018), fill=INK)
+
+for i, (k, b, a, g) in enumerate([("決定率", TO_BE_RATE, "3.43%", GAP_PT),
+                                  ("就職者数", TO_BE_PLACED, "60,307 人",
+                                   GAP_PLACED)]):
+    yy = TOP + Inches(0.62 + i * 0.90)
+    label(s, gcx[0], yy + Inches(0.14), gcw[0], k, size=15)
+    label(s, gcx[1], yy, gcw[1], b, size=26, color=WARN)
+    label(s, gcx[2], yy, gcw[2], a, size=26, color=INK)
+    label(s, gcx[3], yy, gcw[3], g, size=26, color=WARN)
+    rect(s, ML, yy + Inches(0.68), CW, Inches(0.012), fill=LINE)
+
+band(s, Inches(4.30), Inches(0.90),
+     [[("決定率を 3.43% から ", dict(size=16, bold=True, color=INK)),
+       (TO_BE_RATE, dict(size=16, bold=True, color=WARN)),
+       (" に上げるには、就職者数を ", dict(size=16, bold=True, color=INK)),
+       (GAP_PLACED, dict(size=16, bold=True, color=WARN)),
+       (" 増やす必要があります", dict(size=16, bold=True, color=INK))]],
+     fill=ACCENT_L, bar=ACCENT)
+
+# ================================================================ スライド 14
+s = slide_new("差分② 年間登録者数 ── 伸びしろは「未リーチ層」にある",
+              kicker="① 前提 ─ 差分 GAP ②",
+              note="出典：転職希望者534万人・未接点67%（約358万人）＝ パーソルHD "
+                   "IR-DAY 2024 説明資料（Career SBU）p.14／パーソルキャリア 2022年市場調査。")
+
+band(s, TOP, Inches(0.66),
+     [[("転職希望者 534万人 のうち、", dict(size=13.5, color=BODY)),
+       ("67%（約358万人）が doda と接点を持っていない",
+        dict(size=15, bold=True, color=INK))]],
+     fill=PANEL)
+
+# 左：未リーチ層の規模
+sh = rect(s, ML, Inches(2.36), Inches(4.6), Inches(1.90), fill=WARN_L,
+          line_color=WARN, line_w=1.5, dash=True)
+label(s, ML, Inches(2.62), Inches(4.6), "doda と接点を持っていない転職希望者",
+      size=12, color=WARN, align=PP_ALIGN.CENTER)
+label(s, ML, Inches(3.06), Inches(4.6), "358万人", size=44, color=WARN,
+      align=PP_ALIGN.CENTER, h=Inches(0.9))
+
+# 右：リーチ率
+RX2 = ML + Inches(4.85)
+RW2 = Inches(7.04)
+sh = rect(s, RX2, Inches(2.36), RW2, Inches(1.90), fill=WHITE, line_color=LINE)
+tfr2 = sh.text_frame
+tfr2.margin_left = Inches(0.28)
+tfr2.margin_top = Inches(0.22)
+text(tfr2, [("リーチ率 ＝ 年間登録者数 ÷ 転職希望者534万人",
+             dict(size=14, bold=True, color=INK))], first=True, space_after=3)
+text(tfr2, [("※ 公表値ではなく、この2つからの逆算値", dict(size=10.5, color=MUTED))],
+     space_after=10)
+text(tfr2, [("パーソル　　176万 ÷ 534万 ＝ ", dict(size=13.5, color=BODY)),
+            ("33.0%", dict(size=18, bold=True, color=INK))], space_after=5)
+text(tfr2, [("リクルート　202.4万 ÷ 534万 ＝ ", dict(size=13.5, color=BODY)),
+            ("37.9%", dict(size=18, bold=True, color=INK)),
+            ("　→ 4.9ポイント差", dict(size=13.5, bold=True, color=WARN))],
+     space_after=0)
+
+band(s, Inches(4.62), Inches(0.90),
+     [[("登録者数を増やす余地は残っている。取りに行く先は、この358万人",
+        dict(size=16, bold=True, color=ACCENT))]],
+     fill=ACCENT_L, bar=ACCENT)
+
+# ================================================= スライド 15（セクション扉②）
+section_slide("02", "差分の要因",
+              "なぜ差がついているのか ── 構造と、いま挙がっている仮説")
+
+# ================================================================ スライド 16
+s = slide_new("差分の要因 ── 足りないのは「就職者数」",
+              kicker="② 差分の要因 ─ 構造",
+              note="STEP 1（年間登録者数）と STEP 3（決定率）について、"
+                   "いま挙がっている仮説を次のページでご説明します。")
+
+band(s, TOP, Inches(0.66),
+     [[("差分の要因　", dict(size=11, bold=True, color=WARN)),
+       ("就職者数が足りていないこと", dict(size=17, bold=True, color=INK))]],
+     fill=WARN_L, bar=WARN)
+
+tff = tb(s, ML, Inches(2.36), CW, Inches(0.5))
+text(tff, [("就職者数 ＝ 年間登録者数 × 決定率",
+            dict(size=24, bold=True, color=INK))],
+     first=True, space_after=0, align=PP_ALIGN.CENTER)
+
+# 3ステップ（①登録者数を増やす → ②就職者数を増やす → ③決定率を上げる）
+STEPW, ARW = Inches(3.63), Inches(0.5)
+flow = [
+    ("STEP 1", "年間登録者数を\n増やす", "176万人", f"未リーチ 358万人へ", ACCENT),
+    ("STEP 2", "そのうえで、\n就職者数を増やす", "60,307人",
+     f"{TO_BE_PLACED} へ", ACCENT),
+    ("STEP 3", "それによって、\n決定率を上げる", "3.43%", f"{TO_BE_RATE} へ", WARN),
+]
+for i, (badge, ttl, now, goal, ac) in enumerate(flow):
+    x = ML + i * (STEPW + ARW)
+    sh = rect(s, x, Inches(3.20), STEPW, Inches(1.96), fill=WHITE,
+              line_color=LINE)
+    rect(s, x, Inches(3.20), STEPW, Inches(0.05), fill=ac)
+    tfc = sh.text_frame
+    tfc.margin_left = Inches(0.24)
+    tfc.margin_top = Inches(0.20)
+    text(tfc, [(badge, dict(size=10, bold=True, color=ac))], first=True,
+         space_after=4)
+    text(tfc, [(ttl, dict(size=16.5, bold=True, color=INK))], space_after=10,
+         line=1.25)
+    text(tfc, [(now, dict(size=13, color=MUTED)),
+               ("　→　", dict(size=13, color=MUTED)),
+               (goal, dict(size=14, bold=True, color=ac))], space_after=0)
+    if i < 2:
+        label(s, x + STEPW, Inches(4.02), ARW, "▶", size=15, color=LINE,
+              align=PP_ALIGN.CENTER)
+
+band(s, Inches(5.38), Inches(0.86),
+     [[("年間登録者数を増やし、そのうえで就職者数を増やす。"
+        "それによって決定率を向上させる",
+        dict(size=15.5, bold=True, color=ACCENT))]],
+     fill=ACCENT_L, bar=ACCENT)
+
+# ================================================================ スライド 17
+s = slide_new("それぞれについて、いま挙がっている仮説",
+              kicker="② 差分の要因 ─ 仮説",
+              note="記載は 9/4 対面MTGでの議論を整理したものです。"
+                   "いずれも検証前の仮説です。")
+
+HYP = [
+    (ML, ACCENT, "① 年間登録者数が増えない要因（仮説）", [
+        ("1-1", "認知・第一想起で差がある",
+         "総合型でバランスがよいというポジションが、認知として弱い"),
+        ("1-2", "集客チャネル・顧客接点、広告投下量に差がある", None),
+        ("1-3", "登録体験・UIで負けている",
+         "入力コストが高い／パーソナライズができていない"),
+        ("1-4", "求人数・企業数による登録の魅力度に差がある", None),
+        ("1-5", "獲得できている年代・職種・地域に偏りがある", None),
+        ("1-6", "転職しない期間の接点が持てていない", None),
+    ]),
+    (ML + Inches(6.07), WARN, "② 決定率が上がらない要因（仮説）", [
+        ("2-1", "登録者に紹介できる求人数が足りない", None),
+        ("2-2", "求人紹介 → 応募率が低い", None),
+        ("2-3", "応募 → 書類 → 面接 → 内定の通過率が低い",
+         "面接対策などサービスの質"),
+        ("2-4", "内定 → 承諾・入社率が低い＝意思決定までが遅い",
+         "選考プロセスが見えていない"),
+        ("2-5", "CA・RAの支援体制と生産性",
+         "専門性／雑務量／クロージング力／AI活用の範囲"),
+    ]),
+]
+COLW = Inches(5.82)
+for x, ac, head, rows in HYP:
+    rect(s, x, TOP, COLW, Inches(0.44), fill=ac)
+    label(s, x + Inches(0.22), TOP + Inches(0.10), COLW - Inches(0.4), head,
+          size=12.5, color=WHITE)
+    yy = TOP + Inches(0.66)
+    for no, main, sub in rows:
+        label(s, x + Inches(0.04), yy + Inches(0.02), Inches(0.55), no, size=10,
+              color=ac)
+        label(s, x + Inches(0.58), yy, COLW - Inches(0.62), main, size=13,
+              color=INK, h=Inches(0.28))
+        yy += Inches(0.28)
+        if sub:
+            label(s, x + Inches(0.58), yy, COLW - Inches(0.62), sub, size=10.5,
+                  bold=False, color=MUTED, h=Inches(0.24))
+            yy += Inches(0.24)
+        yy += Inches(0.14)
+
+band(s, Inches(5.62), Inches(0.78),
+     [[("検証状況　", dict(size=11, bold=True, color=WARN)),
+       ("いずれも仮説です。工程別の歩留まりは両社とも非開示のため、"
+        "公開情報では特定できません。", dict(size=13.5, bold=True, color=INK))]],
+     fill=WARN_L, bar=WARN)
+
+# ================================================= スライド 18（セクション扉③）
+section_slide("03", "課題",
+              "いま我々が課題と捉えているもの ── まだ発散段階です")
+
+# ================================================================ スライド 19
 s = slide_new("いま挙がっている課題は5つ ── まだ発散段階です",
               kicker="③ 課題（発散）",
               note="課題3・4・5は、私たちが置いた定量定義と接続していません。"
-                   "また課題5だけ粒度が違い（HiProという1サービスの話）、他と並べる階層ではない可能性があります。")
+                   "また課題5だけ粒度が違い（HiProという1サービスの話）、"
+                   "他と並べる階層ではない可能性があります。")
 
 issues = [
     ("課題1", "登録者数・プラットフォーム規模の格差と未リーチ層への接触不足", True),
@@ -542,123 +817,71 @@ for no, name, linked in issues:
           color=(ACCENT if linked else MUTED))
     label(s, ML + Inches(0.28), yy + Inches(0.42), Inches(8.6), name, size=15,
           color=(INK if linked else BODY))
-    tag = "定量定義と接続する" if linked else "定量定義の外側"
-    label(s, ML + CW - Inches(2.25), yy + Inches(0.32), Inches(2.0), tag,
-          size=10.5, bold=False, color=(ACCENT if linked else MUTED),
-          align=PP_ALIGN.RIGHT)
+    label(s, ML + CW - Inches(2.55), yy + Inches(0.32), Inches(2.3),
+          "定量定義と接続する" if linked else "定量定義の外側", size=10.5,
+          bold=False, color=(ACCENT if linked else MUTED), align=PP_ALIGN.RIGHT)
     yy += hh + Inches(0.16)
 
-# ================================================================ スライド 10
-s = slide_new("課題1・2 ── 定量定義と直接つながる2つ", kicker="③ 課題（発散）",
-              note="記載は 9/4 チーム共有ドキュメント「③課題の整理」の内容そのままです。"
-                   "深掘りの論点はかな、仮説はホワイトボードとみおの発言によります。")
-
-card(s, ML, TOP, Inches(5.82), Inches(3.9),
-     "登録者数・プラットフォーム規模の格差と\n未リーチ層への接触不足",
-     [
-         [("リクルートに対して個人登録者数（26.4万人差）や法人シェア率で劣っており、"
-           "転職希望者の67%（358万人）と接点が持てていない", dict(size=12.2))],
-         [("", dict(size=6))],
-         [("深掘りの論点（かな）", dict(size=11, bold=True, color=ACCENT))],
-         [("認知・第一想起／集客チャネル・顧客接点／求人数・企業数による登録魅力度／"
-           "獲得できている年代・職種・地域", dict(size=11.8))],
-         [("", dict(size=6))],
-         [("ホワイトボードで出た仮説", dict(size=11, bold=True, color=WARN))],
-         [("登録時の入力コスト・UI（年収レンジ）・Web上の企業名表示",
-           dict(size=11.8, bold=True, color=INK))],
-     ], badge="課題1 ｜ 発案：リーダー・まい・けーた", tsize=15.5)
-
-card(s, ML + Inches(6.07), TOP, Inches(5.82), Inches(3.9),
-     "登録者から成果（就職・決定）への\n転換力の低さ",
-     [
-         [("母数の差だけでなく、登録者から就職に至る決定率（パーソル3.43% vs "
-           "リクルート4.34%）そのものに0.91ポイントの構造的な弱さがある",
-           dict(size=12.2))],
-         [("", dict(size=6))],
-         [("深掘りの論点（かな）", dict(size=11, bold=True, color=ACCENT))],
-         [("登録者に紹介できる求人数／求人紹介→応募率／応募→書類→面接→内定の通過率／"
-           "内定→承諾・入社率／CA・法人営業の支援体制・生産性", dict(size=11.8))],
-         [("", dict(size=6))],
-         [("ホワイトボード・みおの仮説", dict(size=11, bold=True, color=WARN))],
-         [("CAの質（専門性／雑務量）／最終意思決定までが遅い",
-           dict(size=11.8, bold=True, color=INK))],
-     ], accent=WARN, badge="課題2 ｜ 発案：まい・けーた", tsize=15.5)
-
-# ================================================================ スライド 11
-s = slide_new("課題3・4・5 ── 定量定義の外側にある3つ", kicker="③ 課題（発散）",
-              note="3つとも市場環境とは接続しますが、GAPの数字とは接続していません。"
-                   "課題5は他と階層が違う可能性があります。")
-
-c3 = [
-    [("人材紹介事業単体では転職時のみの「点の支援」で終わり、転職しない期間の接点が"
-      "少なく、顧客生涯価値（LTV）を高められていない", dict(size=11.8))],
-]
-c4 = [
-    [("求人掲載数（30万件 vs 80万件）では競合に勝てず、高い定着率（94.5%）や入社後の"
-      "活躍度を法人側に客観的に示すデータ・手段が不足している", dict(size=11.8))],
-]
-c5 = [
-    [("HiProは急成長しているが全社LTVを支えるには規模（10万人）が小さく、dodaからの"
-      "実際の流入率（クロスユース率）が不明。また利用者の7割が現職会社員であり、"
-      "「転職後の受け皿」というストーリーとズレがある", dict(size=11.8))],
-]
-for i, (badge, ttl, lines) in enumerate([
-        ("課題3 ｜ 発案：リーダー・まい・みお・かな",
-         "点の支援によるLTVの低さと、\nトータルソリューションの不備", c3),
-        ("課題4 ｜ 発案：リーダー・まい・みお",
-         "求人「量」の劣勢と、「質」を\n証明・評価する手段の不足", c4),
-        ("課題5 ｜ 発案：まい",
-         "HiProの規模感と、dodaからの\n連携ストーリーの脆弱さ", c5)]):
-    x = ML + i * (Inches(3.83) + Inches(0.2))
-    card(s, x, TOP, Inches(3.83), Inches(2.5), ttl, lines, accent=MUTED,
-         fill=PANEL, badge=badge, tsize=14, dash=True)
-
-sh = rect(s, ML, Inches(4.32), CW, Inches(1.08), fill=WARN_L, line_color=WARN)
-tf = sh.text_frame
-text(tf, [("自分たちで気づいている弱点", dict(size=11, bold=True, color=WARN))],
-     first=True, space_after=4)
-text(tf, [("課題3・4・5は、私たちが置いた定量定義（登録者数・就職者数）と接続していません。"
-           "定性の議論から出てきたもので、GAPのどこを埋めるのかを説明できていません。"
-           "また課題5だけ粒度が違い、他と並べる階層ではない可能性があります。",
-           dict(size=12.5, color=INK))], space_after=0, line=1.3)
-
-# ================================================================ スライド 13
+# ================================================================ スライド 20
 s = slide_new("この先の進め方", kicker="④ クロージング")
 
 steps = [
     ("STEP 1", "本日 〜 次回の中間FBまで",
      ["現場社員の方へのヒアリングと、メンターからのフィードバックをもとに議論する",
-      "課題の捉え方を詰めたうえで、解決策の方向性を導き出す"], ACCENT),
+      "P.17 の仮説を検証し、課題の捉え方を詰めたうえで、解決策の方向性を導き出す",
+      "2030年のあるべき決定率（本日は未算出）を確定させる"], ACCENT),
     ("STEP 2", "次回の中間FB",
      ["解決策を含めた全体をレビューいただく"], MUTED),
     ("STEP 3", "最終発表",
-     ["いただいたご指摘をチームでまとめ、①前提／②リサーチ／③課題／④解決策／"
+     ["いただいたご指摘をまとめ、①前提／②リサーチ／③課題／④解決策／"
       "⑤1か月の行動として発表する"], MUTED),
 ]
-yy = TOP + Inches(0.14)
+yy = TOP + Inches(0.10)
 for badge, ttl, lines, c in steps:
-    hh = Inches(1.52) if len(lines) > 1 else Inches(1.34)
+    hh = Inches(0.86 + 0.32 * len(lines) + 0.16)
     rect(s, ML, yy, CW, hh, fill=(ACCENT_L if c == ACCENT else PANEL))
     rect(s, ML, yy, Inches(0.06), hh, fill=c)
-    label(s, ML + Inches(0.34), yy + Inches(0.2), Inches(2), badge, size=10.5,
+    label(s, ML + Inches(0.34), yy + Inches(0.16), Inches(2), badge, size=10.5,
           color=c)
-    label(s, ML + Inches(0.34), yy + Inches(0.48), Inches(6), ttl, size=18,
-          color=INK, h=Inches(0.4))
+    label(s, ML + Inches(0.34), yy + Inches(0.42), Inches(6), ttl, size=16,
+          color=INK, h=Inches(0.36))
     for j, ln in enumerate(lines):
-        yl = yy + Inches(0.94 + j * 0.34)
-        rect(s, ML + Inches(0.38), yl + Inches(0.12), Inches(0.08), Inches(0.08),
+        yl = yy + Inches(0.86 + j * 0.32)
+        rect(s, ML + Inches(0.38), yl + Inches(0.11), Inches(0.08), Inches(0.08),
              fill=c, shape=MSO_SHAPE.OVAL)
         label(s, ML + Inches(0.66), yl, CW - Inches(1.0), ln, size=13,
-              bold=False, color=BODY, h=Inches(0.32))
-    yy += hh + Inches(0.24)
+              bold=False, color=BODY, h=Inches(0.3))
+    yy += hh + Inches(0.22)
 
-# ================================================================ スライド 14
+# ================================================================ スライド 21
 s = slide_new("本日いただきたいフィードバック（再掲）", kicker="④ クロージング",
               note="この2点について、ご指摘をいただけますと幸いです。")
+fb_body(s)
 
-fb_cards(s)
+# ============================================================ Appendix アジェンダ
+s = slide_new("Appendix ─ アジェンダ", kicker="APPENDIX")
+label(s, ML, TOP, CW, "以降は、ご質問をいただいた際に参照する資料です。", size=13,
+      bold=False, color=MUTED)
 
-# ============================================================ Appendix 扉なし
+apx = [
+    ("1", "出典一覧", "本編で使った主要数値の一次ソース・許可番号・取得日"),
+    ("2", "1か月間の活動記録", "8/19・8/24・8/29・9/4・9/7 と、各回で決めたこと"),
+    ("3", "リサーチしたファクト", "前提で使っていない数値／要因ではないと確認できたもの"),
+    ("4", "パーソルの強み・弱みと外部環境", "SWOTの強み／弱み、PEST"),
+]
+yy = Inches(2.14)
+for no, ttl, sub in apx:
+    rect(s, ML, yy, CW, Inches(0.94), fill=WHITE, line_color=LINE)
+    rect(s, ML, yy, Inches(0.05), Inches(0.94), fill=ACCENT)
+    rect(s, ML + Inches(0.32), yy + Inches(0.22), Inches(0.5), Inches(0.5),
+         fill=ACCENT_L)
+    label(s, ML + Inches(0.32), yy + Inches(0.34), Inches(0.5), no, size=13,
+          color=ACCENT, align=PP_ALIGN.CENTER)
+    label(s, ML + Inches(1.06), yy + Inches(0.20), Inches(6.0), ttl, size=16)
+    label(s, ML + Inches(1.06), yy + Inches(0.52), Inches(10.0), sub, size=11.5,
+          bold=False, color=MUTED)
+    yy += Inches(1.06)
+
 # --- Appendix 1
 s = slide_new("出典一覧", kicker="APPENDIX 1")
 src = [
@@ -670,7 +893,8 @@ src = [
      "（4か月以上の有期および無期の就職者数）"),
     ("法人KPI｜パーソル 60,307人",
      "厚生労働省 人材サービス総合サイト／許可番号 13-ユ-304785（同上）"),
-    ("転職希望者の67%（358万人）がdodaと接点なし", "パーソル市場調査（2022年）"),
+    ("転職希望者534万人・67%（358万人）がdodaと接点なし",
+     "PERSOL IR-DAY 2024（Career SBU）p.14／パーソルキャリア 2022年市場調査"),
     ("転職実現に至るのは1〜2割程度",
      "厚生労働省 令和4年版 労働経済の分析 第Ⅱ部第3章"),
     ("企業の約55%が「最適な人員配置」に課題",
@@ -679,8 +903,8 @@ src = [
 ]
 yy = TOP
 for k, v in src:
-    label(s, ML, yy, Inches(4.6), k, size=11.5, color=INK)
-    label(s, ML + Inches(4.75), yy, Inches(7.14), v, size=11, bold=False,
+    label(s, ML, yy, Inches(4.9), k, size=11.5, color=INK)
+    label(s, ML + Inches(5.05), yy, Inches(6.84), v, size=11, bold=False,
           color=MUTED)
     rect(s, ML, yy + Inches(0.42), CW, Inches(0.012), fill=LINE)
     yy += Inches(0.6)
@@ -708,8 +932,57 @@ for d, t, v in acts:
           bold=False, color=MUTED)
     yy += Inches(0.98)
 
-# --- Appendix 3
-s = slide_new("その他のファクト", kicker="APPENDIX 3")
+# --- Appendix 3（リサーチしたファクトのうち、前提で使っていないもの）
+s = slide_new("リサーチしたファクト（前提で使っていないもの）", kicker="APPENDIX 3",
+              note="出典：厚生労働省 令和4年版 労働経済の分析／パーソル総合研究所 "
+                   "人事部大研究／各社IR・公式サイト。")
+
+facts = [
+    ("個人", [
+        [("転職希望者のうち、実際に転職を実現するのは 1〜2割程度",
+          dict(bold=True, color=INK)),
+         ("（厚生労働省 令和4年版 労働経済の分析）", dict(size=11, color=MUTED))],
+    ]),
+    ("法人", [
+        [("求人掲載数：リクルート 約80万件 vs パーソル 約30万件",
+          dict(bold=True, color=INK)), ("　量では勝てない", dict(size=11.5, color=MUTED))],
+        [("入社後7か月以上の 定着率 94.5%", dict(bold=True, color=INK)),
+         ("　質では戦える可能性がある", dict(size=11.5, color=MUTED))],
+    ]),
+    ("市場", [
+        [("2030年に全国で 644万人 の人手不足", dict(bold=True, color=INK))],
+        [("企業の 約55% が「最適な人員配置」に課題", dict(bold=True, color=INK)),
+         ("（パーソル総合研究所）", dict(size=11, color=MUTED))],
+    ]),
+    ("要因ではないと確認できたもの", [
+        [("手数料率：パーソル31.7〜33.1% vs リクルート31.4〜33.4%",
+          dict(bold=True, color=INK)), ("　→ 価格ではない", dict(size=11.5, color=MUTED))],
+        [("6か月以内離職率：パーソル5.49% vs リクルート5.97%",
+          dict(bold=True, color=INK)),
+         ("　→ 紹介の質でもない", dict(size=11.5, color=MUTED))],
+    ]),
+]
+y = TOP
+for head, lines in facts:
+    label(s, ML, y, Inches(3.2), head, size=13.5, color=ACCENT)
+    rect(s, ML + Inches(3.3), y + Inches(0.12), CW - Inches(3.3), Inches(0.012),
+         fill=LINE)
+    y += Inches(0.38)
+    for ln in lines:
+        rect(s, ML + Inches(0.16), y + Inches(0.11), Inches(0.07), Inches(0.07),
+             fill=ACCENT, shape=MSO_SHAPE.OVAL)
+        tfl = tb(s, ML + Inches(0.44), y, CW - Inches(0.44), Inches(0.3))
+        p = para(tfl, first=True, space_after=0, line=1.2)
+        for s_, opt in ln:
+            opt = dict(opt)
+            r = p.add_run()
+            r.text = s_
+            _set_font(r, opt.pop("size", 13.5), **opt)
+        y += Inches(0.38)
+    y += Inches(0.18)
+
+# --- Appendix 4
+s = slide_new("パーソルの強み・弱みと外部環境", kicker="APPENDIX 4")
 card(s, ML, TOP, Inches(5.82), Inches(2.35), "パーソルの強み",
      [
          [("スポットワーク「シェアフル」は業界2位（ユーザー数5.5万人）", dict(size=12))],
