@@ -689,8 +689,8 @@ section_slide("02", "差分の要因",
 # ================================================================ スライド 16
 s = slide_new("差分の要因 ── 足りないのは「就職者数」",
               kicker="② 差分の要因 ─ 構造",
-              note="STEP 1（年間登録者数）と STEP 3（決定率）について、"
-                   "いま挙がっている仮説を次のページでご説明します。")
+              note="「登録者数を伸ばす」「登録者を就職に転換する」それぞれの課題を、"
+                   "次のページでご説明します。")
 
 band(s, TOP, Inches(0.66),
      [[("差分の要因　", dict(size=11, bold=True, color=WARN)),
@@ -736,55 +736,46 @@ band(s, Inches(5.38), Inches(0.86),
      fill=ACCENT_L, bar=ACCENT)
 
 # ================================================================ スライド 17
-s = slide_new("それぞれについて、いま挙がっている仮説",
-              kicker="② 差分の要因 ─ 仮説",
-              note="記載は 9/4 対面MTGでの議論を整理したものです。"
-                   "いずれも検証前の仮説です。")
+s = slide_new("それぞれの差分に対する課題",
+              kicker="② 差分の要因 ─ 課題",
+              note="記載は 9/4 対面MTGでの議論を整理したものです。")
 
-HYP = [
-    (ML, ACCENT, "① 年間登録者数が増えない要因（仮説）", [
-        ("1-1", "認知・第一想起で差がある",
-         "総合型でバランスがよいというポジションが、認知として弱い"),
-        ("1-2", "集客チャネル・顧客接点、広告投下量に差がある", None),
-        ("1-3", "登録体験・UIで負けている",
-         "入力コストが高い／パーソナライズができていない"),
-        ("1-4", "求人数・企業数による登録の魅力度に差がある", None),
-        ("1-5", "獲得できている年代・職種・地域に偏りがある", None),
-        ("1-6", "転職しない期間の接点が持てていない", None),
+ISSUES2 = [
+    (ML, ACCENT, "登録者数を伸ばすときの課題", [
+        ("転職希望者の67%（約358万人）が doda と接点を持っていない", 2,
+         "＝ 転職しない期間の接点を持てていない"),
+        ("総合型でバランスがいい ＝ ポジショニング認知が足りない", 2, None),
     ]),
-    (ML + Inches(6.07), WARN, "② 決定率が上がらない要因（仮説）", [
-        ("2-1", "登録者に紹介できる求人数が足りない", None),
-        ("2-2", "求人紹介 → 応募率が低い", None),
-        ("2-3", "応募 → 書類 → 面接 → 内定の通過率が低い",
-         "面接対策などサービスの質"),
-        ("2-4", "内定 → 承諾・入社率が低い＝意思決定までが遅い",
-         "選考プロセスが見えていない"),
-        ("2-5", "CA・RAの支援体制と生産性",
-         "専門性／雑務量／クロージング力／AI活用の範囲"),
+    (ML + Inches(6.07), WARN, "登録者を就職に転換するときの課題", [
+        ("応募 → 書類 → 面接 → 内定の通過率に差があるのか", 2, None),
+        ("内定承諾までの意思決定を支える支援の差", 1, None),
+        ("CAの専門性の差", 1, None),
     ]),
 ]
 COLW = Inches(5.82)
-for x, ac, head, rows in HYP:
-    rect(s, x, TOP, COLW, Inches(0.44), fill=ac)
-    label(s, x + Inches(0.22), TOP + Inches(0.10), COLW - Inches(0.4), head,
-          size=12.5, color=WHITE)
-    yy = TOP + Inches(0.66)
-    for no, main, sub in rows:
-        label(s, x + Inches(0.04), yy + Inches(0.02), Inches(0.55), no, size=10,
-              color=ac)
-        label(s, x + Inches(0.58), yy, COLW - Inches(0.62), main, size=13,
-              color=INK, h=Inches(0.28))
-        yy += Inches(0.28)
+for x, ac, head, rows in ISSUES2:
+    rect(s, x, TOP, COLW, Inches(0.48), fill=ac)
+    label(s, x + Inches(0.24), TOP + Inches(0.13), COLW - Inches(0.44), head,
+          size=14, color=WHITE)
+    yy = TOP + Inches(0.78)
+    for main, nl, sub in rows:
+        rect(s, x + Inches(0.08), yy + Inches(0.10), Inches(0.09), Inches(0.09),
+             fill=ac, shape=MSO_SHAPE.OVAL)
+        tfi = tb(s, x + Inches(0.42), yy - Inches(0.02), COLW - Inches(0.54),
+                 Inches(0.34 * nl))
+        text(tfi, [(main, dict(size=15, bold=True, color=INK))], first=True,
+             space_after=0, line=1.30)
+        yy += Inches(0.34 * nl + 0.06)
         if sub:
-            label(s, x + Inches(0.58), yy, COLW - Inches(0.62), sub, size=10.5,
-                  bold=False, color=MUTED, h=Inches(0.24))
-            yy += Inches(0.24)
-        yy += Inches(0.14)
+            label(s, x + Inches(0.42), yy, COLW - Inches(0.54), sub, size=12,
+                  bold=False, color=ac, h=Inches(0.3))
+            yy += Inches(0.34)
+        yy += Inches(0.26)
 
-band(s, Inches(5.62), Inches(0.78),
+band(s, Inches(4.96), Inches(0.78),
      [[("検証状況　", dict(size=11, bold=True, color=WARN)),
-       ("いずれも仮説です。工程別の歩留まりは両社とも非開示のため、"
-        "公開情報では特定できません。", dict(size=13.5, bold=True, color=INK))]],
+       ("工程別の歩留まりは両社とも非開示のため、公開情報では特定できません。",
+        dict(size=13.5, bold=True, color=INK))]],
      fill=WARN_L, bar=WARN)
 
 # ================================================= スライド 18（セクション扉③）
@@ -828,7 +819,7 @@ s = slide_new("この先の進め方", kicker="④ クロージング")
 steps = [
     ("STEP 1", "本日 〜 次回の中間FBまで",
      ["現場社員の方へのヒアリングと、メンターからのフィードバックをもとに議論する",
-      "P.17 の仮説を検証し、課題の捉え方を詰めたうえで、解決策の方向性を導き出す",
+      "P.17 の課題を検証し、捉え方を詰めたうえで、解決策の方向性を導き出す",
       "2030年のあるべき決定率（本日は未算出）を確定させる"], ACCENT),
     ("STEP 2", "次回の中間FB",
      ["解決策を含めた全体をレビューいただく"], MUTED),
