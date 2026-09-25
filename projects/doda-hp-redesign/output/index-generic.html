@@ -1,0 +1,895 @@
+<title>JobCompass 転職トップ</title>
+<meta name="description" content="転職サイトのトップページ改善案（架空サイトのデザインモック）">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+/* 既存JobCompassトップの見た目（白ボックス／グレー罫線／青リンク／オレンジCTA）を踏襲し、余白・角丸・階層だけ整える。ライトテーマ固定 */
+:root{
+  color-scheme:light;
+  --text:#333333; --sub:#666666; --mute:#8C8C8C;
+  --line:#DCDFE3; --line-2:#EBEDF0;
+  --bg:#F2F3F5; --white:#FFFFFF;
+  --blue:#0068C8; --blue-dk:#00509E; --blue-pale:#EEF5FD; --blue-line:#B9D5F2;
+  --orange:#F08A00; --orange-dk:#D87B00; --orange-pale:#FFF4E5;
+  --r:8px;
+  --font:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",Meiryo,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.6}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+h1,h2,h3,h4{margin:0;line-height:1.4;text-wrap:balance}
+ul{list-style:none;margin:0;padding:0}
+.num{font-variant-numeric:tabular-nums}
+.inner{max-width:1120px;margin:0 auto;padding-inline:20px}
+
+.mock{background:#FFF8D6;color:#6B5600;font-size:12px;text-align:center;padding:5px 16px}
+
+/* ---------- header ---------- */
+.hd{background:var(--white);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:30}
+.hd-top{display:flex;justify-content:space-between;gap:12px;font-size:11px;color:var(--sub);padding-top:6px}
+.hd-top h1{font-size:11px;font-weight:400}
+.hd-top a{color:var(--sub)}
+.hd-main{display:flex;align-items:center;gap:28px;height:60px}
+.logo{font-size:30px;font-weight:700;letter-spacing:-.03em;color:var(--blue);line-height:1}
+.logo:hover{text-decoration:none}
+.hd-sp{flex:1}
+/* グローバルナビ：大きな青いタブバー */
+.gbar{background:var(--blue)}
+.gnav{display:grid;grid-template-columns:repeat(4,1fr)}
+.gnav > li{position:relative;display:flex;border-left:1px solid rgba(255,255,255,.25)}
+.gnav > li:last-child{border-right:1px solid rgba(255,255,255,.25)}
+.gnav > li > a{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 12px;color:#fff;font-weight:700;font-size:16px;letter-spacing:.02em}
+.gnav > li > a svg{width:22px;height:22px;flex:none}
+.gnav > li > a::after{content:"";width:7px;height:7px;border-right:2px solid rgba(255,255,255,.8);border-bottom:2px solid rgba(255,255,255,.8);transform:rotate(45deg) translateY(-3px)}
+.gnav > li:hover > a,.gnav > li:focus-within > a{background:var(--blue-dk);text-decoration:none}
+/* 表示中のページのタブは白（このページ＝求人を探す） */
+.gnav > li > a[aria-current="page"],.gnav > li:hover > a[aria-current="page"]{background:var(--white);color:var(--blue)}
+.gnav > li > a[aria-current="page"]::after{border-color:var(--blue)}
+.drop{position:absolute;top:100%;left:0;right:0;min-width:220px;background:var(--white);border:1px solid var(--line);border-top:3px solid var(--blue-dk);border-radius:0 0 var(--r) var(--r);box-shadow:0 8px 20px rgba(0,0,0,.12);padding:6px 0;display:none;z-index:5}
+.gnav > li:hover .drop,.gnav > li:focus-within .drop{display:block}
+.drop a{display:block;padding:8px 16px;color:var(--text)}
+.drop a:hover{background:var(--blue-pale);color:var(--blue);text-decoration:none}
+.hd-acts{display:flex;align-items:center;gap:4px}
+.hicon{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 8px;color:var(--sub);font-size:10.5px;position:relative;background:none;border:0}
+.hicon svg{width:20px;height:20px;color:var(--blue)}
+.hicon:hover{color:var(--blue);text-decoration:none}
+.badge{position:absolute;top:0;right:6px;background:var(--orange);color:#fff;border-radius:8px;font-size:10px;min-width:16px;height:16px;line-height:16px;text-align:center;padding:0 4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:4px;border-radius:6px;font-weight:700;font-size:14px;padding:9px 16px;border:1px solid transparent;white-space:nowrap;line-height:1.3}
+.btn:hover{text-decoration:none}
+.btn-or{background:var(--orange);color:#fff}
+.btn-or:hover{background:var(--orange-dk)}
+.btn-bl{background:var(--white);color:var(--blue);border-color:var(--blue)}
+.btn-bl:hover{background:var(--blue-pale)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:var(--blue-dk)}
+.hd-acts .btn{margin-left:6px;padding:8px 14px;font-size:13px}
+
+/* ---------- top area ---------- */
+.page{padding-block:16px 40px}
+.urgent{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:10px 16px;display:flex;flex-wrap:wrap;gap:4px 24px;font-size:13px}
+/* 既存のブランドパネル画像を画面幅いっぱいに表示（元と同じ 1920×323） */
+body{overflow-x:clip}
+.brand{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:12px;background:#E9EEF4}
+.brand-over{position:absolute;inset:0;display:flex;justify-content:flex-end;align-items:center;pointer-events:none}
+.brand-over .signup{pointer-events:auto;width:260px;padding:14px 16px;gap:8px}
+.brand-over .signup .btn{padding:9px}
+.brand-ph{max-width:1120px;margin:0 auto;padding:36px 20px;text-align:center;color:var(--blue-dk)}.brand-ph h2{font-size:30px;margin:6px 0}.brand-ph p{margin:0;font-size:13px;color:var(--sub)}
+.brand-img{display:block;width:100%;height:auto;aspect-ratio:1920/323;object-fit:cover}
+.signup{background:var(--white);border-radius:var(--r);box-shadow:0 2px 10px rgba(0,0,0,.08);padding:18px;display:flex;flex-direction:column;gap:10px;text-align:center}
+.signup .cnt{font-size:12px;color:var(--sub)}
+.signup .cnt b{display:block;font-size:26px;color:var(--text);line-height:1.2}
+.signup .btn{width:100%;padding:12px}
+.signup .login{font-size:12px;color:var(--sub)}
+
+/* ---------- 2 columns ---------- */
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;margin-top:20px;align-items:start}
+.main{display:flex;flex-direction:column;gap:20px;min-width:0}
+.aside{display:flex;flex-direction:column;gap:16px}
+.box{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.sec-t{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+.sec-t h2{font-size:18px;font-weight:700;padding-left:12px;border-left:4px solid var(--blue)}
+.sec-t h3{font-size:15px;font-weight:700}
+.sec-t a{font-size:13px;white-space:nowrap}
+.sec-t a::after,.more::after{content:" ›"}
+
+/* quick search */
+.qs-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;margin-bottom:12px}
+.qs-head .n{font-size:22px;font-weight:700}
+.qs-head small{color:var(--sub);font-size:12px}
+/* 選択肢の最長テキストで列が広がって枠からはみ出さないよう minmax(0,1fr) */
+.qs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:8px}
+.sel{position:relative;display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:6px;padding:0 12px;background:var(--white);min-height:48px;min-width:0}
+.sel select{width:100%;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.sel:hover,.sel:focus-within{border-color:var(--blue)}
+.sel svg{width:18px;height:18px;color:var(--blue);flex:none}
+.sel select{appearance:none;border:0;background:transparent;font:inherit;font-size:14px;color:var(--text);flex:1;min-width:0;padding:12px 18px 12px 0;outline:none;cursor:pointer}
+.sel::after{content:"";position:absolute;right:14px;top:50%;width:7px;height:7px;border-right:2px solid var(--blue);border-bottom:2px solid var(--blue);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.qs .btn{padding:0 28px;font-size:15px;min-height:48px}
+.qs-foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:12px;font-size:13px}
+.qs-foot label{display:flex;align-items:center;gap:6px;cursor:pointer}
+.qs-foot input{width:16px;height:16px;accent-color:var(--blue)}
+
+/* condition tabs (moved up) */
+.tabs{display:flex;border-bottom:1px solid var(--line);margin:-4px 0 16px;gap:4px;overflow-x:auto}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 16px;font-weight:700;color:var(--sub);white-space:nowrap;margin-bottom:-1px}
+.tabs button[aria-selected="true"]{color:var(--blue);border-bottom-color:var(--blue)}
+.tabs button:hover{color:var(--blue)}
+.occ{display:grid;grid-template-columns:repeat(3,1fr);gap:0 24px}
+.occ a{display:flex;justify-content:space-between;gap:8px;padding:9px 2px;border-bottom:1px dotted var(--line);color:var(--text)}
+.occ a:hover{color:var(--blue);text-decoration:none}
+.occ .num{color:var(--mute);font-size:12px;flex:none}
+.area{display:grid;gap:10px}
+.area dl{display:grid;grid-template-columns:6.5em 1fr;gap:8px;margin:0;padding-bottom:10px;border-bottom:1px dotted var(--line)}
+.area dt{font-weight:700}
+.area dd{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px}
+.work h4{font-size:13px;color:var(--sub);margin:4px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--text);background:var(--white)}
+.chip:hover{border-color:var(--blue);color:var(--blue);text-decoration:none}
+.tab-foot{text-align:right;margin-top:12px;font-size:13px}
+
+/* job carousel */
+.jobs{display:grid;grid-auto-flow:column;grid-auto-columns:240px;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}
+.job{scroll-snap-align:start;border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:6px;background:var(--white)}
+.job .co{font-size:12px;color:var(--sub);display:flex;gap:6px;align-items:center}
+.new{background:var(--orange);color:#fff;font-size:10px;font-weight:700;border-radius:3px;padding:0 5px;line-height:16px}
+.job a.t{font-weight:700;font-size:14px;line-height:1.5;color:var(--blue)}
+.job .sal{font-size:12px;color:var(--sub);margin-top:auto;padding-top:8px;border-top:1px solid var(--line-2)}
+.fav{align-self:flex-start;background:var(--white);border:1px solid var(--line);border-radius:4px;padding:2px 10px;font-size:12px;color:var(--sub)}
+.fav[aria-pressed="true"]{border-color:var(--orange);color:var(--orange);background:var(--orange-pale)}
+
+/* services */
+.svc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.svc a{display:block;border:1px solid var(--line);border-radius:var(--r);padding:16px;color:var(--text)}
+.svc a:hover{border-color:var(--blue);text-decoration:none}
+.svc b{display:block;color:var(--blue);font-size:15px;margin-bottom:4px}
+.svc p{margin:0;font-size:13px;color:var(--sub)}
+.know{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.know a{display:block;background:var(--bg);border-radius:var(--r);padding:14px;color:var(--text)}
+.know a:hover{background:var(--blue-pale);text-decoration:none}
+.know b{display:block;color:var(--blue);margin-bottom:2px}
+.know p{margin:0;font-size:12.5px;color:var(--sub)}
+.links li{border-bottom:1px solid var(--line-2)}
+.links a{display:block;padding:9px 16px 9px 0;position:relative}
+.links a::after{content:"›";position:absolute;right:2px;color:var(--mute)}
+
+/* diagnosis (main column, replaces 9 image banners) */
+.diag-lead{margin:-6px 0 14px;font-size:13px;color:var(--sub)}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tool{display:flex;gap:10px;align-items:center;text-align:left;background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:12px;color:var(--text)}
+.tool:hover{border-color:var(--blue);background:var(--blue-pale)}
+.tool .ti{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--blue-pale);color:var(--blue)}
+.tool.doc .ti{background:var(--orange-pale);color:var(--orange-dk)}
+.tool .ti svg{width:20px;height:20px}
+.tool b{display:block;font-size:13.5px}
+.tool small{display:block;font-size:11.5px;color:var(--sub);line-height:1.45}
+
+/* aside quiz (replaces 人気の求人特集) */
+.side-tools .mlist{gap:6px}
+.side-tools .tool{padding:9px 10px}
+.side-tools .tool .ti{width:32px;height:32px}
+.side-tools .tool .ti svg{width:18px;height:18px}
+.quiz .q{font-weight:700;margin:6px 0 10px}
+.prog{display:flex;gap:4px;margin-top:4px}
+.prog i{flex:1;height:4px;border-radius:2px;background:var(--line-2)}
+.prog i.on{background:var(--blue)}
+.opts{display:grid;gap:6px}
+.opt{text-align:left;background:var(--white);border:1px solid var(--line);border-radius:6px;padding:9px 12px;font-size:13px;color:var(--text)}
+.opt:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-pale)}
+.qfoot{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--mute)}
+.linkbtn{background:none;border:0;padding:0;color:var(--blue);font-size:12px}
+.linkbtn:hover{text-decoration:underline}
+.quiz-intro{font-size:12.5px;color:var(--sub);margin:0 0 8px}
+.rank{counter-reset:r}
+.rank li{counter-increment:r;border-bottom:1px solid var(--line-2)}
+.rank a{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;padding:9px 0;color:var(--text)}
+.rank a::before{content:counter(r);width:22px;height:22px;border-radius:50%;background:var(--line-2);color:var(--sub);display:grid;place-items:center;font-size:11px;font-weight:700}
+.rank li:first-child a::before{background:var(--orange);color:#fff}
+.rank a:hover{color:var(--blue);text-decoration:none}
+.rank .pct{font-size:12px;color:var(--mute)}
+.rank li:first-child .pct{color:var(--orange-dk);font-weight:700}
+.top-pick{background:var(--orange-pale);border-radius:6px;padding:10px 12px;margin:8px 0 6px;font-size:12.5px}
+.top-pick b{display:block;font-size:14px;color:var(--text)}
+.feat-all{display:block;text-align:right;font-size:12px;margin-top:10px}
+
+.ev li{border-bottom:1px solid var(--line-2)}
+.ev a{display:block;padding:8px 0;font-size:13px}
+.ev .d{display:block;font-size:11.5px;color:var(--sub)}
+.side-list a{display:block;padding:6px 0;font-size:13px}
+.side-banner{display:block;border-radius:var(--r);padding:14px 16px;background:var(--white);border:1px solid var(--line);color:var(--text)}
+.side-banner:hover{border-color:var(--blue);text-decoration:none}
+.side-banner b{color:var(--blue);display:block}
+.side-banner small{color:var(--sub)}
+
+footer{background:var(--white);border-top:1px solid var(--line);padding-block:32px 20px;font-size:12.5px}
+.fcols{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.fcols h4{font-size:13px;margin-bottom:8px}
+.fcols li{margin:3px 0}
+.fcols a{color:var(--sub)}
+.copy{margin-top:24px;padding-top:14px;border-top:1px solid var(--line);color:var(--mute);font-size:11px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+/* floating button + popup */
+.fab{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;gap:8px;background:var(--white);color:var(--blue);border:2px solid var(--blue);border-radius:999px;padding:10px 18px 10px 12px;font-weight:700;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+.fab svg{width:20px;height:20px}
+.fab:hover{background:var(--blue-pale)}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.5);display:grid;place-items:center;padding:16px}
+.sheet{background:var(--white);border-radius:12px;width:min(600px,100%);max-height:calc(100dvh - 32px);overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.sheet-h{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--white);z-index:1}
+.sheet-h h2{font-size:16px}
+.sheet-h .x{background:none;border:0;font-size:22px;color:var(--mute);padding:0 8px;line-height:1}
+.sheet-b{padding:16px 20px 20px}
+.sheet .tabs{margin:0 0 14px}
+.mlist{display:grid;gap:8px}
+.mlist .tool{width:100%}
+.mlist .tool .arr{margin-left:auto;color:var(--mute)}
+.detail .ti{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--blue-pale);color:var(--blue);margin-bottom:10px}
+.detail.doc .ti{background:var(--orange-pale);color:var(--orange-dk)}
+.detail .ti svg{width:26px;height:26px}
+.detail h3{font-size:19px;margin-bottom:6px}
+.detail p{color:var(--sub);margin:0 0 10px}
+.detail ul{margin:0 0 16px;padding-left:1.2em;list-style:disc;color:var(--sub);font-size:13px}
+.detail .btns{display:flex;gap:8px;flex-wrap:wrap}
+#toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#333;color:#fff;padding:9px 16px;border-radius:6px;font-size:13px;z-index:60;max-width:calc(100vw - 32px)}
+
+/* あなたの検索条件 */
+.mys{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mys a{display:block;border:1px solid var(--line);border-radius:6px;padding:10px 12px;color:var(--text)}
+.mys a:hover{border-color:var(--blue);text-decoration:none}
+.mys small{display:block;font-size:11.5px;color:var(--sub)}
+.mys b{font-size:14px;color:var(--blue)}
+.mys .hot{display:inline-block;margin-left:6px;background:var(--orange);color:#fff;font-size:10px;border-radius:3px;padding:0 5px;line-height:16px;vertical-align:2px}
+.sec-sub{font-size:12px;color:var(--sub);font-weight:400;margin-left:8px}
+.dl{background:#E5484D;color:#fff;font-size:10px;font-weight:700;border-radius:3px;padding:0 5px;line-height:16px}
+
+/* 人気のサービス／専門サイト／関連サイト */
+.pbn{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.pbn a{display:flex;flex-direction:column;justify-content:center;min-height:72px;border-radius:var(--r);padding:10px 12px;background:var(--blue-pale);color:var(--text);font-size:12px;line-height:1.45}
+.pbn a b{color:var(--blue);font-size:13.5px}
+.pbn a:hover{background:#DDEBFB;text-decoration:none}
+.spc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 20px}
+.spc a{display:block;padding:10px 0;border-bottom:1px dotted var(--line);color:var(--text)}
+.spc a b{display:block;color:var(--blue);font-size:14px}
+.spc a small{color:var(--sub);font-size:12px}
+.spc a:hover{text-decoration:none}
+.spc a:hover b{text-decoration:underline}
+.rel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px}
+.rel a{display:flex;gap:8px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line-2);font-size:13px;color:var(--text)}
+.rel a b{color:var(--blue);flex:none}
+.rel a small{color:var(--sub);font-size:12px}
+.rel a:hover{text-decoration:none}
+.rel a:hover b{text-decoration:underline}
+.about p{margin:0 0 6px;font-size:12.5px;color:var(--sub);line-height:1.8}
+.pr li{font-size:13px;padding:4px 0}
+.share{display:flex;gap:8px;flex-wrap:wrap}
+.share a,.share button{flex:1;min-width:64px;text-align:center;border:1px solid var(--line);border-radius:6px;padding:7px 4px;font-size:12px;background:var(--white);color:var(--text)}
+.share a:hover,.share button:hover{border-color:var(--blue);color:var(--blue);text-decoration:none}
+
+/* 大フッター */
+.fsec{border-bottom:1px solid var(--line-2);padding-block:14px;display:grid;grid-template-columns:11em 1fr;gap:12px}
+.fsec h4{font-size:13px}
+.fsec ul{display:flex;flex-wrap:wrap;gap:4px 16px}
+.fsec a{color:var(--sub);font-size:12.5px}
+.fgrp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin-top:20px}
+.fgrp h4{font-size:13px;margin-bottom:6px}
+.fgrp h5{font-size:12px;color:var(--sub);margin:8px 0 4px}
+.fgrp li{margin:2px 0}
+.fgrp a{color:var(--sub);font-size:12.5px}
+.flegal{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:20px;padding-top:14px;border-top:1px solid var(--line);font-size:12px}
+.flegal a{color:var(--sub)}
+
+/* チャット */
+.fabs{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.fabs .fab{position:static}
+.chat-fab{display:flex;align-items:center;gap:8px;background:var(--blue);color:#fff;border:0;border-radius:999px;padding:12px 20px 12px 14px;font-weight:700;font-size:14px;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.chat-fab svg{width:22px;height:22px}
+.chat-fab:hover{background:var(--blue-dk)}
+.chat{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:45;width:min(380px,calc(100vw - 32px));height:min(560px,calc(100dvh - 40px));background:var(--white);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.25);display:flex;flex-direction:column;overflow:hidden}
+.chat-h{background:var(--blue);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.chat-h .av{width:34px;height:34px;border-radius:50%;background:#fff;color:var(--blue);display:grid;place-items:center;font-weight:700;font-size:12px;flex:none}
+.chat-h b{display:block;font-size:14px}
+.chat-h small{font-size:11px;opacity:.85}
+.chat-h .x{margin-left:auto;background:none;border:0;color:#fff;font-size:22px;line-height:1;padding:0 6px}
+.chat-log{flex:1;overflow-y:auto;padding:14px;background:var(--bg);display:flex;flex-direction:column;gap:10px}
+.msg{max-width:86%;padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.6;white-space:pre-line}
+.msg.bot{background:var(--white);border:1px solid var(--line);border-top-left-radius:4px;align-self:flex-start}
+.msg.me{background:var(--blue);color:#fff;border-top-right-radius:4px;align-self:flex-end}
+.msg .acts{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.msg .acts a,.msg .acts button{display:block;text-align:left;border:1px solid var(--blue-line);background:var(--blue-pale);color:var(--blue);border-radius:6px;padding:6px 10px;font-size:12.5px;font-weight:700}
+.msg .acts a:hover,.msg .acts button:hover{background:#DDEBFB;text-decoration:none}
+.typing{align-self:flex-start;color:var(--mute);font-size:12px}
+.qr{display:flex;gap:6px;overflow-x:auto;padding:8px 10px;border-top:1px solid var(--line);background:var(--white)}
+.qr button{flex:none;border:1px solid var(--blue);color:var(--blue);background:var(--white);border-radius:999px;padding:5px 12px;font-size:12px}
+.qr button:hover{background:var(--blue-pale)}
+.chat-in{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line);background:var(--white)}
+.chat-in input{flex:1;min-width:0;border:1px solid var(--line);border-radius:6px;padding:9px 10px;font:inherit;font-size:13px}
+.chat-in input:focus{outline:none;border-color:var(--blue)}
+.chat-in .btn{padding:8px 14px}
+
+/* 写真の高さがボックスより低くなる幅では、写真のすぐ下に横並びで表示 */
+@media (max-width:1300px){
+  .brand-over{position:static;justify-content:center;padding-block:10px;background:var(--white);border-bottom:1px solid var(--line)}
+  .brand-over .signup{width:100%;max-width:1080px;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;box-shadow:none;padding:4px 0;gap:10px 16px}
+  .brand-over .signup .cnt b{display:inline;font-size:20px;margin:0 2px}
+  .brand-over .signup .btn{width:auto;padding:9px 18px}
+}
+@media (max-width:1000px){
+  .hd-top h1{display:none}
+  .gnav > li > a{font-size:14px;gap:6px}
+  .cols{grid-template-columns:1fr}
+  .aside{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .fcols,.fgrp{grid-template-columns:1fr 1fr}
+  .pbn{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:680px){
+  .inner{padding-inline:16px}
+  .hd-acts .hicon span:not(.badge),.hd-acts .btn-bl{display:none}
+  .hd-main{gap:12px}
+  .gnav{padding-inline:0}
+  .gnav > li > a{flex-direction:column;gap:2px;height:60px;font-size:11px;padding:0 4px;text-align:center;line-height:1.3}
+  .gnav > li > a::after,.drop{display:none!important}
+  .qs{grid-template-columns:minmax(0,1fr)}
+  .occ,.tools,.know,.svc,.aside,.mys,.spc,.rel,.fgrp,.fsec{grid-template-columns:1fr}
+  .pbn{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .chat-fab span{display:none}
+  .chat-fab{padding:12px}
+  .area dl{grid-template-columns:1fr;gap:4px}
+  .box{padding:16px}
+  .fab span{display:none}
+  .fab{padding:12px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="mock" role="note">架空の転職サイト「JobCompass」のデザインモックです。掲載している企業名・求人・数値はすべてサンプルです</div>
+
+<header class="hd">
+  <div class="inner">
+    <div class="hd-top"><h1>転職なら、求人情報・転職サイト JobCompass（仮）</h1><a href="#">中途採用を検討中の企業さまへ</a></div>
+    <div class="hd-main">
+      <a class="logo" href="#">JobCompass</a>
+      <span class="hd-sp"></span>
+      <div class="hd-acts">
+        <a class="hicon" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>閲覧履歴</span></a>
+        <a class="hicon" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg><span>気になる</span><span class="badge num" id="favCount" hidden>0</span></a>
+        <a class="hicon" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/></svg><span>Web履歴書</span></a>
+        <a class="btn btn-bl" href="#">ログイン</a>
+        <a class="btn btn-or" href="#">会員登録</a>
+      </div>
+    </div>
+  </div>
+  <nav class="gbar" aria-label="メインメニュー">
+    <ul class="gnav inner">
+      <li><a href="#search" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>求人を探す</a><div class="drop"><a href="#search">詳細条件から探す</a><a href="#">新着求人から探す</a><a href="#tokushu">求人特集から探す</a></div></li>
+      <li><a href="#svc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M17 11l2 2 4-4"/></svg>求人を紹介してもらう</a><div class="drop"><a href="#svc">エージェントサービス</a><a href="#svc">スカウトサービス</a><a href="#">パートナーエージェントサービス</a></div></li>
+      <li><a href="#know"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H9l-5 4z"/><path d="M9 9h6M9 12h4"/></svg>知りたい・聞きたい</a><div class="drop"><a href="#know">転職ノウハウ</a><a href="#">データで見る転職</a><a href="#">コラム・インタビュー</a><a href="#">転職Q&amp;A</a><a href="#diag">診断・書類作成ツール</a></div></li>
+      <li><a href="#event"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>イベント</a><div class="drop"><a href="#event">転職イベント・転職セミナー</a><a href="#">転職フェア</a><a href="#">転職セミナー動画</a></div></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="inner page">
+  <div class="urgent">
+    <a href="#">・【重要】「利用規約」改定のお知らせ</a>
+    <a href="#">・【重要なお知らせ】「企業ブロック機能」の変更とご対応のお願い</a>
+  </div>
+
+  <!-- 既存のブランドパネル画像（著名人ビジュアル）はそのまま使用 -->
+  <div class="brand">
+    <div class="brand-ph"><p>キャリアアドバイザーが、あなたに合う求人をご紹介</p><h2>はたらくを、もっと自由に。</h2><p>※ ここは元サイトではメインビジュアル画像が入る領域です</p></div>
+    <!-- 元と同じく、掲載中の求人ボックスを写真の上に重ねる -->
+    <div class="brand-over inner">
+      <div class="signup">
+        <div class="cnt">掲載中の求人<b class="num">315,549<small style="font-size:13px"> 件</small></b>（非公開求人を含む）</div>
+        <a class="btn btn-or" href="#">会員登録する（無料）</a>
+        <div class="login">ログインは<a href="#">こちら</a></div>
+        <a class="btn btn-bl" href="#">はじめて利用される方へ</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <main class="main">
+      <!-- クイック検索 -->
+      <section class="box" id="search" aria-labelledby="qsT">
+        <div class="sec-t"><h2 id="qsT">求人を検索する</h2><small style="color:var(--sub);font-size:12px">2026/9/21（月）更新 ｜ 毎週月・木曜更新</small></div>
+        <form class="qs" onsubmit="event.preventDefault();toast('条件に合う求人一覧へ移動します（モック）')">
+          <label class="sel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2"/></svg><select id="s-occ" aria-label="職種"><option>職種</option></select></label>
+          <label class="sel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><select id="s-area" aria-label="勤務地"><option>勤務地</option></select></label>
+          <label class="sel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l6 8 6-8M12 12v8M8 13h8M8 17h8"/></svg><select id="s-inc" aria-label="年収"><option>年収</option><option>300万円以上</option><option>400万円以上</option><option>500万円以上</option><option>600万円以上</option><option>700万円以上</option><option>800万円以上</option><option>1,000万円以上</option></select></label>
+          <button class="btn btn-or" type="submit">検索する</button>
+        </form>
+        <div class="qs-foot"><label for="s-new"><input type="checkbox" id="s-new">新着のみ</label><a class="more" href="#">詳しい条件で求人を検索する</a></div>
+      </section>
+
+      <!-- 元の「希望条件にマッチした求人／前回の検索条件／保存した検索条件」 -->
+      <section class="box" aria-labelledby="mysT">
+        <div class="sec-t"><h2 id="mysT">あなたの検索条件</h2></div>
+        <div class="mys">
+          <a href="#"><small>前回の検索条件</small><b class="num">13,738件</b><span class="hot">新着あり</span></a>
+          <a href="#"><small>保存した検索条件</small><b>保存した条件を見る</b></a>
+          <a href="#"><small>希望条件にマッチした求人</small><b>希望条件を設定する</b></a>
+        </div>
+      </section>
+
+      <!-- 条件から探す（旧：おすすめ求人の下 → 検索の直下へ移動） -->
+      <section class="box" id="find" aria-labelledby="findT">
+        <div class="sec-t"><h2 id="findT">条件から求人を探す</h2></div>
+        <div class="tabs" role="tablist">
+          <button type="button" role="tab" id="t-occ" aria-selected="true" aria-controls="p-occ">職種から探す</button>
+          <button type="button" role="tab" id="t-area" aria-selected="false" aria-controls="p-area">勤務地から探す</button>
+          <button type="button" role="tab" id="t-work" aria-selected="false" aria-controls="p-work">はたらき方から探す</button>
+        </div>
+        <div role="tabpanel" id="p-occ" aria-labelledby="t-occ"><div class="occ" id="occList"></div><div class="tab-foot"><a class="more" href="#">全職種一覧</a></div></div>
+        <div role="tabpanel" id="p-area" aria-labelledby="t-area" hidden><div class="area" id="areaList"></div></div>
+        <div role="tabpanel" id="p-work" aria-labelledby="t-work" hidden>
+          <div class="work">
+            <h4>休日・はたらき方</h4>
+            <div class="chips"><a class="chip" href="#">在宅勤務</a><a class="chip" href="#">完全週休2日制</a><a class="chip" href="#">年間休日120日以上</a><a class="chip" href="#">土日祝休み</a><a class="chip" href="#">残業20時間未満</a><a class="chip" href="#">産休・育休取得実績あり</a><a class="chip" href="#">原則定時退社</a><a class="chip" href="#">フレックス勤務</a></div>
+            <h4>会社・職場の環境／語学</h4>
+            <div class="chips"><a class="chip" href="#">上場企業</a><a class="chip" href="#">外資系企業</a><a class="chip" href="#">服装自由</a><a class="chip" href="#">女性活躍</a><a class="chip" href="#">定着率95%以上</a><a class="chip" href="#">自動車通勤OK</a><a class="chip" href="#">英語を活かす</a><a class="chip" href="#">中国語を活かす</a></div>
+            <h4>待遇・福利厚生</h4>
+            <div class="chips"><a class="chip" href="#">退職金制度</a><a class="chip" href="#">社宅・家賃補助制度</a><a class="chip" href="#">固定給25万円以上</a><a class="chip" href="#">固定給35万円以上</a><a class="chip" href="#">Ｕ・Ｉターン支援あり</a><a class="chip" href="#">資格取得支援制度</a><a class="chip" href="#">研修制度充実</a><a class="chip" href="#">育児・託児支援制度</a></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="box" aria-labelledby="recT">
+        <div class="sec-t"><h2 id="recT">あなたが閲覧した求人に近い求人</h2><a href="#">一覧へ</a></div>
+        <div class="jobs" id="jobsNear"></div>
+      </section>
+
+      <section class="box" aria-labelledby="viewT">
+        <div class="sec-t"><h2 id="viewT">あなたが閲覧した求人</h2><a href="#">一覧へ</a></div>
+        <div class="jobs" id="jobsViewed"></div>
+      </section>
+
+      <section class="box" aria-labelledby="newJT">
+        <div class="sec-t"><h2 id="newJT">新着求人<span class="sec-sub"><b class="num" style="color:var(--text);font-size:14px">27,467</b>件｜毎週月・木曜に新着求人をお知らせ</span></h2><a href="#">一覧へ</a></div>
+        <div class="jobs" id="jobsNew"></div>
+      </section>
+
+      <section class="box" aria-labelledby="popJT">
+        <div class="sec-t"><h2 id="popJT">技術職（SE・インフラエンジニア・Webエンジニア）×東京都で人気の求人</h2><a href="#">一覧へ</a></div>
+        <div class="jobs" id="jobsPop"></div>
+      </section>
+
+      <section class="box" id="svc" aria-labelledby="svcT">
+        <div class="sec-t"><h2 id="svcT">求人を紹介してもらう</h2></div>
+        <div class="svc">
+          <a href="#"><b>エージェントサービス</b><p>専任のキャリアアドバイザーが、非公開求人を含む約10万件の求人からあなたにぴったりの求人をご紹介します</p></a>
+          <a href="#"><b>スカウトサービス</b><p>あなたの経験・スキルに興味を持った企業から直接オファーが届きます</p></a>
+        </div>
+      </section>
+
+      <!-- 診断・書類作成ツール（9枚の画像バナー → 目的別カード＋ポップアップ） -->
+      <section class="box" id="diag" aria-labelledby="diagT">
+        <div class="sec-t"><h2 id="diagT">診断・書類作成ツール</h2><button type="button" class="linkbtn" data-open="list" style="font-size:13px">すべて見る ›</button></div>
+        <p class="diag-lead">すべて無料。気になるツールを選ぶと、内容を確認してから始められます。</p>
+        <div class="tools" id="tools"></div>
+      </section>
+
+      <section class="box" id="know" aria-labelledby="knowT">
+        <div class="sec-t"><h2 id="knowT">知りたい・聞きたい！</h2></div>
+        <div class="know">
+          <a href="#"><b>転職ノウハウ</b><p>転職のはじめ方から、求人の探し方や職務経歴書・面接・退職までのノウハウを解説</p></a>
+          <a href="#"><b>わたしの転職エピソード</b><p>転職活動当時の悩み・モヤモヤをエピソードでご紹介。完全匿名だから話せるリアルトーク</p></a>
+          <a href="#"><b>転職Q＆A</b><p>転職にまつわる疑問や悩みに、専門スタッフやその道のプロ、転職経験者などがお答えします</p></a>
+        </div>
+      </section>
+
+      <section class="box" aria-labelledby="forYouT">
+        <div class="sec-t"><h2 id="forYouT">あなたへのおすすめ</h2></div>
+        <ul class="links">
+          <li><a href="#">最新の転職市場の動向は？転職市場予測</a></li>
+          <li><a href="#">正社員の平均年収は？職種別・業種別の平均年収ランキング</a></li>
+          <li><a href="#">転職活動の進め方・方法 完全ガイド｜事前準備・流れ・スケジュール</a></li>
+          <li><a href="#">履歴書の書き方 完全ガイド｜サンプル見本・作成のコツ・テンプレート</a></li>
+          <li><a href="#">ダウンロードしてすぐに使える！【ニーズ別】履歴書テンプレート</a></li>
+          <li><a href="#">133職種のサンプルテンプレート付き！職務経歴書の書き方 完全ガイド</a></li>
+        </ul>
+      </section>
+
+      <section class="box" aria-labelledby="popSvcT">
+        <div class="sec-t"><h2 id="popSvcT">人気のサービス</h2></div>
+        <div class="pbn">
+          <a href="#"><b>転職フェア</b>企業と直接話せる</a>
+          <a href="#"><b>女性の転職</b>女性向けの求人・コンテンツ</a>
+          <a href="#"><b>エンジニア専門</b>ITエンジニアの転職</a>
+          <a href="#"><b>転職アプリ</b>求人検索・応募をアプリで</a>
+          <a href="#"><b>ファッション業界</b>アパレル・ラグジュアリー</a>
+        </div>
+      </section>
+
+      <section class="box" aria-labelledby="spcT">
+        <div class="sec-t"><h2 id="spcT">専門サイト</h2></div>
+        <div class="spc">
+          <a href="#"><b>Web・ITエンジニア</b><small>ITエンジニア、社内SE、Webクリエイターほか</small></a>
+          <a href="#"><b>モノづくりエンジニア</b><small>回路設計・機械設計、研究職、施工管理ほか</small></a>
+          <a href="#"><b>メディカル業界</b><small>MR、CRA、医療機器営業ほか</small></a>
+          <a href="#"><b>営業職・販売サービス職</b><small>営業職、販売・サービス職、SCほか</small></a>
+          <a href="#"><b>金融業界</b><small>銀行法人営業、ファンドマネージャーほか</small></a>
+          <a href="#"><b>企画職・管理部門</b><small>経理、人事、企画、マーケティング広報ほか</small></a>
+          <a href="#"><b>管理職・ハイクラス</b><small>経営企画、ゼネラル・マネジャー、CxOほか</small></a>
+          <a href="#"><b>海外勤務・アジア転職</b><small>海外勤務、アジアで働く、語学スキルを活かすほか</small></a>
+          <a href="#"><b>女性の転職</b><small>じぶんらしいキャリアを真剣に考えたい女性へ</small></a>
+        </div>
+      </section>
+
+      <section class="box" aria-labelledby="relT">
+        <div class="sec-t"><h2 id="relT">関連サイト</h2></div>
+        <div class="rel">
+          <a href="#"><b>はたらくメディア</b><small>はたらくヒントをお届け</small></a>
+          <a href="#"><b>ハイクラス転職</b><small>希少性の高い非公開求人多数</small></a>
+          <a href="#"><b>リスキリング</b><small>個人向けの学び直しサービス</small></a>
+          <a href="#"><b>副業マッチング</b><small>副業・フリーランス向け</small></a>
+          <a href="#"><b>経営支援サービス</b><small>企業の経営課題を支援</small></a>
+          <a href="#"><b>ITフリーランス</b><small>技術者向けマッチング</small></a>
+          <a href="#"><b>語学を活かす転職</b><small>語学力を活かすハイクラス転職</small></a>
+          <a href="#"><b>エグゼクティブ紹介</b><small>経営層専門の人材紹介</small></a>
+          <a href="#"><b>匿名キャリア相談</b><small>キャリアや転職の匿名相談</small></a>
+          <a href="#"><b>スポーツ業界の求人</b><small>スポーツの“はたらく”に出会う</small></a>
+          <a href="#"><b>公共機関の求人</b><small>公共機関のはたらくを知ろう</small></a>
+          <a href="#"><b>新卒向けサービス</b><small>就活にプロの視点を</small></a>
+        </div>
+      </section>
+
+      <section class="box about" aria-labelledby="aboutT">
+        <div class="sec-t"><h2 id="aboutT">この転職サイトについて</h2></div>
+        <p>これは転職サイトのトップページのデザイン検討用モックです。実在のサービス・企業とは関係ありません。</p>
+        <p>業種・職種ごとの専任のキャリアアドバイザーがマッチングを行うエージェントサービスでは、転職相談から求人紹介、面接対策や応募書類作成までを想定しています。</p>
+        <p>求人情報は架空のもので、職種・勤務地・こだわり条件などから検索する動線を再現しています。</p>
+      </section>
+    </main>
+
+    <aside class="aside">
+
+      <!-- 診断・書類作成ツール（抜粋）：人気の求人特集の上 -->
+      <section class="box side-tools" aria-labelledby="sideToolT">
+        <div class="sec-t" style="margin-bottom:10px"><h3 id="sideToolT">診断・書類作成ツール</h3><button type="button" class="linkbtn" data-open="list">すべて見る ›</button></div>
+        <div class="mlist" id="sideTools"></div>
+      </section>
+
+      <!-- 人気の求人特集 → 3問で相性順に並ぶ診断へ -->
+      <section class="box quiz" id="tokushu" aria-labelledby="featT" aria-live="polite">
+        <div class="sec-t" style="margin-bottom:6px"><h3 id="featT">人気の求人特集</h3></div>
+        <div id="quiz"></div>
+      </section>
+
+      <a class="side-banner" href="#"><b>転職フェア 開催の案内</b><small>10/17（土）開催</small></a>
+      <a class="side-banner" href="#"><b>ハイクラス転職サービス</b><small>希少性の高い非公開求人多数</small></a>
+
+      <section class="box" id="event" aria-labelledby="evT">
+        <div class="sec-t"><h3 id="evT">イベント・セミナー</h3></div>
+        <ul class="ev">
+          <li><a href="#"><span class="d">9/29（火）</span>海外も注目する 日本の宇宙スタートアップ～宇宙産業の最前線とはたらく魅力～</a></li>
+          <li><a href="#"><span class="d">9/30（水）</span>ストレングスファインダーで発見！自分の強みを見つけるセミナー</a></li>
+          <li><a href="#"><span class="d">10/2（金）</span>転職活動の始め方が分かる転職教室</a></li>
+          <li><a href="#"><span class="d">10/15（木）</span>はじめてのAI面接対策セミナー</a></li>
+          <li><a href="#"><span class="d">10/16（金）</span>第二新卒のための“失敗”しない転職準備が分かるセミナー</a></li>
+          <li><a href="#"><span class="d">10/17（土）</span>転職フェア</a></li>
+          <li><a href="#"><span class="d">10/26（月）</span>後悔しないキャリア選択のための「キャリアとお金の考え方セミナー」</a></li>
+        </ul>
+        <a class="feat-all more" href="#">イベント・セミナー一覧</a>
+      </section>
+
+      <section class="box" aria-labelledby="newT">
+        <div class="sec-t"><h3 id="newT">新着・注目のコンテンツ</h3></div>
+        <ul class="side-list">
+          <li><a href="#">職務経歴書の書き方｜書類作成のコツと133職種のサンプル</a></li>
+          <li><a href="#">キャリアパスとは？キャリアプランとの違いや、面接で確認する方法を解説</a></li>
+          <li><a href="#">一次面接の逆質問例文24選！好印象のコツやNG例を徹底解説</a></li>
+          <li><a href="#">今年は令和何年？【西暦・和暦早見表付き】 履歴書に記入するときのポイントも解説</a></li>
+          <li><a href="#">求人数はどう変わった？転職求人倍率レポート【最新版】</a></li>
+        </ul>
+        <button type="button" class="side-banner" data-tool="jikopr" style="width:100%;text-align:left;margin-top:10px;font:inherit;cursor:pointer"><b>「自己PR」発掘診断</b><small>～自己PR作成のヒントが見つかる！～</small></button>
+        <a class="feat-all more" href="#">このほかのコンテンツ一覧</a>
+      </section>
+
+      <a class="side-banner" href="#"><b>地方企業で働く</b></a>
+
+      <section class="box" aria-labelledby="infoT">
+        <div class="sec-t"><h3 id="infoT">サイトからのお知らせ</h3></div>
+        <ul class="side-list">
+          <li><a href="#">「エージェントサービス」が「職業紹介優良事業者」認定を取得</a></li>
+          <li><a href="#">「募集情報等提供」に関する取り組み</a></li>
+        </ul>
+        <div class="sec-t" style="margin:14px 0 6px"><h3>法人のお客さまへ</h3></div>
+        <ul class="side-list"><li><a href="#">求人広告掲載や人材採用に関するお問い合わせはこちら</a></li><li><a href="#">代理店を希望されるお客様はこちら</a></li></ul>
+        <div class="sec-t" style="margin:14px 0 6px"><h3>&lt;PR&gt;</h3></div>
+        <ul class="side-list"><li><a href="#">就活にプロの視点を。新卒エージェント</a></li><li><a href="#">ポータブルスキルチェックツール</a></li></ul>
+      </section>
+
+      <section class="box" aria-labelledby="shareT">
+        <div class="sec-t" style="margin-bottom:10px"><h3 id="shareT">このサイトをシェア</h3></div>
+        <div class="share"><a href="#">X</a><a href="#">Facebook</a><a href="#">はてな</a><button type="button" id="copyLink">リンクをコピー</button></div>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<footer>
+  <div class="inner">
+    <h3 style="font-size:15px;margin-bottom:6px">転職に役立つ関連情報</h3>
+    <div class="fsec"><h4>転職サービス</h4><ul><li><a href="#">はじめての方へ</a></li><li><a href="#">求人情報検索</a></li><li><a href="#">エージェントサービス</a></li><li><a href="#">スカウトサービス</a></li></ul></div>
+    <div class="fsec"><h4>専門サイト</h4><ul><li><a href="#">ITエンジニア</a></li><li><a href="#">モノづくりエンジニア</a></li><li><a href="#">メディカル</a></li><li><a href="#">セールス</a></li><li><a href="#">ファイナンス</a></li><li><a href="#">スペシャリスト</a></li><li><a href="#">エグゼクティブ</a></li><li><a href="#">グローバル（アジア）</a></li><li><a href="#">女性の転職</a></li></ul></div>
+    <div class="fsec"><h4>地域別サイト</h4><ul><li><a href="#">北海道</a></li><li><a href="#">東北</a></li><li><a href="#">関東</a></li><li><a href="#">東海</a></li><li><a href="#">北信越</a></li><li><a href="#">関西</a></li><li><a href="#">中国・四国</a></li><li><a href="#">九州・沖縄</a></li><li><a href="#">海外</a></li></ul></div>
+    <div class="fsec"><h4>転職イベント・セミナー</h4><ul><li><a href="#">転職イベント・セミナー情報</a></li><li><a href="#">転職フェア</a></li><li><a href="#">転職セミナー動画</a></li></ul></div>
+    <div class="fsec"><h4>関連情報</h4><ul><li><a href="#">転職活動の進め方</a></li><li><a href="#">履歴書の書き方</a></li><li><a href="#">職務経歴書の書き方</a></li><li><a href="#">志望動機の書き方</a></li><li><a href="#">自己PRの書き方</a></li><li><a href="#">求人応募の仕方</a></li><li><a href="#">面接の流れと質問</a></li><li><a href="#">内定・退職・入社の手続き</a></li><li><a href="#">第二新卒の転職活動</a></li><li><a href="#">人気企業ランキング</a></li><li><a href="#">平均年収</a></li><li><a href="#">生涯年収</a></li><li><a href="#">転職理由</a></li><li><a href="#">転職年齢</a></li><li><a href="#">中途採用の実態</a></li><li><a href="#">仕事満足度</a></li><li><a href="#">転職市場予測</a></li><li><a href="#">ホンネの転職白書</a></li><li><a href="#">職種図鑑</a></li></ul></div>
+    <div class="fsec"><h4>企業情報</h4><ul><li><a href="#">会社案内</a></li><li><a href="#">拠点一覧</a></li><li><a href="#">求人掲載・採用企業の方へ</a></li></ul></div>
+
+    <div class="fgrp">
+      <div><h4>グループ会社</h4><ul><li><a href="#">ホールディングス</a></li><li><a href="#">人材派遣会社</a></li><li><a href="#">BPO会社</a></li><li><a href="#">エンジニア派遣会社</a></li><li><a href="#">人材紹介会社</a></li><li><a href="#">新規事業会社</a></li><li><a href="#">総合研究所</a></li><li><a href="#">グループ会社一覧</a></li></ul></div>
+      <div><h4>個人向けサービス</h4><h5>人材派遣</h5><ul><li><a href="#">派遣求人サイト</a></li><li><a href="#">お仕事検索</a></li><li><a href="#">短期・単発のお仕事</a></li><li><a href="#">フレキシブル勤務</a></li><li><a href="#">エンジニア派遣</a></li></ul></div>
+      <div><h5 style="margin-top:0">転職・就職</h5><ul><li><a href="#">転職サイト（本サイト）</a></li><li><a href="#">エグゼクティブ紹介</a></li><li><a href="#">語学を活かす転職</a></li><li><a href="#">ファッション業界の転職</a></li><li><a href="#">ハイクラス転職</a></li><li><a href="#">障がい者向け転職</a></li><li><a href="#">20代向け転職</a></li><li><a href="#">新卒向けサービス</a></li></ul>
+        <h5>その他</h5><ul><li><a href="#">副業マッチング</a></li><li><a href="#">スキマバイト</a></li><li><a href="#">就労支援</a></li><li><a href="#">リスキリング</a></li><li><a href="#">調査・レポート</a></li><li><a href="#">サービス一覧</a></li></ul></div>
+      <div><h4>法人向けサービス</h4><ul><li><a href="#">採用・求人広告</a></li><li><a href="#">RPA導入支援</a></li><li><a href="#">業務コンサルティング</a></li><li><a href="#">採用管理システム</a></li><li><a href="#">勤怠・組織可視化</a></li><li><a href="#">店舗向けPOS</a></li><li><a href="#">リスキリング支援</a></li><li><a href="#">サービス一覧</a></li></ul></div>
+    </div>
+
+    <div class="flegal"><a href="#">利用規約</a><a href="#">通信に関する情報の利用について</a><a href="#">取扱職種の範囲等</a><a href="#">利用者データの外部送信</a><a href="#">免責事項</a><a href="#">サイトマップ</a><a href="#">ヘルプ</a><a href="#">個人情報の取り扱いについて</a><a href="#">個人情報保護方針</a></div>
+    <div class="copy"><span>JobCompass（架空サイト）</span><span>デザイン検討用モック</span></div>
+  </div>
+</footer>
+
+<div class="fabs" id="fabs">
+  <button class="fab" type="button" data-open="list" aria-haspopup="dialog">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M20 12v7H4V5h11"/></svg><span>診断・書類作成ツール</span>
+  </button>
+  <button class="chat-fab" type="button" id="chatOpen" aria-controls="chat" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><span>お悩みをチャットで解消</span>
+  </button>
+</div>
+
+<!-- チャット（フロントのみ：よくある質問に定型回答＋関連ツール・ページへ案内） -->
+<section class="chat" id="chat" hidden aria-label="チャットで質問">
+  <div class="chat-h"><span class="av">JobCompass</span><span><b>チャットで質問・相談</b><small>よくある質問にお答えします</small></span><button class="x" type="button" id="chatClose" aria-label="チャットを閉じる">×</button></div>
+  <div class="chat-log" id="chatLog" aria-live="polite"></div>
+  <div class="qr" id="chatQR"></div>
+  <form class="chat-in" id="chatForm"><input id="chatText" autocomplete="off" placeholder="例：履歴書の書き方を知りたい" aria-label="質問を入力"><button class="btn btn-blue" type="submit">送信</button></form>
+</section>
+
+<div class="modal" id="modal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="sheet-h"><h2 id="mTitle">診断・書類作成ツール</h2><button class="x" type="button" aria-label="閉じる" id="mClose">×</button></div>
+    <div class="sheet-b" id="mBody"></div>
+  </div>
+</div>
+<div id="toast" hidden></div>
+
+<script>
+const OCC=[['営業',64610],['企画・管理',39722],['事務／アシスタント',13627],['販売／サービス',29369],['コンサルタント／士業',8374],['金融専門職',2670],['公務員／教員 ほか',923],['SE／インフラエンジニア／Webエンジニア',49923],['機械／電気',53347],['組み込みソフトウェア',9160],['建築／土木／不動産／プラント／設備',52392],['化学／素材／化粧品 ほか',7160],['食品／香料／飼料 ほか',2846],['医療系専門職',4923],['クリエイティブ',7365]];
+const AREA=[['北海道','北海道'],['東北','青森 岩手 宮城 秋田 山形 福島'],['関東','茨城 栃木 群馬 埼玉 千葉 東京 神奈川 山梨'],['東海','岐阜 静岡 愛知 三重'],['北信越','新潟 富山 石川 福井 長野'],['関西','滋賀 京都 大阪 兵庫 奈良 和歌山'],['中国・四国','鳥取 島根 岡山 広島 山口 徳島 香川 愛媛 高知'],['九州・沖縄','福岡 佐賀 長崎 熊本 大分 宮崎 鹿児島 沖縄'],['海外','海外']];
+/* 求人データは元ページ（2026/9/21取得）の表示から引用。tag: 'new' | 'dl'(締切間近) | '' */
+const JOBS={
+  jobsNear:[
+    ['株式会社アオゾラテック','','自社SaaSのWebエンジニア／フルリモート可／年休125日','年収480万円／28歳・経験3年'],
+    ['ミドリ技研株式会社','new','ITエンジニア／未経験歓迎／研修3か月／残業月10h以内','年収420万円／26歳・未経験入社2年目'],
+    ['株式会社ヒナタソフト','','インフラエンジニア／AWS・Azure／在宅8割','年収520万円／30歳・経験5年'],
+    ['コモレビ株式会社','new','フロントエンドエンジニア／案件選択制／年休130日','年収560万円／32歳・経験6年'],
+    ['株式会社ナギサシステムズ','new','開発エンジニア／昇給年2回／副業OK','年収450万円／27歳（月給32万円）'],
+    ['ソラノ開発株式会社','','社内SE／土日祝休み／転勤なし','年収500万円／31歳・経験4年']
+  ],
+  jobsViewed:[
+    ['株式会社アオゾラテック','','自社SaaSのWebエンジニア／フルリモート可／年休125日','年収480万円／28歳・経験3年'],
+    ['むらさき商事株式会社','','【英語を活かす】海外向けIR担当◆未経験歓迎／フレックス×リモート','600万円～900万円']
+  ],
+  jobsNew:[
+    ['さくら鉄道株式会社','new','＜総合職＞アセットマネジメント※運営計画・資金管理等をお任せ◇土日祝休み','600万円～800万円'],
+    ['やまびこ食品株式会社','new','【東京】給与計算担当 ※フレックス・リモート可／就業環境◎','550万円～800万円'],
+    ['株式会社こはる製菓','new','【海外事業管理】海外現地法人の損益管理・分析◇年間休日129日','587万円～967万円'],
+    ['あさひコンサルティング株式会社','new','【第二新卒可】営業サポート担当◆女性活躍／社内でキャリア形成','400万円～700万円'],
+    ['みなも飲料株式会社','new','【全国】清涼飲料の企画営業◇ブランド強化◇有名商品多数◎','600万円～1,050万円'],
+    ['株式会社しおかぜホールディングス','new','【横浜／総合職】グループの幹部候補／不動産・ホテルなど幅広く展開','476万円～890万円'],
+    ['ほくと光学株式会社','new','【カメラの商品企画】海外向け製品◇医療～素材まで幅広い事業展開◎','600万円～1,000万円'],
+    ['株式会社こなゆき製菓','new','【本社】人事制度企画※大手菓子メーカー／賞与5か月分','540万円～800万円'],
+    ['株式会社あおい広告','new','【東京】事務職（売上管理・会計処理等）※未経験歓迎／年休125日','350万円～500万円'],
+    ['株式会社つきよみ出版','new','【音楽配信】DSP向けの配信営業・プロモーション担当','654万円～729万円']
+  ],
+  jobsPop:[
+    ['すずかけヘルスケア株式会社','','【東京】総合職：DX推進担当','700万円～980万円'],
+    ['学校法人みらい学園','dl','【研究室】講座運営・進行管理等◆研修企画/運営経験者歓迎◆週3在宅勤務可','400万円～500万円'],
+    ['はるかぜリース株式会社','','【在宅8割】社内SE※IT戦略～基盤構築・全社DX推進／残業20h','600万円～800万円'],
+    ['新都市高速鉄道株式会社','','【社内SE】SI歓迎◇鉄道インフラを支えるIT基盤・セキュリティ強化','560万円～800万円'],
+    ['株式会社ゆきのはキャラクターズ','','【IT戦略担当】国内外の全社的なIT戦略・投資計画の策定・実行など','513万円～1,200万円'],
+    ['あじわい食品株式会社','','【東京】社内SE（基幹システム開発）※福利厚生充実／在宅可','800万円～950万円'],
+    ['株式会社クラウド労務','dl','【カスタマーサポート】チャット対応中心◆人事労務SaaS','430万円～600万円']
+  ]
+};
+const ICON={
+  yen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l6 8 6-8M12 12v8M8 13h8M8 17h8"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>',
+  compass:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>',
+  spark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/></svg>',
+  person:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+  chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  cloud:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 18a5 5 0 1 1 1-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 8z"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/></svg>',
+  pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg>'
+};
+const B='';
+/* リンク先は既存トップの「診断・書類作成ツール」バナーと同じ */
+const TOOLS=[
+  {id:'nenshu',kind:'diag',ic:'yen',name:'年収査定',short:'いまの市場価値・適正年収を知る',url:'#',body:'経験やスキルに関する質問に答えると、あなたの適正年収の目安がわかります。',points:['転職で年収が上がる余地の把握に','年収交渉の目安づくりに']},
+  {id:'goukaku',kind:'diag',ic:'check',name:'合格診断',short:'気になる企業との相性をチェック',url:B+'/guide/popular/shindan.html',body:'あなたの経歴をもとに、気になる企業との相性をチェックできます。',points:['応募先の優先順位づけに']},
+  {id:'tekishoku',kind:'diag',ic:'compass',name:'転職タイプ診断（適職診断）',short:'向いている仕事・働き方を知る',url:B+'/type/',body:'質問に答えると、あなたに向いている仕事や働き方の傾向がわかります。',points:['職種選びに迷っているときに','自己分析の出発点に']},
+  {id:'career',kind:'diag',ic:'person',name:'キャリアタイプ診断',short:'性格・価値観から強みを知る',url:B+'/dcfront/personality/personalityIndex/',body:'性格や価値観、行動の特徴から、あなたのキャリアタイプと強みを診断します。',points:['長期的なキャリアの軸づくりに']},
+  {id:'jikopr',kind:'diag',ic:'spark',name:'自己PR発掘診断',short:'自己PR作成のヒントが見つかる',url:B+'/guide/rireki/jikopr/maker/',body:'質問に答えていくと、あなたの強みと、それを伝える自己PRのヒントが見つかります。',points:['書類・面接で話す強みの整理に']},
+  {id:'online',kind:'diag',ic:'chart',name:'オンライン仕事力診断',short:'ビジネススキルを客観的に測る',url:B+'/guide/online/',body:'ビジネスで求められる力を、オンラインで客観的に測定できます。',points:['得意・不得意の可視化に']},
+  {id:'moyamoya',kind:'diag',ic:'cloud',name:'モヤモヤ解消診断',short:'はたらく上での迷いを整理する',url:B+'/woman/careerlife/shindan/',body:'仕事や働き方についてのモヤモヤを整理し、次の一歩のヒントを見つけます。',points:['転職するか迷っている段階でも']},
+  {id:'rireki',kind:'doc',ic:'doc',name:'履歴書作成ツール',short:'履歴書をかんたん作成',url:B+'/guide/rireki/builder/',body:'フォームに入力するだけで、応募に使える履歴書をWeb上で作成できます。',points:['入力内容をそのまま応募に使える']},
+  {id:'resume',kind:'doc',ic:'pen',name:'レジュメビルダー',short:'職務経歴書をかんたん作成',url:B+'/guide/syokureki/builder/',body:'ガイドに沿って入力するだけで、職務経歴書をかんたんに作成できます。',points:['133職種のサンプルを参考にできる']}
+];
+/* 既存の「人気の求人特集」5件 */
+const FEAT={
+  middle:{name:'ミドル層積極採用',title:'「35歳転職限界説」はもう古い。ミドル層を積極採用する企業特集'},
+  ui:{name:'U・Iターン歓迎企業',title:'好きな場所で働きたい！U・Iターン歓迎企業の求人特集'},
+  stable:{name:'安定収入',title:'安定収入が魅力！営業職×固定給25万円以上を含む求人特集'},
+  balance:{name:'残業20H未満×完全週休2日制',title:'働き方を見直そう！残業20H未満×完全週休2日制の求人特集'},
+  remote:{name:'フルリモート',title:'フルリモート・完全在宅勤務の求人特集'}
+};
+const QS=[
+  {q:'次の職場で、いちばん変えたいことは？',o:[['休み・残業を見直したい',{balance:3,remote:1}],['収入を安定させたい',{stable:3,middle:1}],['働く場所を自由にしたい',{remote:3,ui:2}],['経験を正当に評価されたい',{middle:3,stable:1}]]},
+  {q:'働く場所の希望は？',o:[['自宅で働きたい',{remote:3,balance:1}],['地元・地方で働きたい',{ui:3}],['今の通勤圏でよい',{stable:1,balance:1,middle:1}]]},
+  {q:'いまのキャリアは？',o:[['社会人10年以上／マネジメント経験あり',{middle:3}],['営業経験を活かしたい',{stable:2,middle:1}],['職種は変えず働き方を変えたい',{remote:2,balance:2}]]}
+];
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---- search selects / condition tabs ---- */
+OCC.forEach(([n])=>$('#s-occ').insertAdjacentHTML('beforeend',`<option>${n}</option>`));
+AREA.forEach(([r,p])=>$('#s-area').insertAdjacentHTML('beforeend',`<optgroup label="${r}">${p.split(' ').map(x=>`<option>${x}</option>`).join('')}</optgroup>`));
+$('#occList').innerHTML=OCC.map(([n,c])=>`<a href="#">${n}<span class="num">(${c.toLocaleString()})</span></a>`).join('');
+$('#areaList').innerHTML=AREA.map(([r,p])=>`<dl><dt>${r}</dt><dd>${p.split(' ').map(x=>`<a href="#">${x}</a>`).join('')}</dd></dl>`).join('');
+document.querySelectorAll('#find [role=tab]').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('#find [role=tab]').forEach(x=>{const on=x===t;x.setAttribute('aria-selected',on);$('#'+x.getAttribute('aria-controls')).hidden=!on;});
+}));
+
+/* ---- jobs ---- */
+for(const id in JOBS){
+  $('#'+id).innerHTML=JOBS[id].map(([co,tag,t,s])=>`<article class="job"><div class="co">${tag==='new'?'<span class="new">NEW</span>':tag==='dl'?'<span class="dl">締切間近</span>':''}<span>${esc(co)}</span></div>
+    <a class="t" href="#">${esc(t)}</a><div class="sal">${/万円～/.test(s)?'年収 ':''}${esc(s)}</div><button class="fav" type="button" aria-pressed="false">♡ 気になる</button></article>`).join('');
+}
+
+/* ---- tools ---- */
+const toolCard=(t,arr)=>`<button type="button" class="tool ${t.kind==='doc'?'doc':''}" data-tool="${t.id}"><span class="ti">${ICON[t.ic]}</span><span><b>${t.name}</b><small>${t.short}</small></span>${arr?'<span class="arr">›</span>':''}</button>`;
+$('#tools').innerHTML=TOOLS.map(t=>toolCard(t)).join('');
+$('#sideTools').innerHTML=['nenshu','tekishoku','rireki','resume'].map(id=>toolCard(TOOLS.find(t=>t.id===id),true)).join('');
+
+/* ---- 求人特集診断 ---- */
+let step=-1, ans=[];
+function renderQuiz(){
+  const el=$('#quiz');
+  if(step<0){
+    el.innerHTML=`<p class="quiz-intro">3つの質問に答えると、あなたに合う順に特集が並びます。</p>
+      <ul class="rank">${Object.values(FEAT).map(f=>`<li><a href="#"><span>${f.name}</span><span></span></a></li>`).join('')}</ul>
+      <button class="btn btn-blue" type="button" id="qStart" style="width:100%;margin-top:12px">3問で診断する</button>
+      <a class="feat-all more" href="#">求人特集一覧</a>`;
+    return;
+  }
+  if(step<QS.length){
+    const q=QS[step];
+    el.innerHTML=`<div class="prog">${QS.map((_,i)=>`<i class="${i<=step?'on':''}"></i>`).join('')}</div>
+      <div class="q">Q${step+1}. ${q.q}</div>
+      <div class="opts">${q.o.map((o,i)=>`<button type="button" class="opt" data-a="${i}">${o[0]}</button>`).join('')}</div>
+      <div class="qfoot"><span class="num">${step+1} / ${QS.length}</span><button type="button" class="linkbtn" id="qBack">${step?'← 戻る':'やめる'}</button></div>`;
+    return;
+  }
+  const sc={};ans.forEach(w=>{for(const k in w)sc[k]=(sc[k]||0)+w[k];});
+  const max=QS.reduce((a,q)=>a+Math.max(...q.o.flatMap(o=>Object.values(o[1]))),0);
+  const ranked=Object.keys(FEAT).map(k=>[k,sc[k]||0]).sort((a,b)=>b[1]-a[1]);
+  const pct=v=>Math.round(40+60*v/max);
+  const top=FEAT[ranked[0][0]];
+  el.innerHTML=`<div class="top-pick">あなたにいちばん合う特集<b>${top.name}</b>${top.title}</div>
+    <ul class="rank">${ranked.map(([k,v])=>`<li><a href="#" data-feat="${k}"><span>${FEAT[k].name}</span><span class="pct num">${pct(v)}%</span></a></li>`).join('')}</ul>
+    <div class="qfoot"><button type="button" class="linkbtn" id="qRetry">もう一度診断する</button><a class="more" href="#" style="font-size:12px">求人特集一覧</a></div>`;
+}
+$('#quiz').addEventListener('click',e=>{
+  const a=e.target.closest('[data-a]');
+  if(a){ans[step]=QS[step].o[+a.dataset.a][1];step++;renderQuiz();return;}
+  if(e.target.id==='qStart'){step=0;ans=[];renderQuiz();}
+  if(e.target.id==='qBack'){step--;ans.length=Math.max(step,0);renderQuiz();}
+  if(e.target.id==='qRetry'){step=0;ans=[];renderQuiz();}
+  const f=e.target.closest('[data-feat]'); if(f){e.preventDefault();toast(`「${FEAT[f.dataset.feat].name}」の特集へ移動します（モック）`);}
+});
+
+/* ---- popup ---- */
+let lastFocus=null, mTab='diag';
+function openModal(v){lastFocus=document.activeElement;$('#modal').hidden=false;document.body.style.overflow='hidden';v==='list'?renderList():renderDetail(v);$('#mClose').focus();}
+function closeModal(){$('#modal').hidden=true;document.body.style.overflow='';lastFocus&&lastFocus.focus();}
+function renderList(){
+  $('#mTitle').textContent='診断・書類作成ツール';
+  const n=k=>TOOLS.filter(t=>t.kind===k).length;
+  $('#mBody').innerHTML=`<div class="tabs" role="tablist">
+    <button type="button" role="tab" aria-selected="${mTab==='diag'}" data-mtab="diag">診断ツール（${n('diag')}）</button>
+    <button type="button" role="tab" aria-selected="${mTab==='doc'}" data-mtab="doc">書類作成ツール（${n('doc')}）</button></div>
+    <div class="mlist">${TOOLS.filter(t=>t.kind===mTab).map(t=>toolCard(t,true)).join('')}</div>`;
+}
+function renderDetail(id){
+  const t=TOOLS.find(x=>x.id===id); if(!t) return renderList();
+  $('#mTitle').textContent=t.kind==='doc'?'書類作成ツール':'診断ツール';
+  $('#mBody').innerHTML=`<div class="detail ${t.kind==='doc'?'doc':''}"><span class="ti">${ICON[t.ic]}</span><h3>${t.name}</h3><p>${t.body}</p>
+    <ul>${t.points.map(p=>`<li>${p}</li>`).join('')}</ul>
+    <div class="btns"><a class="btn btn-or" href="${t.url}" target="_blank" rel="noopener">${t.kind==='doc'?'作成をはじめる':'診断をはじめる'}（無料）</a>
+    <button type="button" class="btn btn-bl" data-back>ほかのツールを見る</button></div></div>`;
+}
+document.addEventListener('click',e=>{
+  const o=e.target.closest('[data-open]'); if(o){e.preventDefault();openModal(o.dataset.open);return;}
+  const t=e.target.closest('[data-tool]'); if(t){mTab=TOOLS.find(x=>x.id===t.dataset.tool).kind;openModal(t.dataset.tool);return;}
+  const mt=e.target.closest('[data-mtab]'); if(mt){mTab=mt.dataset.mtab;renderList();return;}
+  if(e.target.closest('[data-back]')){renderList();return;}
+  const f=e.target.closest('.fav'); if(f){const on=f.getAttribute('aria-pressed')!=='true';f.setAttribute('aria-pressed',on);f.textContent=(on?'♥':'♡')+' 気になる';
+    const c=document.querySelectorAll('.fav[aria-pressed="true"]').length;$('#favCount').textContent=c;$('#favCount').hidden=!c;toast(on?'気になるリストに保存しました':'気になるリストから外しました');}
+});
+$('#mClose').addEventListener('click',closeModal);
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!$('#modal').hidden)closeModal();else if(!$('#chat').hidden)closeChat();});
+
+/* ---- チャット ---- */
+/* 回答はページ内の既存情報のみで構成。a: [ラベル, 動作] 動作= '#id'(ページ内移動) | 'tool:id'(ツールのポップアップ) | 'quiz'(求人特集診断) */
+const FAQ={
+  shindan:{k:/診断|向いて|適職|強み|わからない|分からない|迷/,q:'自分に合う仕事がわからない',
+    a:'診断ツールで、あなたの強みや向いている仕事・働き方を確認できます。どれも無料です。',
+    acts:[['転職タイプ診断（適職診断）','tool:tekishoku'],['キャリアタイプ診断','tool:career'],['3問で合う求人特集を診断','quiz']]},
+  docs:{k:/履歴書|職務経歴書|書類|レジュメ|自己PR/,q:'履歴書・職務経歴書を作りたい',
+    a:'Web上で入力するだけで作れるツールがあります。書き方のガイドもあわせてどうぞ。',
+    acts:[['履歴書作成ツール','tool:rireki'],['レジュメビルダー（職務経歴書）','tool:resume'],['自己PR発掘診断','tool:jikopr']]},
+  search:{k:/探|検索|求人|条件|勤務地|職種|リモート|在宅/,q:'求人の探し方を知りたい',
+    a:'職種・勤務地・年収で検索できます。はたらき方（在宅勤務、残業20時間未満など）からも探せます。',
+    acts:[['求人を検索する','#search'],['条件から求人を探す','#find']]},
+  agent:{k:/エージェント|相談|紹介|アドバイザー|非公開/,q:'エージェントに相談したい',
+    a:'専任のキャリアアドバイザーが、非公開求人を含む約10万件の求人からあなたにぴったりの求人をご紹介します（エージェントサービス）。\n企業から直接オファーが届くスカウトサービスもあります。',
+    acts:[['求人を紹介してもらう','#svc']]},
+  salary:{k:/年収|給与|給料|市場価値|収入/,q:'適正年収を知りたい',
+    a:'年収査定で、経験やスキルをもとに適正年収の目安がわかります。',
+    acts:[['年収査定','tool:nenshu']]},
+  interview:{k:/面接|逆質問|AI面接/,q:'面接が不安',
+    a:'面接対策のコンテンツやセミナーがあります。10/15（木）には「はじめてのAI面接対策セミナー」を開催します。',
+    acts:[['イベント・セミナーを見る','#event'],['転職ノウハウを見る','#know']]},
+  member:{k:/登録|会員|ログイン|無料/,q:'会員登録について',
+    a:'会員登録は無料です。サービスの使い方は「はじめて利用される方へ」でご確認いただけます。',
+    acts:[['会員登録・はじめて利用される方へ','#top']]}
+};
+const QR_KEYS=['shindan','docs','search','agent','salary','interview','member'];
+const log=$('#chatLog');
+function addMsg(who,text,acts){
+  const m=document.createElement('div');m.className='msg '+who;m.textContent=text;
+  if(acts&&acts.length){const w=document.createElement('div');w.className='acts';
+    acts.forEach(([l,act])=>{const b=document.createElement('button');b.type='button';b.textContent=l+' ›';b.dataset.act=act;w.appendChild(b);});m.appendChild(w);}
+  log.appendChild(m);log.scrollTop=log.scrollHeight;
+}
+function botReply(key,userText){
+  addMsg('me',userText);
+  const t=document.createElement('div');t.className='typing';t.textContent='入力中…';log.appendChild(t);log.scrollTop=log.scrollHeight;
+  setTimeout(()=>{t.remove();
+    if(key){addMsg('bot',FAQ[key].a,FAQ[key].acts);}
+    else addMsg('bot','うまくお答えできませんでした。下のボタンから近いものを選ぶか、転職Q&Aをご覧ください。',[['転職Q&Aを見る','#know']]);
+  },500);
+}
+function openChat(){
+  $('#chat').hidden=false;$('#fabs').hidden=true;$('#chatOpen').setAttribute('aria-expanded','true');
+  if(!log.childElementCount) addMsg('bot','こんにちは。このサイトの使い方や転職の進め方について、よくある質問にお答えします。\n知りたいことを選ぶか、入力してください。');
+  $('#chatText').focus();
+}
+function closeChat(){$('#chat').hidden=true;$('#fabs').hidden=false;$('#chatOpen').setAttribute('aria-expanded','false');$('#chatOpen').focus();}
+$('#chatQR').innerHTML=QR_KEYS.map(k=>`<button type="button" data-q="${k}">${FAQ[k].q}</button>`).join('');
+$('#chatOpen').addEventListener('click',openChat);
+$('#chatClose').addEventListener('click',closeChat);
+$('#chatQR').addEventListener('click',e=>{const b=e.target.closest('[data-q]');if(b)botReply(b.dataset.q,FAQ[b.dataset.q].q);});
+$('#chatForm').addEventListener('submit',e=>{e.preventDefault();const v=$('#chatText').value.trim();if(!v)return;$('#chatText').value='';
+  const key=QR_KEYS.find(k=>FAQ[k].k.test(v));botReply(key,v);});
+log.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
+  if(a.startsWith('tool:')){const id=a.slice(5);mTab=TOOLS.find(x=>x.id===id).kind;openModal(id);}
+  else if(a==='quiz'){step=0;ans=[];renderQuiz();$('#tokushu').scrollIntoView({behavior:'smooth',block:'center'});}
+  else if(a==='#top'){window.scrollTo({top:0,behavior:'smooth'});}
+  else {const el=document.querySelector(a);el&&el.scrollIntoView({behavior:'smooth',block:'start'});}
+});
+$('#copyLink').addEventListener('click',()=>{try{navigator.clipboard.writeText('#').then(()=>toast('リンクをコピーしました'),()=>toast('コピーできませんでした'));}catch(_){toast('コピーできませんでした');}});
+
+let tt;function toast(m){const el=$('#toast');el.textContent=m;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,2200);}
+renderQuiz();
+</script>

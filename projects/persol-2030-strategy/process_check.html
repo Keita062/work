@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>1ヶ月のプロセス 検証</title>
+<style>
+  @page { size: A4; margin: 16mm 14mm 16mm; }
+  :root { --ink:#111; --sub:#555; --line:#ccc; --ng:#b3261e; --warn:#8a5a00; --ok:#1e6b3a; --bg:#f5f5f5; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Noto Sans JP","BIZ UDPGothic","Yu Gothic",sans-serif; color: var(--ink); font-size: 10pt; line-height: 1.7;
+         -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .label { display:inline-block; background:var(--ink); color:#fff; font-weight:700; font-size:10pt; padding:1px 6px; }
+  h1 { display:inline-block; background:var(--ink); color:#fff; font-size:17pt; font-weight:700; padding:2px 8px; margin-top:3px; line-height:1.35; }
+  .meta { color:var(--sub); font-size:8.5pt; margin-top:8px; }
+  h2 { font-size:12.5pt; margin:20px 0 8px; padding-bottom:3px; border-bottom:2px solid var(--ink); }
+  p { margin: 4px 0; }
+  .lead { background:var(--bg); padding:10px 12px; margin-top:12px; }
+  .lead b { font-size:11pt; }
+  table { width:100%; border-collapse:collapse; margin-top:6px; font-size:9pt; }
+  th, td { border:1px solid var(--line); padding:5px 7px; vertical-align:top; text-align:left; }
+  th { background:var(--bg); font-weight:700; }
+  tr { page-break-inside: avoid; }
+  .tag { display:inline-block; font-weight:700; font-size:8.5pt; padding:0 6px; border:1.5px solid; white-space:nowrap; }
+  .ng { color:var(--ng); } .warn { color:var(--warn); } .ok { color:var(--ok); }
+  .card { border:1px solid var(--line); padding:10px 12px; margin-top:10px; page-break-inside: avoid; }
+  .card h3 { font-size:11pt; display:flex; gap:10px; align-items:baseline; }
+  .card h3 .date { color:var(--sub); font-size:9pt; font-weight:700; }
+  .row { display:grid; grid-template-columns: 70px 1fr; gap:4px 10px; margin-top:6px; }
+  .row .k { font-weight:700; color:var(--sub); font-size:8.5pt; padding-top:1px; }
+  .quote { color:var(--sub); }
+  .fix { background:var(--bg); padding:4px 8px; }
+  ul { padding-left: 1.2em; } li { margin: 2px 0; }
+  .src { font-size:8pt; color:var(--sub); margin-top:14px; }
+  .pb { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<div class="label">内定者研修チームA｜1ヶ月のプロセス</div><br>
+<h1>「1ヶ月のプロセス」スライドの事実確認</h1>
+<p class="meta">作成 2026-09-25｜対象：内定者研修チームA_1ヶ月のプロセス.pdf（9/24作成版）｜照合元：Gemini議事録 16本（8/19〜9/24）・研修共有ドキュメント</p>
+
+<div class="lead">
+  <b>結論：6ステップのうち5ステップに、議事録と合わない表現がある。</b>
+  <p>特に「⑤つまずく場所を特定する」の「CAヒアリングでボトルネックを特定」は、9/24夜のMTGでも「ヒアリングを実施、に直す」と確認した箇所で、そのまま発表すると事実と異なる。あわせて、9/10の数字訂正・9/11の個人に絞る決定・9/18の中間FB②という、グロースマインドセットを示すのに向いた出来事がスライドから抜けている。</p>
+</div>
+
+<h2>1. 判定一覧</h2>
+<table>
+  <tr><th style="width:34%">ステップ（スライド上の日付）</th><th style="width:14%">判定</th><th>要点</th></tr>
+  <tr><td>①「選ばれる」を数字で定義（8/19・8/24）</td><td><span class="tag ng">要修正</span></td><td>指標が決まったのは9/4。8/24時点では案の一つ</td></tr>
+  <tr><td>② 公開データで差をつかむ（8/29・9/4）</td><td><span class="tag ng">要修正</span></td><td>「主な差は決定率と見極めた」は記録と合わない</td></tr>
+  <tr><td>③ 中間FB①で立ち止まる（9/7）</td><td><span class="tag warn">一部修正</span></td><td>KPTはFB前に決めたもの。「習慣」の記録なし</td></tr>
+  <tr><td>④ ユーザーとして使ってみる（9/10〜9/14）</td><td><span class="tag warn">要確認</span></td><td>全員での登録・転職経験者ヒアリングの記録なし</td></tr>
+  <tr><td>⑤ つまずく場所を特定する（9/16・9/17）</td><td><span class="tag ng">要修正（最優先）</span></td><td>「特定」ではなく仮説。9/24に修正を確認済み</td></tr>
+  <tr><td>⑥ 定義を決め、解決策を練る（9/21〜9/24）</td><td><span class="tag warn">一部修正</span></td><td>4%の初出は9/4、正式確定は9/22</td></tr>
+  <tr><td>フッター「Gemini議事録が残るMTG 13回」</td><td><span class="tag warn">表記</span></td><td>13は開催日数。議事録は16本</td></tr>
+</table>
+
+<h2 class="pb">2. ステップごとの根拠と修正案</h2>
+
+<div class="card">
+  <h3>① 「選ばれる」を数字で定義 <span class="date">8/19・8/24</span> <span class="tag ng">要修正</span></h3>
+  <div class="row">
+    <div class="k">スライド</div><div class="quote">個人は年間登録者数、法人は就職者数を指標に置きました。</div>
+    <div class="k">記録</div><div><ul>
+      <li>8/19：「定量で定義する（効果測定しやすいため）」は合意済み。</li>
+      <li>8/24：登録者数・就職者数は案の一つ。チームのまとめは就職率・定着率・シェア率・登録者数など複数の指標が並んだ状態。</li>
+      <li>8/29 議事録：「現時点では『選ばれる』ことの明確な定義は確立されておらず、引き続き議論が必要」。</li>
+      <li>9/4：「選ばれる＝決定率がリクルートを上回る状態」と決定。</li>
+    </ul></div>
+    <div class="k">修正案</div><div class="fix">「選ばれる」を印象ではなく比較できる実数で測ると決め、指標の候補を出し合いました。（日付は 8/19〜8/29）</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>② 公開データで差をつかむ <span class="date">8/29・9/4</span> <span class="tag ng">要修正</span></h3>
+  <div class="row">
+    <div class="k">スライド</div><div class="quote">NotebookLMにIR資料や厚労省のデータを読み込ませ…新宿での対面MTGで、主な差は決定率にあると見極めました。</div>
+    <div class="k">記録</div><div><ul>
+      <li>NotebookLMの導入は8/29で一致。ただし厚労省の就職者数は人材サービス総合サイトから直接取得したもので、NotebookLMに読み込ませた記録はない。</li>
+      <li>「就職者数＝登録者数×決定率」への分解は8/29で一致。</li>
+      <li>9/4に決めたのは「比較できるデータがそろう決定率を定義に採用する」「スコープをリクルートエージェントとdodaに絞る」「2030年の目標は現実的に4%程度」「まず個人に注力」。<b>「主な差は決定率」と結論づけた記録はない。</b></li>
+      <li>9/10に数字を直した後は、差が登録者数91万人に対して決定率0.38ptとなり、「主な差は決定率」は後のデータとも合わない。</li>
+    </ul></div>
+    <div class="k">修正案</div><div class="fix">IR資料や厚労省の公表データを集め、リクルートとの差を「登録者数×決定率」に分解しました。新宿での対面MTGで、両社で比べられる「決定率」を定義に据えると決めました。</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>③ 中間FB①で立ち止まる <span class="date">9/7</span> <span class="tag warn">一部修正</span></h3>
+  <div class="row">
+    <div class="k">スライド</div><div class="quote">KPTで振り返る習慣もここから始めました。</div>
+    <div class="k">記録</div><div><ul>
+      <li>「定義の伝え方が足りなかった」「軸は変えず定量・定性を足し引きする」は、FB後（10:35）のMTGで一致。</li>
+      <li>KPTは<b>FB前</b>（9:29の事前MTG）に「中間FB資料の最後にKPTスライドを入れる」と決めたもの。以降の記録は9/24の最終資料のみで、継続して振り返った記録はない。</li>
+    </ul></div>
+    <div class="k">修正案</div><div class="fix">KPTの一文を削るか、「中間FB資料にKPTの振り返りを入れました」に変える。</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>④ ユーザーとして使ってみる <span class="date">9/10〜9/14</span> <span class="tag warn">要確認</span></h3>
+  <div class="row">
+    <div class="k">スライド</div><div class="quote">dodaとリクルートエージェントに実際に登録し…転職経験者へのヒアリングも行い、担当CAによって体験が大きく変わる点に着目しました。</div>
+    <div class="k">記録</div><div><ul>
+      <li>9/10：Figma上で両サイトのUI・登録画面を比較。実際にサービスを使っていたのは猪股さん個人で、全員で登録した記録はない。</li>
+      <li>転職経験者（猪股さんの知人）へのヒアリングは、9/10に「今度ちゃんと聞こう」と話した段階で止まっており、実施した記録はない。</li>
+      <li>CAガチャは9/11・9/14に議論しているが、9/14の発言は「想像でしかないけど」という前置き付き。</li>
+      <li>9/14の中心は解決策の議論（SEO対策・CA勉強会・入社後の定着支援）。</li>
+      <li>9/24夜のMTGで「ユーザビリティテストはこのステップに入れる」と確認している。</li>
+    </ul></div>
+    <div class="k">修正案</div><div class="fix">dodaとリクルートエージェントを実際に触り、Figma上で画面と登録フローを比較するユーザビリティテストを行いました。担当CAによって体験が変わる「CAガチャ」にも着目しました。<br>※転職経験者へのヒアリングは、実施済みなら残し、未実施なら削る。</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>⑤ つまずく場所を特定する <span class="date">9/16・9/17</span> <span class="tag ng">要修正（最優先）</span></h3>
+  <div class="row">
+    <div class="k">スライド</div><div class="quote">ユーザビリティテストとCAへのヒアリングで、登録からCA面談までの離脱をボトルネックとして特定しました。</div>
+    <div class="k">記録</div><div><ul>
+      <li>「獲得・決定・継続の3要素が循環する構造」は9/16で一致。</li>
+      <li>9/16に決めたのは「登録フォームで離脱している、という仮説を確かめるためにヒアリングを実施する」こと。研修共有ドキュメントでも各要因に「仮説」と書かれている。</li>
+      <li>9/24夜のMTGで「CAヒアリングで特定、は事実と違う。『ヒアリングを実施』に直す」と確認。CAからの回答は9/24ごろに届いたばかり。</li>
+      <li>9/24夜にも「データの裏付けはないが、仮説として精度を上げる」と話している。</li>
+    </ul></div>
+    <div class="k">修正案</div><div class="fix">「選ばれる」を獲得・決定・継続の3要素が循環する構造に分けました。登録から就職までのフローを分解し、「登録からCA面談までの離脱」をボトルネックの仮説として置き、CAへのヒアリングで確かめています。</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>⑥ 定義を決め、解決策を練る <span class="date">9/21〜9/24</span> <span class="tag warn">一部修正</span></h3>
+  <div class="row">
+    <div class="k">スライド</div><div class="quote">選ばれる姿を「人生（キャリア）のパートナーであり続けること」と定め、2030年の決定率4%を目標にしました。</div>
+    <div class="k">記録</div><div><ul>
+      <li>パートナーの定義は9/21の決定事項と一致。</li>
+      <li>4%は9/4に「現実的な目標」として一度置き、9/22に正式に確定。</li>
+      <li>9/21に「4%は競合に勝つためではなく、成長の目安だと補足する」と合意している（2030年予測はリクルートエージェント5.01%、dodaのなりゆき2.77%）。</li>
+    </ul></div>
+    <div class="k">修正案</div><div class="fix">選ばれる姿を「人生（キャリア）のパートナーであり続けること」と定め、なりゆきでは2.77%まで下がる決定率を2030年に4%へ引き上げる目標を確定しました。</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>フッター <span class="tag warn">表記</span></h3>
+  <div class="row">
+    <div class="k">スライド</div><div class="quote">Gemini議事録が残るMTG 13回</div>
+    <div class="k">記録</div><div>開催日は13日（8/19, 8/24, 8/29, 9/4, 9/7, 9/10, 9/11, 9/14, 9/16, 9/17, 9/21, 9/22, 9/24）。議事録は9/4・9/7・9/24が2本ずつで計16本。9/18の中間FB②と9/7の中間FB①本番は議事録なし。</div>
+    <div class="k">修正案</div><div class="fix">8/19〜9/24｜MTG 13日・16回（Gemini議事録あり）＋中間FB 2回</div>
+  </div>
+</div>
+
+<h2>3. スライドに入っていない出来事</h2>
+<table>
+  <tr><th style="width:16%">日付</th><th style="width:30%">出来事</th><th>入れる理由</th></tr>
+  <tr><td>9/10</td><td>数字の訂正：doda登録者数を176万人から111万人に修正し、就職者数をdoda分（×0.73）に推計し直した。決定率は3.96%対4.34%に。</td><td>「データを疑って直した」経緯で、グロースマインドセットの「改善」を最も具体的に示せる。②の結論が変わった根拠でもある。</td></tr>
+  <tr><td>9/11</td><td>法人ではなく個人に絞る方針を決定。</td><td>提案の前提（個人が増えれば法人も選ぶサイクル）が決まった日。</td></tr>
+  <tr><td>9/18</td><td>中間FB②（湯原さん）：「選ばれる＝決定率なの？」「パーソルらしさを軸に」「何を捨てて何を話すか」の指摘。</td><td>9/21に定義を言い直したきっかけ。9/24夜にも「中間FB②を足す」と確認済み。</td></tr>
+</table>
+<p style="margin-top:8px">※9/18の受け止めは記録によって違う。9/18のメモは「認識がまず伝わってない」、9/24の発言は「循環構造には納得してもらった」。どちらで書くかをチームで揃える必要がある。</p>
+
+<h2>4. チームで確認したいこと</h2>
+<p>議事録に残っていないため、実施していれば「実施した」、未実施なら「予定」と書き分ける。</p>
+<table>
+  <tr><th style="width:5%">#</th><th style="width:45%">確認事項</th><th>影響するステップ</th></tr>
+  <tr><td>1</td><td>転職経験者（猪股さんの知人など）へのヒアリングは実施したか</td><td>④</td></tr>
+  <tr><td>2</td><td>CAヒアリングの回答は、いつ・誰経由で届いたか。内容はボトルネック仮説を裏付けたか</td><td>⑤</td></tr>
+  <tr><td>3</td><td>ユーザビリティテストは誰が・いつ行ったか（結果はFigmaに掲載）</td><td>④</td></tr>
+  <tr><td>4</td><td>9/18 中間FB②の受け止めをどちらで書くか</td><td>追加ステップ</td></tr>
+</table>
+
+<p class="src">照合元：Gemini議事録（パーソルキャリアkickoff 8/19／パーソルmtg 8/24・8/29・9/11・9/14・9/17・9/24×2／パーソル 研修外出mtg 9/4×2／パーソル事前mtg 9/7×2／パーソルキャリアmtg 9/10／パーソルMTG 9/16・9/21・9/22）、研修共有ドキュメント（2026-09-25時点）。Gemini議事録の本文冒頭の日付は1日ずれているものがあるため、ファイル名（JST）の日時を正とした。</p>
+
+</body>
+</html>

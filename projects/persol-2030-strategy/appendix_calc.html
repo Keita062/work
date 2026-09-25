@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>アペンディックス 算出過程</title>
+<style>
+  @page { size: 13.333in 7.5in; margin: 0; }
+  :root {
+    --ink: #1a1a1a;
+    --sub: #5f5f5f;
+    --line: #d2d2d2;
+    --panel: #f4f4f4;
+    --accent: #f0a000;
+    --accent-ink: #a86d00;
+    --hl: #fff1cc;
+    --rec: #1f5fa8;
+    --doda: #c0392b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; }
+  body {
+    font-family: "Noto Sans JP", "BIZ UDPGothic", "Yu Gothic", "Meiryo", sans-serif;
+    color: var(--ink);
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    position: relative; width: 1280px; height: 720px; padding: 32px 56px 0 64px;
+    overflow: hidden; break-after: page;
+  }
+  .page:last-child { break-after: auto; }
+  .page::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 12px; background: var(--accent); }
+
+  .kicker { font-size: 15px; font-weight: 700; color: var(--accent-ink); letter-spacing: .02em; }
+  h1 { font-size: 30px; font-weight: 700; line-height: 1.35; margin-top: 4px; }
+
+  .grid { display: grid; column-gap: 24px; row-gap: 18px; }
+  .panel { background: var(--panel); border-radius: 12px; padding: 20px 24px; }
+  .panel h2 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 19px; }
+  th { font-weight: 700; color: var(--sub); font-size: 15px; text-align: right; padding: 8px 10px; border-bottom: 2px solid #999; white-space: nowrap; }
+  td { padding: 10px 10px; border-bottom: 1px solid var(--line); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  tr.hl td { background: var(--hl); font-weight: 700; }
+  td.b { font-weight: 700; }
+  .muted { color: var(--sub); }
+  .small { font-size: 15px; }
+  .tag { display: inline-block; font-size: 13px; font-weight: 700; padding: 1px 7px; border-radius: 4px; border: 1.5px solid #999; color: var(--sub); margin-left: 6px; vertical-align: 2px; white-space: nowrap; }
+
+  sup { font-size: .62em; vertical-align: .75em; line-height: 0; }
+  sub { font-size: .62em; vertical-align: -.25em; line-height: 0; }
+
+  .eq { font-size: 24px; line-height: 1.7; font-variant-numeric: tabular-nums; }
+  .eq .res { font-weight: 700; }
+
+  .step { display: grid; grid-template-columns: 34px 1fr; column-gap: 14px; padding: 18px 0; border-bottom: 1.5px dashed var(--line); }
+  .step:first-of-type { padding-top: 4px; }
+  .step:last-of-type { border-bottom: none; padding-bottom: 4px; }
+  .no { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 16px; font-weight: 700; margin-top: 2px; }
+  .step .ttl { font-size: 17px; font-weight: 700; color: var(--sub); }
+  .step .note { font-size: 15px; color: var(--sub); line-height: 1.55; }
+
+  .result { background: var(--hl); border-radius: 10px; padding: 14px 22px; font-size: 27px; font-weight: 700; }
+  .msg { border-left: 5px solid var(--accent); background: #fffaf0; padding: 14px 20px; font-size: 19px; font-weight: 700; line-height: 1.65; }
+  .notes { font-size: 16px; color: var(--sub); line-height: 1.7; }
+  .notes li { margin-left: 1.2em; }
+
+  .foot { position: absolute; left: 64px; right: 56px; bottom: 16px; font-size: 12.5px; color: var(--sub); line-height: 1.6; border-top: 1px solid var(--line); padding-top: 7px; }
+
+  .co-rec { color: var(--rec); font-weight: 700; }
+  .co-doda { color: var(--doda); font-weight: 700; }
+  th.grp { text-align: center; border-bottom: 1px solid #999; font-size: 17px; }
+  .sep { border-left: 2px solid #bbb; }
+
+  /* 手順マトリクス */
+  .flow { display: grid; grid-template-columns: 140px repeat(5, 1fr); column-gap: 12px; row-gap: 12px; margin-top: 22px; }
+  .flow .hd { background: var(--ink); color: #fff; border-radius: 10px; padding: 12px 14px; position: relative; }
+  .flow .hd .s { font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: .06em; }
+  .flow .hd .t { font-size: 18px; font-weight: 700; line-height: 1.35; margin-top: 2px; }
+  .flow .hd .f { font-size: 14px; line-height: 1.5; margin-top: 6px; color: #e6e6e6; }
+  .flow .hd:not(.last)::after { content: ""; position: absolute; right: -11px; top: 50%; transform: translateY(-50%); border-left: 10px solid var(--ink); border-top: 10px solid transparent; border-bottom: 10px solid transparent; z-index: 2; }
+  .flow .rh { display: flex; align-items: center; font-size: 19px; line-height: 1.4; padding-left: 4px; }
+  .flow .c { background: var(--panel); border-radius: 10px; padding: 14px; font-size: 16px; line-height: 1.6; }
+  .flow .c b { font-size: 18px; }
+  .flow .c.hlc { background: var(--hl); display: flex; align-items: center; justify-content: center; }
+  .flow .c.hlc b { font-size: 36px; }
+</style>
+</head>
+<body>
+
+<!-- ============ ① 結論と手順 ============ -->
+<div class="page">
+  <div class="kicker">アペンディックス｜2030年度の決定率の算出 ①</div>
+  <h1>2030年度 決定率の算出手順と推計結果</h1>
+
+  <div class="flow">
+    <div></div>
+    <div class="hd"><div class="s">STEP 1</div><div class="t">公開データを集める</div></div>
+    <div class="hd"><div class="s">STEP 2</div><div class="t">年間の値にそろえる</div></div>
+    <div class="hd"><div class="s">STEP 3</div><div class="t">年平均成長率 g</div><div class="f">(最新 ÷ 起点)<sup>1/年数</sup> − 1</div></div>
+    <div class="hd"><div class="s">STEP 4</div><div class="t">2030年度まで延長</div><div class="f">2025年度 × (1 ＋ g)<sup>5</sup></div></div>
+    <div class="hd last"><div class="s">STEP 5</div><div class="t">決定率</div><div class="f">就職者数 ÷ 登録者数</div></div>
+
+    <div class="rh co-rec">リクルート<br>エージェント</div>
+    <div class="c">自社公表の年間登録者数・転職決定者数（FY22〜FY25）</div>
+    <div class="c">公表値が年間の値なので、そのまま使う</div>
+    <div class="c">登録者数 <b>＋4.1%</b><br>就職者数 <b>＋7.2%</b></div>
+    <div class="c">登録者数 <b>247.8万</b><br>就職者数 <b>124,227</b></div>
+    <div class="c hlc"><b>5.01%</b></div>
+
+    <div class="rh co-doda">doda</div>
+    <div class="c">doda会員数（累計）<br>パーソルキャリア就職者数</div>
+    <div class="c">登録者数 ＝ 会員数の1年間の増加<br>就職者数 ＝ 全体 × 0.73</div>
+    <div class="c">登録者数 <b>＋11.1%</b><br>就職者数 <b>＋3.4%</b></div>
+    <div class="c">登録者数 <b>187.5万</b><br>就職者数 <b>51,971</b></div>
+    <div class="c hlc"><b>2.77%</b></div>
+  </div>
+
+  <div class="msg" style="margin-top:24px;">過去の伸びがそのまま5年続いた場合の値（なりゆき）。<br>リクルートは就職者数（＋7.2%/年）が登録者数（＋4.1%/年）より速く伸びるため上がり、<br>doda は登録者数（＋11.1%/年）が就職者数（＋3.4%/年）より速く伸びるため下がる。</div>
+</div>
+
+<!-- ============ ② リクルート ============ -->
+<div class="page">
+  <div class="kicker">アペンディックス｜2030年度の決定率の算出 ②</div>
+  <h1>リクルートエージェントの2030年度 決定率の算出</h1>
+
+  <div class="grid" style="grid-template-columns: 470px 1fr; margin-top:20px;">
+    <div class="panel">
+      <h2>STEP 1・2　実績（自社公表値）</h2>
+      <table>
+        <tr><th>年度</th><th>年間登録者数</th><th>就職者数</th></tr>
+        <tr><td>FY2022</td><td>130.5万人</td><td>6.9万人</td></tr>
+        <tr><td>FY2023</td><td>143.3万人</td><td>8.0万人</td></tr>
+        <tr><td>FY2024</td><td>141.5万人</td><td>8.7万人</td></tr>
+        <tr class="hl"><td>FY2025</td><td>202.4万人</td><td>87,754人</td></tr>
+      </table>
+      <div class="notes" style="margin-top:12px; font-size:14.5px; line-height:1.6;">FY2025 の就職者数は、doda とそろえて厚労省の値（自社公表では 8.5万人）</div>
+    </div>
+
+    <div class="panel">
+      <div class="step"><span class="no">3</span><div>
+        <div class="ttl">成長率 g</div>
+        <div class="eq">登録者数　(141.5万 ÷ 130.5万)<sup>1/2</sup> − 1 ＝ <span class="res">＋4.1%</span></div>
+        <div class="eq">就職者数　(8.5万 ÷ 6.9万)<sup>1/3</sup> − 1 ＝ <span class="res">＋7.2%</span></div>
+      </div></div>
+      <div class="step"><span class="no">4</span><div>
+        <div class="ttl">2030年度の値</div>
+        <div class="eq">登録者数　202.4万 × 1.041<sup>5</sup> ＝ <span class="res">247.8万人</span></div>
+        <div class="eq">就職者数　87,754 × 1.072<sup>5</sup> ＝ <span class="res">124,227人</span></div>
+      </div></div>
+      <div class="step" style="align-items:center;"><span class="no">5</span><div>
+        <div class="result">決定率 ＝ 124,227 ÷ 2,477,852 ＝ 5.01%</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="foot">出典：リクルートエージェント法人向けページ（r-agent.com/business/。FY22・FY23 は同ページの過去版、FY24 は転職メディアの記事）、厚生労働省 人材サービス総合サイト（インディードリクルートパートナーズ 13-ユ-317880、令和7年度）。成長率は丸める前の値で計算。</div>
+</div>
+
+<!-- ============ ③ doda データ ============ -->
+<div class="page">
+  <div class="kicker">アペンディックス｜2030年度の決定率の算出 ③</div>
+  <h1>doda の年間登録者数・就職者数の算出方法</h1>
+
+  <div class="msg" style="margin-top:18px; font-size:17px; font-weight:400;">
+    <b>0.73 の根拠：</b>パーソルHD IR DAY 2026 p.11 の年収帯別売上構成比（FY25）で、年収600万円未満が 73%。
+    厚労省の就職者数は doda 以外も含むため、doda 分をこの比率で切り出した。<b>売上の比率なので、就職者数は推計値</b>。
+  </div>
+
+  <div class="grid" style="grid-template-columns: 1fr 1fr; margin-top:16px;">
+    <div class="panel">
+      <h2>年間登録者数 ＝ doda会員数（累計）の1年間の増加</h2>
+      <table>
+        <tr><th>年度</th><th>6月末</th><th>翌6月末</th><th>増加</th></tr>
+        <tr><td>FY2023</td><td>798万</td><td>888万</td><td class="b">90万人</td></tr>
+        <tr><td>FY2024</td><td>888万</td><td>988万</td><td class="b">100万人</td></tr>
+        <tr class="hl"><td>FY2025</td><td>988万</td><td>1,099万</td><td>111万人</td></tr>
+      </table>
+      <div class="notes" style="margin-top:12px; font-size:14.5px; line-height:1.6;">出典：doda会員レポート（saiyo-doda.jp、毎年7月発行号に6月末の累計が載る）</div>
+    </div>
+
+    <div class="panel">
+      <h2>就職者数 ＝ パーソルキャリア就職者数 × 0.73</h2>
+      <table>
+        <tr><th>年度</th><th>パーソルキャリア</th><th>× 0.73</th></tr>
+        <tr><td>FY2023</td><td>56,434人</td><td class="b">41,197人</td></tr>
+        <tr><td>FY2024</td><td>60,747人</td><td class="b">44,345人</td></tr>
+        <tr class="hl"><td>FY2025</td><td>60,307人</td><td>44,024人</td></tr>
+      </table>
+      <div class="notes" style="margin-top:12px; font-size:14.5px; line-height:1.6;">出典：厚生労働省 人材サービス総合サイト（パーソルキャリア 13-ユ-304785、令和5〜7年度）</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ ④ doda 計算 ============ -->
+<div class="page">
+  <div class="kicker">アペンディックス｜2030年度の決定率の算出 ④</div>
+  <h1>doda の2030年度 決定率の算出</h1>
+
+  <div class="panel" style="margin-top:20px; padding-top:22px;">
+    <div class="step"><span class="no">3</span><div>
+      <div class="ttl">成長率 g（FY23→FY25、2年）</div>
+      <div class="eq">登録者数　(111万 ÷ 90万)<sup>1/2</sup> − 1 ＝ <span class="res">＋11.1%</span></div>
+      <div class="eq">就職者数　(60,307 ÷ 56,434)<sup>1/2</sup> − 1 ＝ <span class="res">＋3.4%</span></div>
+      <div class="note">0.73 は毎年同じと置くため、パーソルキャリア全体の伸びがそのまま doda の伸びになる</div>
+    </div></div>
+    <div class="step"><span class="no">4</span><div>
+      <div class="ttl">2030年度の値</div>
+      <div class="eq">登録者数　111万 × 1.111<sup>5</sup> ＝ <span class="res">187.5万人</span></div>
+      <div class="eq">就職者数　60,307 × 1.034<sup>5</sup> × 0.73 ＝ <span class="res">51,971人</span></div>
+    </div></div>
+    <div class="step" style="align-items:center;"><span class="no">5</span><div>
+      <div class="result">決定率 ＝ 51,971 ÷ 1,875,099 ＝ 2.77%</div>
+    </div></div>
+  </div>
+
+  <div class="foot">成長率は丸める前の値で計算。</div>
+</div>
+
+<!-- ============ ⑤ 推移 ============ -->
+<div class="page">
+  <div class="kicker">アペンディックス｜2030年度の決定率の算出 ⑤</div>
+  <h1>2025〜2030年度 決定率の推移（両社比較）</h1>
+
+  <div class="panel" style="margin-top:20px; padding-top:14px; padding-bottom:14px;">
+    <table>
+      <tr><th></th><th colspan="3" class="grp co-rec">リクルートエージェント</th><th colspan="3" class="grp co-doda sep">doda</th><th class="sep"></th></tr>
+      <tr><th>年度</th><th>登録者数</th><th>就職者数</th><th>決定率</th><th class="sep">登録者数</th><th>就職者数</th><th>決定率</th><th class="sep">差</th></tr>
+      <tr><td>2025 <span class="tag">実績</span></td><td>2,024,000</td><td>87,754</td><td class="b">4.34%</td><td class="sep">1,110,000</td><td>44,024</td><td class="b">3.97%</td><td class="sep">0.37pt</td></tr>
+      <tr><td>2026</td><td>2,107,577</td><td>94,071</td><td class="b">4.46%</td><td class="sep">1,232,717</td><td>45,510</td><td class="b">3.69%</td><td class="sep">0.77pt</td></tr>
+      <tr><td>2027</td><td>2,194,605</td><td>100,843</td><td class="b">4.60%</td><td class="sep">1,369,000</td><td>47,045</td><td class="b">3.44%</td><td class="sep">1.16pt</td></tr>
+      <tr><td>2028</td><td>2,285,227</td><td>108,103</td><td class="b">4.73%</td><td class="sep">1,520,350</td><td>48,633</td><td class="b">3.20%</td><td class="sep">1.53pt</td></tr>
+      <tr><td>2029</td><td>2,379,591</td><td>115,885</td><td class="b">4.87%</td><td class="sep">1,688,433</td><td>50,274</td><td class="b">2.98%</td><td class="sep">1.89pt</td></tr>
+      <tr class="hl"><td>2030</td><td>2,477,852</td><td>124,227</td><td>5.01%</td><td class="sep">1,875,099</td><td>51,971</td><td>2.77%</td><td class="sep">2.24pt</td></tr>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>
