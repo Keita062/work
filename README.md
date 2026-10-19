@@ -35,10 +35,8 @@ work/
 │   └── skills/new-project/    # 新規案件作成スキル（/new-project）
 ├── .venv/                     # Python仮想環境（gitignore）
 │
-├── 025_onboarding-worksheet/  # 【実体】進行中案件の作業場（NNN_案件名）
-├── 026_persol-2030-strategy/
-├── 027_data-scientist-roadmap/
-├── 028_doda-hp-redesign/
+├── 027_data-scientist-roadmap/  # 【実体】進行中案件の作業場（NNN_案件名）
+├── 029_graduation-thesis/
 │
 ├── Context Vault/             # 【文脈】案件の進行状況・決定事項
 │   ├── Projects/              #   進行中の案件（NNN_案件名.md）
@@ -51,8 +49,6 @@ work/
 │   ├── slides/                 #   スライド作成の原則・テンプレート
 │   ├── analysis/                #   データ分析・統計処理のお作法
 │   └── snippets/                #   再利用するコード片・プロンプト
-│
-└── inbox/                     # まだテーマ分け（ID付与）するほどでもない単発の作業
 ```
 
 ### 案件ID
@@ -91,10 +87,11 @@ work/
 | 022 | childcare-waitlist-analysis | 完了 |
 | 023 | one-off-experiments | 完了 |
 | 024 | sidewalk-priority-survey | 完了 |
-| 025 | onboarding-worksheet（内定者研修 宿題シート） | 進行中 |
-| 026 | persol-2030-strategy（パーソルキャリア内定者研修） | 進行中 |
+| 025 | onboarding-worksheet（内定者研修 宿題シート） | 完了 |
+| 026 | persol-2030-strategy（パーソルキャリア内定者研修） | 完了 |
 | 027 | data-scientist-roadmap（個人キャリア10ヶ年計画） | 進行中 |
-| 028 | doda-hp-redesign | レビュー待ち |
+| 028 | doda-hp-redesign | 完了 |
+| 029 | graduation-thesis（卒論） | 着手前 |
 
 ### 案件フォルダ ↔ Context Vault の対応
 
@@ -115,8 +112,6 @@ work/
 2. `Context Vault/Projects/NNN_案件名.md` を作る（テンプレートは §5）
 3. 作業フォルダに `README.md` を置き、**Vaultファイルへのリンクを必ず張る**
 4. 本ファイル §2 の案件ID一覧に1行追記する
-
-テーマが定まらない単発作業はIDを付けず `inbox/` に置いてよい。
 
 ### ② 作業中
 

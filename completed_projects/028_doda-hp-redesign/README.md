@@ -3,8 +3,8 @@
 doda トップページの改善モック作成（フロントエンドのみ）
 
 - 案件ID：028
-- ステータス：レビュー待ち
-- 案件の詳細・経緯・次のアクションは [Context Vault/Projects/028_doda-hp-redesign.md](../Context%20Vault/Projects/028_doda-hp-redesign.md) を参照
+- ステータス：完了
+- 案件の詳細・経緯・次のアクションは [Context Vault/Archive/028_doda-hp-redesign.md](../../Context%20Vault/Archive/028_doda-hp-redesign.md) を参照
 
 ## フォルダ構成
 

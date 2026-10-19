@@ -3,8 +3,8 @@
 内定者研修「宿題シート.pptx」6枚目（自己紹介ワークシート）の記入内容作成
 
 - 案件ID：025
-- ステータス：着手
-- 案件の詳細・経緯・次のアクションは [Context Vault/Projects/025_onboarding-worksheet.md](../Context%20Vault/Projects/025_onboarding-worksheet.md) を参照
+- ステータス：完了
+- 案件の詳細・経緯・次のアクションは [Context Vault/Archive/025_onboarding-worksheet.md](../../Context%20Vault/Archive/025_onboarding-worksheet.md) を参照
 
 ## フォルダ構成
 

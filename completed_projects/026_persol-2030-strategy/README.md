@@ -3,8 +3,8 @@
 パーソルキャリア内定者研修のチーム課題。2030年のあるべき決定率を定義し、リクルートとのGAPを要因分解する
 
 - 案件ID：026
-- ステータス：着手
-- 案件の詳細・経緯・次のアクションは [Context Vault/Projects/026_persol-2030-strategy.md](../Context%20Vault/Projects/026_persol-2030-strategy.md) を参照
+- ステータス：完了
+- 案件の詳細・経緯・次のアクションは [Context Vault/Archive/026_persol-2030-strategy.md](../../Context%20Vault/Archive/026_persol-2030-strategy.md) を参照
 
 ## フォルダ構成
 
