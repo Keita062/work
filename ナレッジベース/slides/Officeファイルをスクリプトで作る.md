@@ -132,8 +132,8 @@ pptx 側は `a:latin` / `a:ea` / `a:cs` の3つに `typeface` を設定する。
 
 ## 出典
 
-- [`Wakayama/scripts/make_review_docx.py`](../../031_wakayama-wellbeing-competition/scripts/make_review_docx.py)（md → A4縦8ページの送付用 Word）
-- [`Wakayama/scripts/make_review_slides.py`](../../031_wakayama-wellbeing-competition/scripts/make_review_slides.py)（16:9・20枚のスライド）
+- [`05_scripts/make_review_docx.py`](../../031_wakayama-wellbeing-competition/05_scripts/make_review_docx.py)（md → A4縦8ページの送付用 Word）
+- [`05_scripts/make_review_slides.py`](../../031_wakayama-wellbeing-competition/05_scripts/make_review_slides.py)（16:9・20枚のスライド）
 - 和歌山コンペのパーソルキャリア様向けレビュー資料（09-04版）を作った作業
 - `python-docx` はこの時点で未導入だったので `python -m pip install python-docx` から入れている
 - 記録日: 2026-09-03

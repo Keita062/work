@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """和歌山コンペ WBS + ガントチャート生成
-出典: Wakayama/docs/和歌山コンペ_分析要件定義書 (1)0810.md の「wbs」セクション（2026-08-07 MTG）
+出典: 01_docs/和歌山コンペ_分析要件定義書 (1)0810.md の「wbs」セクション（2026-08-07 MTG）
 
 v2 変更点:
   - タスクオーナー（B列）をプルダウン化（鈴木 / 西村 / 鈴木・西村 / 未定）
@@ -8,13 +8,15 @@ v2 変更点:
   - ステータスの昇格条件・タスクごとの完了条件を「使い方と進捗の定義」シートに明記
 """
 import datetime as dt
+from pathlib import Path
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.formatting.rule import FormulaRule, DataBarRule
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.datavalidation import DataValidation
 
-OUT = r"c:\GitHub\Data-Analysis_competition\Wakayama\和歌山コンペ_WBS_ガントチャート.xlsx"
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / "02_memo" / "和歌山コンペ_WBS_ガントチャート.xlsx"
 
 D = dt.date
 
@@ -394,7 +396,7 @@ for i, (color, text) in enumerate(legend):
 
 note_row = lg + len(legend) + 2
 notes = [
-    "出典：Wakayama/docs/和歌山コンペ_分析要件定義書 (1)0810.md「wbs」セクション（2026年8月7日 MTG）",
+    "出典：01_docs/和歌山コンペ_分析要件定義書 (1)0810.md「wbs」セクション（2026年8月7日 MTG）",
     "B列（タスクオーナー）とF列（ステータス）はプルダウン。セルを選ぶと右に▼が出ます。",
     "G列（進捗率）は F列から自動計算される数式です。直接入力しないでください。",
     "各ステータスに上げる条件と、タスクごとの「完了」の定義は「使い方と進捗の定義」シートにあります。",

@@ -3,10 +3,10 @@
 kpi_municipal.csv（build_kpi_panel.py）は上位5分野＋医療施設徒歩圏・完全失業率だけを持つ。
 09-29版アーティファクトで使った残りの分野のKPIを、手元の一次資料から作り直す。
 
-入力: data/kpi_raw/mlit_toshi_monitoring_zentai.xlsx（都市モニタリングシート R6）
-      data/kpi_raw/keizaicensus2021_b1_009_1a.xlsx（経済センサス2021 産業小分類別事業所数）
-      SSDSE-A-2025（SSDSE/01_election_pledges/data/公的データ/2025/）
-出力: data/processed/kpi_extra.csv … 1行＝1市区町村（5桁コード）
+入力: 04_data/kpi_raw/mlit_toshi_monitoring_zentai.xlsx（都市モニタリングシート R6）
+      04_data/kpi_raw/keizaicensus2021_b1_009_1a.xlsx（経済センサス2021 産業小分類別事業所数）
+      SSDSE-A-2025（completed_projects/030_ssdse-statistics-competition/01_election_pledges/data/公的データ/2025/）
+出力: 04_data/processed/kpi_extra.csv … 1行＝1市区町村（5桁コード）
 """
 import re
 from pathlib import Path
@@ -15,9 +15,13 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW = ROOT / "data" / "kpi_raw"
-OUT = ROOT / "data" / "processed"
-SSDSE_A = ROOT.parent / "SSDSE/01_election_pledges/data/公的データ/2025/SSDSE-A-2025.csv"
+RAW = ROOT / "04_data" / "kpi_raw"
+OUT = ROOT / "04_data" / "processed"
+SSDSE_A = (
+    ROOT.parent
+    / "completed_projects/030_ssdse-statistics-competition/01_election_pledges"
+    / "data/公的データ/2025/SSDSE-A-2025.csv"
+)
 
 
 def code5(s):

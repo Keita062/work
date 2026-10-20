@@ -9,8 +9,8 @@
   4. 分野別          … 24分野それぞれの市別平均と全国パーセンタイル
   5. 寄与上位5分野   … ステップ3で効き目が大きいと分かった5分野に絞った市別の並び
 
-入力: data/digital_wellbeing_shikuchoson_2022_2026.xlsx
-出力: data/processed/target_selection.json
+入力: 04_data/digital_wellbeing_shikuchoson_2022_2026.xlsx
+出力: 04_data/processed/target_selection.json
 """
 import json
 
@@ -150,7 +150,7 @@ res["市の規模"] = pop
 
 (PROC / "target_selection.json").write_text(
     json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
-print("→ data/processed/target_selection.json")
+print("→ 04_data/processed/target_selection.json")
 for r in res["水準"]:
     print(f"{r['市']:<20} 幸福度 {r['幸福度']:>5} (全国{r['幸福度_全国パーセンタイル']:>5}%ile)"
           f"  満足度 {r['生活満足度']:>5}  主観24平均 {r['主観24分野平均']:>5}")

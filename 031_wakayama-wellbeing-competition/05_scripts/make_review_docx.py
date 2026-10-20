@@ -3,10 +3,10 @@
 docx は手で編集せず、内容を変えたら md を直してこのスクリプトを再実行する
 （make_gantt.py / make_review_slides.py と同じ運用）。
 
-    python Wakayama/scripts/make_review_docx.py
+    python 031_wakayama-wellbeing-competition/05_scripts/make_review_docx.py
 
-入力: Wakayama/docs/パーソルキャリア様_レビュー依頼_0904.md
-出力: Wakayama/パーソルキャリア様_レビュー依頼_0904.docx
+入力: 031_wakayama-wellbeing-competition/01_docs/パーソルキャリア様_レビュー依頼_0904.md
+出力: 031_wakayama-wellbeing-competition/01_docs/パーソルキャリア様_レビュー依頼_0904.docx
 """
 
 from __future__ import annotations
@@ -21,8 +21,8 @@ from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "docs" / "パーソルキャリア様_レビュー依頼_0904.md"
-OUT = ROOT / "パーソルキャリア様_レビュー依頼_0904.docx"
+SRC = ROOT / "01_docs" / "パーソルキャリア様_レビュー依頼_0904.md"
+OUT = ROOT / "01_docs" / "パーソルキャリア様_レビュー依頼_0904.docx"
 
 # ---------------------------------------------------------------- 体裁の定義
 

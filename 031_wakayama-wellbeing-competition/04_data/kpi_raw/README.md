@@ -2,7 +2,7 @@
 
 デジタル庁 Well-Being ガイドブックが各個別KPIの出典として挙げている一次資料（一覧は [`../guidebook_sources_municipalities.xlsx`](../guidebook_sources_municipalities.xlsx)）のうち、M1上位5分野（健康状態・自己効力感・住宅環境・地域とのつながり・公共空間）の分を取得したもの。取得日は 2026-09-22。
 
-整形は [`../../scripts/build_kpi_panel.py`](../../scripts/build_kpi_panel.py)、分析は [`../../scripts/m4_kpi_analysis.py`](../../scripts/m4_kpi_analysis.py)。出力は `../processed/`。
+整形は [`../../05_scripts/build_kpi_panel.py`](../../05_scripts/build_kpi_panel.py)、分析は [`../../05_scripts/m4_kpi_analysis.py`](../../05_scripts/m4_kpi_analysis.py)。出力は `../processed/`。
 
 ## ファイルと取得元
 

@@ -6,7 +6,11 @@ from sklearn.preprocessing import StandardScaler
 
 from wb_common import PROC, ROOT
 
-SSDSE_A = ROOT.parent / "SSDSE/01_election_pledges/data/公的データ/2025/SSDSE-A-2025.csv"
+SSDSE_A = (
+    ROOT.parent
+    / "completed_projects/030_ssdse-statistics-competition/01_election_pledges"
+    / "data/公的データ/2025/SSDSE-A-2025.csv"
+)
 VARS = ["log_pop", "log_density", "aging_rate", "fiscal_index", "primary_share", "habitable_share"]
 K_RANGE = range(1, 13)
 # 人口密度の中央値が高い順に付ける名前（k=3 のとき）

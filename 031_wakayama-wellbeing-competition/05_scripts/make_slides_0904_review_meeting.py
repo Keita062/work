@@ -2,14 +2,14 @@
 
 出典: 共同リポジトリ wakayama_competition / origin/analysis_nishimura
       Nishimura/docs/0904和歌山県 主観的ウェルビーイング分析 — レビュー会資料.md
-本リポジトリでの正本: Wakayama/docs/0904和歌山県 主観的ウェルビーイング分析 — レビュー会資料.md
+本リポジトリでの正本: 031_wakayama-wellbeing-competition/01_docs/0904和歌山県 主観的ウェルビーイング分析 — レビュー会資料.md
 
 pptx は手で編集せず、内容を変えたらこのスクリプトを直して再生成する
 （make_review_slides.py / make_gantt.py と同じ運用）。
 
-    python Wakayama/scripts/make_slides_0904_review_meeting.py
+    python 031_wakayama-wellbeing-competition/05_scripts/make_slides_0904_review_meeting.py
 
-出力: Wakayama/0904_和歌山県主観的ウェルビーイング分析_レビュー会資料.pptx
+出力: 031_wakayama-wellbeing-competition/01_docs/0904_和歌山県主観的ウェルビーイング分析_レビュー会資料.pptx
 
 体裁（色・フォント・表・見出し）は make_review_slides.py を共用する。
 """
@@ -49,6 +49,7 @@ from make_review_slides import (  # 体裁の定義とレイアウト部品を�
 
 OUT = (
     Path(__file__).resolve().parents[1]
+    / "01_docs"
     / "0904_和歌山県主観的ウェルビーイング分析_レビュー会資料.pptx"
 )
 

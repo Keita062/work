@@ -1,8 +1,8 @@
 """個別KPI（ガイドブック記載の出典）を市区町村単位に整形して1表にまとめる。
 
-入力: data/kpi_raw/ に置いた一次資料（取得元は data/kpi_raw/README.md）
-出力: data/processed/kpi_municipal.csv   … 1行＝1市区町村（5桁の全国地方公共団体コード）
-（取得したKPI・しなかったKPIと理由は data/kpi_raw/README.md）
+入力: 04_data/kpi_raw/ に置いた一次資料（取得元は 04_data/kpi_raw/README.md）
+出力: 04_data/processed/kpi_municipal.csv   … 1行＝1市区町村（5桁の全国地方公共団体コード）
+（取得したKPI・しなかったKPIと理由は 04_data/kpi_raw/README.md）
 
 対象はM1の上位5分野（健康状態・自己効力感・住宅環境・地域とのつながり・公共空間）。
 環境変数（人口・高齢化率・財政力指数・人口密度）もここで作る。
@@ -15,8 +15,8 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW = ROOT / "data" / "kpi_raw"
-OUT = ROOT / "data" / "processed"
+RAW = ROOT / "04_data" / "kpi_raw"
+OUT = ROOT / "04_data" / "processed"
 OUT.mkdir(parents=True, exist_ok=True)
 
 

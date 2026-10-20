@@ -3,10 +3,10 @@
 問い: 主観スコアの地域差を、分野の個別KPIでどこまで説明できるか。
       説明できるなら、どのKPIを動かせばよいか（ルートA）。できないなら何が足りないか（ルートB）。
 
-入力: data/digital_wellbeing_shikuchoson_2022_2026.xlsx（主観・客観スコア）
-      data/processed/kpi_municipal.csv（build_kpi_panel.py の出力）
-出力: data/processed/m4_results.json（アーティファクトに載せる数字）
-      data/processed/m4_panel.csv（分析に使った 1行＝1市町村 の表）
+入力: 04_data/digital_wellbeing_shikuchoson_2022_2026.xlsx（主観・客観スコア）
+      04_data/processed/kpi_municipal.csv（build_kpi_panel.py の出力）
+出力: 04_data/processed/m4_results.json（アーティファクトに載せる数字）
+      04_data/processed/m4_panel.csv（分析に使った 1行＝1市町村 の表）
 
 分析単位: 市町村。個別KPIが2020〜2024年のどれか1時点しかないため、
 主観スコアは2023〜26年度の回答者数加重平均にして、1市町村1行にする。

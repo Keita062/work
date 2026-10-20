@@ -3,9 +3,9 @@
 pptx は手で編集せず、内容を変えたらこのスクリプトを直して再生成する
 （make_gantt.py と同じ運用）。
 
-    python Wakayama/scripts/make_review_slides.py
+    python 031_wakayama-wellbeing-competition/05_scripts/make_review_slides.py
 
-出力: Wakayama/パーソルキャリア様_レビュー依頼_0904.pptx
+出力: 031_wakayama-wellbeing-competition/01_docs/パーソルキャリア様_レビュー依頼_0904.pptx
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ from pptx.util import Emu, Pt
 
 # ---------------------------------------------------------------- 体裁の定義
 
-OUT = Path(__file__).resolve().parents[1] / "パーソルキャリア様_レビュー依頼_0904.pptx"
+OUT = Path(__file__).resolve().parents[1] / "01_docs" / "パーソルキャリア様_レビュー依頼_0904.pptx"
 
 FONT = "Yu Gothic"
 

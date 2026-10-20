@@ -6,8 +6,8 @@
   M2      … 和歌山6市の下振れ（行内z化した主観−客観から全国平均を引く）
   M3      … 主観を客観で説明できるか（同分野のみ／客観24分野。地域単位の交差検証R²）
 
-入力: data/digital_wellbeing_shikuchoson_2022_2026.xlsx
-出力: data/processed/m1_m3_results.json
+入力: 04_data/digital_wellbeing_shikuchoson_2022_2026.xlsx
+出力: 04_data/processed/m1_m3_results.json
 """
 import json
 

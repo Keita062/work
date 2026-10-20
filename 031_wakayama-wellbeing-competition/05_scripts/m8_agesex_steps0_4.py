@@ -5,7 +5,7 @@
     調整値 = 値 − 同じ年度×年代×性別の全国平均（回答者数加重）＋全国平均
 市町村単位の値は、調整値の回答者数加重平均。
 
-出力：data/processed/m8_agesex_results.json
+出力：04_data/processed/m8_agesex_results.json
 """
 import json
 import os

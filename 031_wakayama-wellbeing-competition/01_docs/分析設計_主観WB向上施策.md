@@ -9,8 +9,8 @@
 ## 0. この文書の前提
 
 - デジタル庁 地域幸福度指標の**主観データ・客観データの数値が入手できている**ことを前提とする（入手経路の検討は [`分析方針_論点整理.md`](分析方針_論点整理.md) §4.5 を参照）
-- 指標の構造・尺度・調査設計は [`../02_guidebook_concept.pdf`](../02_guidebook_concept.pdf)（ガイドブック2章）の p.11〜p.20 を直接確認した内容
-- 24分野の設問文とKPI本数は [`../data/guidebook_sources_municipalities.xlsx`](../data/guidebook_sources_municipalities.xlsx)（市区町村版 出典一覧）を実際に集計した値
+- 指標の構造・尺度・調査設計は [`../00_context/02_guidebook_concept.pdf`](../00_context/02_guidebook_concept.pdf)（ガイドブック2章）の p.11〜p.20 を直接確認した内容
+- 24分野の設問文とKPI本数は [`../04_data/guidebook_sources_municipalities.xlsx`](../04_data/guidebook_sources_municipalities.xlsx)（市区町村版 出典一覧）を実際に集計した値
 - **KPI本数は市区町村版で確認したもの**。都道府県版は一部異なる可能性がある（可住地面積あたり学校数など、都道府県単位では意味が変わる指標があるため）
 
 ---
@@ -616,7 +616,7 @@ KPI_j を 1標準偏差 改善
 ## 参照
 
 - [`分析方針_論点整理.md`](分析方針_論点整理.md) — 論点整理（D1〜D6の決定事項・データ入手経路）
-- [`../02_guidebook_concept.pdf`](../02_guidebook_concept.pdf) — ガイドブック2章。本書の §1 はp.11〜p.20 を直接確認したもの
-- [`../data/guidebook_sources_municipalities.xlsx`](../data/guidebook_sources_municipalities.xlsx) — 市区町村版 客観個別KPI 208本の出典一覧（§1.5の集計元）
+- [`../00_context/02_guidebook_concept.pdf`](../00_context/02_guidebook_concept.pdf) — ガイドブック2章。本書の §1 はp.11〜p.20 を直接確認したもの
+- [`../04_data/guidebook_sources_municipalities.xlsx`](../04_data/guidebook_sources_municipalities.xlsx) — 市区町村版 客観個別KPI 208本の出典一覧（§1.5の集計元）
 - [`../../Context Vault/Projects/Wakayama.md`](../../Context%20Vault/Projects/Wakayama.md) — 進捗の正本
 - デジタル庁 地域幸福度指標：https://well-being.digital.go.jp/

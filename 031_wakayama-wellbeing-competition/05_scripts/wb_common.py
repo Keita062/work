@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "data"
+DATA = ROOT / "04_data"
 PROC = DATA / "processed"
 WB_XLSX = DATA / "digital_wellbeing_shikuchoson_2022_2026.xlsx"
 
