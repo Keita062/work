@@ -1,0 +1,196 @@
+document.addEventListener('DOMContentLoaded', function() {
+
+	// アコーディオンのスライドダウンアニメーション
+	function slideDown(element, duration) {
+			element.style.display = 'block';
+			var height = element.offsetHeight;
+			element.style.height = 0;
+			element.style.overflow = 'hidden';
+			var start = null;
+
+			function step(timestamp) {
+					if (!start) start = timestamp;
+					var progress = timestamp - start;
+					var currentHeight = Math.min((progress / duration) * height, height);
+					element.style.height = currentHeight + 'px';
+					if (progress < duration) {
+							window.requestAnimationFrame(step);
+					} else {
+							element.style.height = '';  // アニメーションが終わったら高さを自動に戻す
+							element.style.overflow = '';
+					}
+			}
+
+			window.requestAnimationFrame(step);
+	}
+
+	// アコーディオンのスライドアップアニメーション
+	function slideUp(element, duration) {
+			var height = element.offsetHeight;
+			element.style.height = height + 'px';
+			element.style.overflow = 'hidden';
+			var start = null;
+
+			function step(timestamp) {
+					if (!start) start = timestamp;
+					var progress = timestamp - start;
+					var currentHeight = Math.max(height - (progress / duration) * height, 0);
+					element.style.height = currentHeight + 'px';
+					if (progress < duration) {
+							window.requestAnimationFrame(step);
+					} else {
+							element.style.display = 'none';  // アニメーションが終わったら非表示にする
+							element.style.height = '';
+							element.style.overflow = '';
+					}
+			}
+
+			window.requestAnimationFrame(step);
+	}
+
+	// スライドトグル機能
+	function slideToggle(element, duration) {
+			if (window.getComputedStyle(element).display === 'none') {
+					slideDown(element, duration);
+			} else {
+					slideUp(element, duration);
+			}
+	}
+
+	var HeadTtlHover = {
+			init: function() {
+					var hoverElements = document.querySelectorAll('.m-head-ttl .-clickable');
+					hoverElements.forEach(function(element) {
+							element.addEventListener('mouseenter', function() {
+									element.parentElement.parentElement.classList.add('-hover');
+							});
+							element.addEventListener('mouseleave', function() {
+									element.parentElement.parentElement.classList.remove('-hover');
+							});
+					});
+			}
+	};
+
+	var ManifestoToggle = {
+			init: function() {
+					var onClickHandler = function(e) {
+							e.preventDefault();
+							var parentElement = e.target.parentElement;
+							parentElement.classList.toggle('-open');
+							var detailList = parentElement.querySelector('.m-manifesto-detail-list');
+							if (detailList) {
+									slideToggle(detailList, 350);  // アニメーションの時間を350msに設定
+							}
+					};
+
+					var manifestoItems = document.querySelectorAll('.m-manifesto-item .-item-dt');
+					manifestoItems.forEach(function(item) {
+							if (!item.parentElement.classList.contains('-open')) {
+									var detailList = item.nextElementSibling;
+									if (detailList && detailList.classList.contains('m-manifesto-detail-list')) {
+											detailList.style.display = 'none';  // 初期状態で閉じておく
+									}
+							}
+
+							item.addEventListener('mouseenter', function() {
+									item.parentElement.classList.add('-hover');
+							});
+
+							item.addEventListener('mouseleave', function() {
+									item.parentElement.classList.remove('-hover');
+							});
+
+							item.addEventListener('click', onClickHandler);
+					});
+			}
+	};
+
+	var UrlCopy = {
+			init: function() {
+					var onClickHandler = function(e) {
+							e.preventDefault();
+							var completeMessage = e.target.nextElementSibling;
+							if (completeMessage) {
+									completeMessage.classList.add('-active');
+									setTimeout(function() {
+											completeMessage.classList.remove('-active');
+									}, 2000);
+							}
+
+							if (navigator.clipboard) {
+									navigator.clipboard.writeText(e.target.getAttribute('data-url'));
+							}
+					};
+
+					var snsItems = document.querySelectorAll('.m-manifesto-sns-item .-url-copy');
+					snsItems.forEach(function(item) {
+							var parent = item.parentElement;
+							var messageDiv = document.createElement('div');
+							messageDiv.classList.add('m-url-copy-complete');
+							messageDiv.textContent = 'URLをコピーしました';
+							parent.appendChild(messageDiv);
+
+							item.addEventListener('click', onClickHandler);
+					});
+			}
+	};
+
+	var Modal = {
+			modalContainerCheck: null,
+
+			onOpenHandler: function() {
+					Modal.containerInit();
+			},
+			onCloseHandler: function() {
+					Modal.containerDestroy();
+			},
+
+			init: function() {
+					var onClickOpenHandler = function(e) {
+							e.preventDefault();
+							var href = e.target.getAttribute('data-href');
+							Modal.open(href);
+					};
+					var onClickCloseHandler = function(e) {
+							e.preventDefault();
+							Modal.close();
+					};
+
+					document.querySelectorAll('.-modal-open').forEach(function(item) {
+							item.addEventListener('click', onClickOpenHandler);
+					});
+					document.querySelectorAll('.-modal-close').forEach(function(item) {
+							item.addEventListener('click', onClickCloseHandler);
+					});
+			},
+
+			containerInit: function() {
+					clearInterval(Modal.modalContainerCheck);
+					Modal.modalContainerCheck = setInterval(function() {
+							if (document.querySelector('.mfp-wrap .modal-content')) {
+									clearInterval(Modal.modalContainerCheck);
+							}
+					}, 1000 / 60);
+			},
+
+			containerDestroy: function() {
+					clearInterval(Modal.modalContainerCheck);
+			},
+
+			open: function(src) {
+					// モーダルの開く処理をここに実装します。別のライブラリまたはネイティブのモーダル実装が必要です。
+					console.log("Open modal with src:", src);
+			},
+
+			close: function() {
+					// モーダルの閉じる処理をここに実装します。
+					console.log("Close modal");
+			}
+	};
+
+	HeadTtlHover.init();
+	ManifestoToggle.init();
+	UrlCopy.init();
+	Modal.init();
+
+});

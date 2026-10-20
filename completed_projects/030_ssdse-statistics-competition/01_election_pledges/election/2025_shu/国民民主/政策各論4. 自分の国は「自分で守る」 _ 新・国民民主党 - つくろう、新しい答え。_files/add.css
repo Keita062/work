@@ -1,0 +1,802 @@
+.img- img { display: block; width:80px; height:80px; object-fit:cover; }
+	
+.yakuin-pdf { margin-top:0px; margin-bottom:57px;}
+.yakuin-pdf-time { margin-bottom:44px!important; }
+
+@media screen and (max-width: 767px) {
+.boardMember_list dl dt {
+width: 60%;
+padding-right: 1rem;
+}
+}
+
+.c-sec_ttl {
+font-family: "ゴシックMB101 B", "Montserrat","Noto Sans JP","ヒラギノ角ゴシック Pro","Hiragino Kaku Gothic Pro",メイリオ,Meiryo,Osaka,"MS pゴシック","MS PGothic",sans-serif !important;
+}
+
+.wp-block-heading.marker1 { 
+	background: linear-gradient(transparent 70%, #fabe00 30%);
+	display: inline; 
+	padding: 0 1px 0px;
+}
+
+.box.contact-ans {
+  margin-top: 1em;
+}
+
+/* ----- スマホでTABLEを横スクロール -------------------- */
+
+/*
+table {
+	display: block;
+	overflow-x: scroll;
+	white-space: nowrap;
+	-webkit-overflow-scrolling: touch;
+	}
+*/
+
+/* Flexible Table Block の横スクロール対応 */
+.wp-block-flexible-table-block-table.is-scroll-on-mobile {
+  overflow-x: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* テーブル自体の最小幅を設定して縮まないようにする */
+.wp-block-flexible-table-block-table.is-scroll-on-mobile table {
+  width: 100%;
+  min-width: 600px; /* 必要に応じて調整（列数に応じて） */
+  white-space: nowrap;
+}
+
+
+/* ----- ギャラリーブロックのキャプション調整 -------------------- */
+
+.wp-block-gallery.has-nested-images figure.wp-block-image figcaption, .wp-block-gallery.has-nested-images figure.wp-block-image:has(figcaption)::before {
+	bottom: 0;
+	left: 0;
+	position: initial!important;
+	right: 0;
+}
+
+.wp-block-gallery.has-nested-images figure.wp-block-image:has(figcaption)::before {
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+	content: "";
+	height: 100%;
+	-webkit-mask-image: linear-gradient(0deg,#000 20%,#0000);
+	mask-image: linear-gradient(0deg,#000 20%,#0000);
+	max-height: 0%;
+}
+
+.wp-block-gallery.has-nested-images figcaption {
+	flex-basis: 0%;
+}
+  
+.wp-block-gallery.has-nested-images figure.wp-block-image figcaption {
+	overflow: unset!important;
+	background: none;
+	box-sizing: border-box;
+	color: #000;
+	font-size: .9em;
+	font-weight: 700;
+	line-height: 1.4em;
+	text-align: left;
+	text-shadow: none;
+	margin: 0;
+	will-change: transform;
+	padding-left: 0em;
+	padding-right: 0em;
+	padding-top: .5em;
+	padding-bottom: 2em;
+	height: 1em;
+	max-height: 2em;
+margin-bottom: 40px !important;
+}
+
+/* 議員・候補者SNS追加　****************** */
+
+.memberDetail_photo .social li .th::before {
+  background: url(../img/icon_threads.svg) no-repeat center center/contain;
+}
+.memberDetail_photo .social li .mx::before {
+  background: url(../img/icon_mixi2.svg) no-repeat center center/contain;
+}
+
+/* サイトトップMV　****************** */
+
+@media screen and (min-width: 768px){
+  .top_mv_visual_fixed {
+    margin-top: -4.125vw!important;
+  }
+}
+
+.top_mv .slick-dots li {
+  /* display: none; */
+}
+@media screen and (min-width: 768px) {
+  .top_pickup {
+    bottom: 60px;
+  }
+	/* .slick-slide img {
+    margin-top: 52px;
+  } */
+}
+@media screen and (max-width: 767px) {
+  .top_pickup {
+    bottom: 10vw !important;
+  }
+}
+
+.wp-block-file {
+  margin: 100px auto 100px !important;
+}
+
+
+/* サイトトップYouTube自動更新　****************** */
+
+.movie_list li .player iframe {
+  width: 560px;
+  height: 315px;
+	    border: none;
+}
+@media screen and (max-width: 767px) {
+.movie_list li .player iframe {
+width: 100%;
+height: 100%;
+	}
+}
+
+/* 党員サポーターページ改訂（2023/5/30）****************** */
+
+.join-step-caution {
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1.3rem;
+  padding-top: 10px !important;
+}
+@media screen and (min-width: 768px){
+.c-step li .box {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+}
+
+/* 党員サポーターページ改訂（2023/6/7）****************** */
+.added-caution ul li {
+  margin: .75em 0 .75em 1em;
+  text-indent: -1em;
+}
+
+/* 党員サポーターページ改訂（2023/9/27）****************** */
+
+.join_about_kinds2 {
+  margin: 40px auto !important;
+}
+@media screen and (max-width: 767px) {
+  .join_about_kinds {
+    margin: 5.3333333333vw auto !important;
+  }
+}
+
+/* 党員サポーターページ改訂（2023/10/16）****************** */
+
+.sub {
+  font-size: 1.5rem;
+}
+@media screen and (max-width: 767px) {
+.sub {
+    font-size: 4.2666666667vw;
+  }
+	.pc{
+		display:none;
+	}
+}
+
+/* 提案と実績ページ改訂（2023/6/27）****************** */
+
+.result_main {
+  margin-top: 90px;
+  padding: 53px 33px;
+  border: 12px solid #ffc000;
+  margin-bottom: 90px;
+}
+.result_skeleton dl dt {
+font-size: 1.8em;
+font-weight: bold;
+line-height: 1.2em;
+margin-bottom: 10px;
+}
+.result_skeleton dl dd {
+  margin-bottom:2em;
+}
+.red {
+  color: #d80c18;
+}
+.blue {
+  color: #003f88;
+}
+.subtitle-big {
+  padding: 0 .25em;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(65%, transparent), color-stop(65%, #FFC000));
+  background: linear-gradient(transparent 65%, #FFC000 65%);
+  line-height: 1.5;
+	font-size:1.1em;
+}
+.subtitle {
+  padding: 0 .25em;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(65%, transparent), color-stop(65%, #FFC000));
+  background: linear-gradient(transparent 65%, #FFC000 65%);
+  line-height: 1.5;
+}
+
+/* 党サポページ改訂（2023/7/19）****************** */
+
+.join_info_list p {
+  margin: .5em 0 .5em 1.5em;
+  text-indent: -1.5em;
+  font-size: 21px;
+}
+@media screen and (max-width: 767px){
+.join_info_list p {
+  margin: .5em 0 .5em .5em;
+  text-indent: 0em;
+  font-size: 1.1rem;
+  line-height: 1.6rem;
+}
+}
+
+/* Twitter埋め込みタイムライン代替表示（2023/7/12）****************** */
+
+@media screen and (min-width: 768px){
+.latest_account {
+  height: 160px !important;
+}
+}
+@media screen and (max-width: 767px){
+.latest_account {
+  height: 135px;
+}
+.latest_account dl + dl {
+  margin-top: 0;
+}
+.latest_account dl dt {
+  text-align: center;
+}
+}
+.twitter-link {
+font-weight: 700;
+color: #003f82;
+text-decoration: underline;
+font-size: inherit;
+text-decoration-thickness: 1px;
+text-underline-offset: .1em;
+}
+
+.twitter-link ::before {
+  content: '';
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-image: url(https://new-kokumin.jp/wp-content/themes/dpfp2023/assets/img/sns_x.svg);
+  background-size: contain;
+  vertical-align: middle;
+  margin-right:10px;
+}
+
+/* 代表選挙ページ調整（2023/8/1）****************** */
+
+@media screen and (min-width: 768px){
+.daihyo {
+  margin-bottom: 0px !important;
+}
+}
+
+  @media screen and (max-width: 767px){
+.daihyo {
+  padding-bottom: 40vw !important;
+}
+}
+
+/* サイトトップ代表選挙対応調整（2023/8/10）******************
+
+@media screen and (min-width: 768px){
+.top_pickup {
+  bottom: 50px !important;
+  width: 1200px;
+}
+}
+@media screen and (max-width: 767px){
+.top_pickup {
+  bottom: 7.4666666667vw;
+}
+}
+ */
+
+.memberDetail_photo .social li .tw::before {
+  background: url(../img/icon_x.svg) no-repeat center center/contain;
+}
+
+/* 人事改訂（2023/9/8）****************** */
+
+@media screen and (min-width: 768px) {
+  .boardMember_list dt {
+    width: 400px !important;
+  }
+}
+/* 党員サポーターページ改訂（2024/9/17）****************** */
+/* 党員サポーターページ改訂（2024/9/17）****************** */
+.join_about_kinds {
+  display: block;
+}
+
+.join_about_kinds .section {
+  width: 100%;
+  position: relative;
+  font-feature-settings: "palt";
+}
+
+@media screen and (min-width: 768px) {
+  .join_about_kinds .section {
+    padding: 40px 32px 60px;
+  }
+  .join_about_kinds .section:not(:first-child) {
+    margin-top: 20px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_about_kinds .section {
+    padding: 10.6666666667vw 4.2666666667vw 16.9333333333vw;
+  }
+  .join_about_kinds .section:not(:first-child) {
+    margin-top: 4.1333333333vw;
+  }
+}
+@media screen and (min-width: 768px) {
+  .join_about_kinds .section .label {
+    text-align: left;
+    margin-bottom: 27px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_about_kinds .section .label {
+    margin-bottom: 8.6666666667vw;
+  }
+}
+.join_about_kinds .section .list dd span {
+  font-size: 60%;
+  vertical-align: text-top;
+  line-height: 1.2;
+}
+
+.join_about_kinds .section .accordion_body {
+  display: none;
+  position: relative;
+  transition: display 0.5s;
+}
+
+@media screen and (min-width: 768px) {
+  .join_about_kinds .section .accordion_body {
+    padding-top: 16px;
+    margin-top: 24px;
+    border-top: solid 2px #C2C2C2;
+    padding-bottom: 65px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_about_kinds .section .accordion_body {
+    margin-top: 6vw;
+    border-top: solid 0.2666666667vw #C2C2C2;
+    padding-bottom: 6.5333333333vw;
+    padding-top: 0.6666666667vw;
+  }
+}
+.join_about_kinds .section .accordion_body .list + p {
+  text-indent: -1.5em;
+  margin-left: 1.5em;
+  letter-spacing: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .join_about_kinds .section .accordion_body .list + p {
+    margin-top: 40px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_about_kinds .section .accordion_body .list + p {
+    margin-top: 2.9411764706vw;
+    font-size: 3.4666666667vw;
+  }
+}
+.join_about_kinds .section.open .accordion_body {
+  overflow-y: auto;
+  display: block;
+}
+
+@media screen and (min-width: 768px) {
+  .join_about_kinds .section .accordion_body dt {
+    padding-top: 10px;
+    margin-bottom: 17px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_about_kinds .section .accordion_body dt {
+    padding-top: 3.3333333333vw;
+    margin-top: 0;
+    margin-bottom: 2.5vw;
+  }
+}
+.join_about_kinds .section .accordion_body dd + dt {
+  margin-top: 0;
+}
+
+.js-accordion-jak_btn {
+  position: absolute;
+  display: block;
+  background: url(../img/icon_arrow01_right.svg) no-repeat 0 0/contain;
+  transform: rotate(90deg);
+  transition: transform 0.3s ease-in-out;
+}
+
+@media screen and (min-width: 768px) {
+  .js-accordion-jak_btn {
+    width: 29px;
+    height: 29px;
+    margin-top: -13.5px;
+    bottom: 28px;
+    right: 28px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .js-accordion-jak_btn {
+    width: 5.4411764706vw;
+    height: 6.5333333333vw;
+    left: 50%;
+    bottom: 5.2453333333vw;
+    margin-top: 0;
+    transform: translateX(-50%) rotate(90deg);
+  }
+}
+@media screen and (min-width: 768px) {
+  .js-accordion-jak.open .js-accordion-jak_btn {
+    transform: rotate(270deg);
+  }
+}
+@media screen and (max-width: 767px) {
+  .js-accordion-jak.open .js-accordion-jak_btn {
+    transform: translateX(-50%) rotate(270deg);
+  }
+}
+@media screen and (min-width: 768px) {
+  .join_about_kinds .section .accordion_body .apply_btn {
+    padding: 18px 65px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_about_kinds .section .accordion_body .apply_btn {
+    padding: 3.7333333333vw 13.0666666667vw;
+    font-size: 3.7333333333vw;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_about_kinds .section .accordion_body .c-btn_wrap {
+    margin: 10vw auto 0;
+  }
+}
+@media screen and (min-width: 768px) {
+  .join_application_kinds {
+    gap: 20px;
+  }
+}
+.join_application_kinds section {
+  align-items: center;
+}
+
+@media screen and (min-width: 768px) {
+  .join_application_kinds section {
+    width: calc((100% - 40px) / 3) !important;
+    padding: 48px 35px 60px !important;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_application_kinds section {
+    width: 100%;
+    padding: 10.6666666667vw 4.2666666667vw 12.9333333333vw !important;
+  }
+}
+.join_application_kinds .section .label {
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .join_application_kinds .section .label + .local_list {
+    margin-top: 30px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_application_kinds .section .label + .local_list {
+    margin-top: 9.6vw;
+  }
+}
+.join_application_kinds .section .local_list + p {
+  letter-spacing: -0.025em;
+  line-height: 1.5em;
+}
+
+@media screen and (min-width: 768px) {
+  .join_application_kinds .section .local_list + p {
+    margin-top: 30px;
+    font-size: 18px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_application_kinds .section .local_list + p {
+    margin-top: 4.4117647059vw;
+    font-size: 3.4666666667vw;
+  }
+}
+@media screen and (min-width: 768px) {
+  .join_application_kinds .section .label + .branch_list {
+    margin-top: 84.5px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_application_kinds .section .label + .branch_list {
+    margin-top: 9.6vw;
+  }
+}
+.join_application_kinds .local_list, .join_application_kinds .branch_list {
+  background-color: #003f82;
+  position: relative;
+}
+
+@media screen and (min-width: 768px) {
+  .join_application_kinds .local_list, .join_application_kinds .branch_list {
+    height: 67px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_application_kinds .local_list, .join_application_kinds .branch_list {
+    height: 13.3333333333vw;
+  }
+}
+.join_application_kinds .local_list::after, .join_application_kinds .branch_list::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .join_application_kinds .local_list::after, .join_application_kinds .branch_list::after {
+    right: 25px;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-top: 22px solid #ffffff;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_application_kinds .local_list::after, .join_application_kinds .branch_list::after {
+    right: 3.6764705882vw;
+    border-left: 1.6176470588vw solid transparent;
+    border-right: 1.6176470588vw solid transparent;
+    border-top: 3.2352941176vw solid #ffffff;
+  }
+}
+.join_application_kinds .local_list select, .join_application_kinds .branch_list select {
+  font-family: "Montserrat", "Noto Sans JP", "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", メイリオ, Meiryo, Osaka, "MS pゴシック", "MS PGothic", sans-serif;
+  background: none;
+  transition: background-color 0.3s, color 0.3s;
+  text-decoration: none;
+  color: #fff;
+  display: block;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 0;
+  border: none;
+  outline: none;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+  z-index: 1;
+  text-align: left;
+}
+
+@media screen and (min-width: 768px) {
+  .join_application_kinds .local_list select, .join_application_kinds .branch_list select {
+    padding: 0 62px 0 30px;
+    font-size: 22px;
+    line-height: 67px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .join_application_kinds .local_list select, .join_application_kinds .branch_list select {
+    padding: 0 8.3666666667vw 0 4.6666666667vw;
+    font-size: 3.7333333333vw;
+    line-height: 13.3333333333vw;
+  }
+}
+.join_application_kinds .local_list select option, .join_application_kinds .branch_list select option {
+  color: #000;
+  font-family: "Montserrat", "Noto Sans JP", "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", メイリオ, Meiryo, Osaka, "MS pゴシック", "MS PGothic", sans-serif;
+}
+
+
+
+
+
+/* モーダルウィンドウ実装（2024/10/21）****************** */
+#modal-wrap {
+  display:none;
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	text-align:center;
+	z-index:99999;
+	background-color:rgba(0,0,0,0.64);
+}
+#modal-wrap td {
+	text-align:center;
+	vertical-align:middle;
+}
+#modal {
+	position:relative;
+	display:block;
+	max-width:80%;
+	margin:auto;
+	z-index:0;
+}
+#modal-close {
+	position:absolute;
+	top:40px;
+	right:40px;
+	cursor:pointer;
+  z-index:2;
+}
+#modal-close img{
+  width: 40px;
+  height: auto;
+  fill: #fff;
+}
+#modal-body {
+	position:relative;
+  color: #fff;
+  line-height: 1.4;
+  z-index:1;
+}
+#modal-banner{
+  text-align: center;
+}
+#modal-banner img{
+  max-width: 100%;
+}
+img.modal-pc{
+  display: inline;
+}
+img.modal-sp{
+  display: none;
+}
+#modal-ttl{
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+@media screen and (max-width: 767px) {
+	#modal-close {
+		position:absolute;
+		top:-60px;
+		right:0px;
+		cursor:pointer;
+	}
+  #modal-ttl{
+    font-size: 1.5em;
+  }
+  img.modal-pc{
+    display: none;
+  }
+  img.modal-sp{
+    display: inline;
+  }
+}
+
+/* 地方選挙の実施予定（2025/09/01）****************** */
+
+
+/* ul を横並び化 */
+.prefecture-anchor-list .prefecture-flex-list {
+  display: flex !important;   /* 横並びを最優先 */
+  flex-wrap: wrap;            /* 折り返し可能 */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 0;          /* すき間を簡単に調整 */
+}
+
+/* li 自体のリセット */
+.prefecture-anchor-list .prefecture-flex-list > li {
+  flex: 0 0 auto;
+  width: auto !important;     /* 100%幅の指定を上書き */
+  margin: 0;
+  writing-mode: horizontal-tb !important; /* 横書き強制 */
+  text-orientation: mixed !important;     /* 漢字も横組み */
+  transform: none !important;             /* rotateで縦にされても解除 */
+}
+
+/* a 要素にも横書きを保証 */
+.prefecture-anchor-list .prefecture-flex-list > li > a {
+  display: block;
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+  transform: none !important;
+  text-decoration: none;
+  padding: .25rem .5rem;
+}
+
+.local-elections-schedule-banner{
+  margin-top: 4em;
+}
+
+.prefecture-anchor-list{
+  margin-top: 4em;
+}
+
+.prefecture-anchor-list h2{
+  margin-top: 2em;
+}
+
+.prefecture-anchor-list ul{
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 1em;
+}
+
+.prefecture-anchor-list ul li{
+  padding: 0.5em;
+  border: 1px solid #333;
+  width: 50%;
+  margin-top: -1px;
+  margin-left: -1px;
+}
+
+.prefecture-anchor-list .election-title{
+  display: block;
+  font-weight: bold;
+}
+
+.prefecture-anchor-list .election-item{
+  position: relative;
+}
+
+.prefecture-anchor-list .election-item .is-important{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: #ffc000;
+  display: block;
+  color: #003d8b;
+  font-size: 80%;
+  padding: 0.2em 0.8em;
+  font-weight: bold;
+}
+
+.local-elections-schedule-banner img{
+  max-width: 100%;
+  transition: opacity 0.3s;
+}
+
+@media screen and (min-width: 768px) {
+  .local-elections-schedule-banner img:hover{
+    opacity: 0.7;
+  }
+}
+
+@media screen and (max-width: 767px) {
+	.prefecture-anchor-list ul li{
+    width: 100%;
+  }
+}

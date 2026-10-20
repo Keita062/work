@@ -1,0 +1,1 @@
+.popup-template .modal{opacity:0;transition:all .25s ease}.popup-template .modal.is-open{opacity:1;transition:all .25s ease}

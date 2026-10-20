@@ -5,7 +5,7 @@
 案件の文脈・知見・作業実体を1か所に集約し、
 「セッションが変わっても、時間が空いても、同じ前提で作業を再開できる」状態を保つことを目的とする。
 
-- 最終更新：2026-10-19（mbk-digital/set_up の構成に合わせて案件ID・Context Vault方式へ移行）
+- 最終更新：2026-10-20（`Data-Analysis_competition` リポジトリの案件（SSDSE・和歌山・SIGNATE）を統合）
 - 運用ルールの正本：[CLAUDE.md](CLAUDE.md)（本ファイルは**全体像と手順**を示す入口）
 
 ---
@@ -37,6 +37,7 @@ work/
 │
 ├── 027_data-scientist-roadmap/  # 【実体】進行中案件の作業場（NNN_案件名）
 ├── 029_graduation-thesis/
+├── 031_wakayama-wellbeing-competition/
 │
 ├── Context Vault/             # 【文脈】案件の進行状況・決定事項
 │   ├── Projects/              #   進行中の案件（NNN_案件名.md）
@@ -60,6 +61,9 @@ work/
 - 新規案件は `/new-project 案件名` で作成する（次のIDの採番・標準フォルダ・Vaultファイル・READMEを一括作成）
 - `001`〜`024` は案件ID導入前（2026-10-19以前）に完了していた大学の課題・自主学習で、導入のタイミングで
   まとめてIDを付与し `completed_projects/` に格納した。中のフォルダ構成は旧来のまま（README.md＋成果物）
+- `030`〜`032` は別リポジトリ `Data-Analysis_competition` で進めていたコンペ案件を2026-10-20に本リポジトリへ移行したもの。
+  着手順（元リポジトリのコミット履歴）でID付与し、中のフォルダ構成は移行元のまま（README.md＋成果物）。
+  `030`（SSDSE）には元リポジトリの `NEW_SSDSE/`（旧作業領域）も `NEW_SSDSE/` サブフォルダとして統合済み
 
 | ID | 案件 | 状態 |
 |---|---|---|
@@ -92,6 +96,9 @@ work/
 | 027 | data-scientist-roadmap（個人キャリア10ヶ年計画） | 進行中 |
 | 028 | doda-hp-redesign | 完了 |
 | 029 | graduation-thesis（卒論） | 着手前 |
+| 030 | ssdse-statistics-competition（統計データ分析競技） | 完了 |
+| 031 | wakayama-wellbeing-competition（和歌山県ウェルビーイングコンペ） | 進行中（提出済み・発表会待ち） |
+| 032 | signate-anime-competition | 完了 |
 
 ### 案件フォルダ ↔ Context Vault の対応
 

@@ -1,0 +1,203 @@
+(function () {
+    if ('querySelector' in window.parent.document &&
+        'addEventListener' in window.parent
+    ) {
+        // Configure
+        const TRACK_READ_CONFIG = {
+          default: {
+            granularity: 25,
+            milestones: [4, 15, 30, 60, 90, 120],
+          },
+          fineGrain: {
+            granularity: 5,
+            milestones: [5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987],
+          }
+        };
+
+        const enableFineGrainScrollTracking = rnTrackVars.enableFineGrainScrollTracking || false;
+        const enableFineGrainReadingRateTracking = rnTrackVars.enableFineGrainReadingRateTracking || false;
+
+        const trackScrollConfig = enableFineGrainScrollTracking ? TRACK_READ_CONFIG.fineGrain : TRACK_READ_CONFIG.default;
+        const scrollGrain = trackScrollConfig.granularity;
+
+        const trackReadConfig = enableFineGrainReadingRateTracking ? TRACK_READ_CONFIG.fineGrain : TRACK_READ_CONFIG.default;
+        const readGrain = trackReadConfig.granularity;
+        const readMileStones = trackReadConfig.milestones;
+
+        const atlasConfigure = function() {
+          atlasTracking.config({
+              'system': {
+                  'endpoint': 'astat.nikkei.com',
+                  'cookieDomain': 'nikkei.com',
+                  'beaconTimeout': 5000,
+                  'targetWindow': 'parent'
+              },
+              'defaults': {
+                  'pageUrl': rnTrackVars.pageUrl,
+                  'pageReferrer': rnTrackVars.pageReferrer,
+                  'pageTitle': rnTrackVars.pageTitle,
+              },
+              'product': {
+                  'productFamily': rnTrackVars.productFamily || 'DS',
+                  'productName': rnTrackVars.product || 'DS-Responsive'
+              },
+              'options': {
+                  'trackClick': {
+                      'enable': true,
+                      'targetAttribute': 'data-atlas-trackable',
+                      'disableText': true,
+                      'logLastClick': true,
+                      'lastClickTtl': 5,
+                      'useLastClickOnly': false,
+                  },
+                  'trackLink': {
+                      'enable': true,
+                      'internalDomains': ['www.nikkei.com', 'mw.nikkei.com', 'r.nikkei.com', 'next.nikkei.com', 'id.nikkei.com', 'style.nikkei.com', 'financial.nikkei.com'],
+                      'nameAttribute': 'data-atlas-link-name',
+                  },
+                  'trackDownload': {
+                      'enable': true,
+                      'fileExtensions': ['pdf', 'zip', 'laz', 'tar', 'gz', 'tgz', 'docx', 'xlsx', 'pptx', 'doc', 'xls', 'ppt'],
+                      'nameAttribute': 'data-atlas-link-name',
+                  },
+                  'trackNavigation': {
+                      'enable': true,
+                  },
+                  'trackPerformance': {
+                      'enable': false,
+                  },
+                  'trackScroll': {
+                      'enable': true,
+                      'granularity': scrollGrain,
+                      'threshold': 2,
+                  },
+                  'trackInfinityScroll': {
+                      'enable': false,
+                      'step': 600,
+                      'threshold': 2,
+                  },
+                  'trackRead': {
+                      'enable': true,
+                      'target': rnTrackVars.trackReadTarget,
+                      'granularity': readGrain,
+                      'milestones': readMileStones,
+                  },
+                  'trackViewability': {
+                      'enable': true,
+                      'targets': rnTrackVars.trackViewabilityTargets,
+                  },
+                  'trackMedia': {
+                      'enable': true,
+                      'selector': 'video, audio',
+                      'heartbeat': 5,
+                  },
+                  'trackForm': {
+                      'enable': false,
+                      'target': null,
+                  },
+                  'trackUnload': {
+                      'enable': true,
+                  },
+                  'trackThroughMessage': {
+                      'enable': true,
+                  }
+              }
+          })
+        };
+
+        window.makeContext = function() {
+          return {
+            'app': rnTrackVars.app,
+            'app_version': null,
+            'source': rnTrackVars.source || null,
+            'edition': rnTrackVars.edition,
+            'id': null,
+            'root_id': null,
+            'contents_service': rnTrackVars.contents_service,
+            'contents_service_family': rnTrackVars.contents_service_family,
+            'content_id': rnTrackVars.contentId,
+            'content_name': rnTrackVars.contentName,
+            'content_status': rnTrackVars.contentStatus || 'none',
+            'page_name': rnTrackVars.pageName,
+            'page_num': rnTrackVars.pageNumber,
+            'category_l1': rnTrackVars.category.level1.name,
+            'category_l2': rnTrackVars.category.level2.name,
+            'category_l3': rnTrackVars.category.level3.name,
+            'tracking_code': atlasTracking.getQueryValue('n_cid'),
+            'campaign': {
+              'name': decodeURIComponent(atlasTracking.getQueryValue('utm_campaign')),
+              'source': decodeURIComponent(atlasTracking.getQueryValue('utm_source')),
+              'medium': decodeURIComponent(atlasTracking.getQueryValue('utm_medium')),
+              'term': decodeURIComponent(atlasTracking.getQueryValue('utm_term')),
+              'content': decodeURIComponent(atlasTracking.getQueryValue('utm_content')),
+            },
+            'events': rnTrackVars.events,
+            'custom_object': rnTrackVars.customObject || {},
+            'published_at': rnTrackVars.printEditionDate,
+            'action': rnTrackVars.action,
+            'url': rnTrackVars.pageUrl,
+            'page_title': rnTrackVars.pageTitle,
+            'funnel': {},
+            'referrer': rnTrackVars.pageReferrer,
+          }
+        }
+
+        window.updateContext = function () {
+          const context = makeContext()
+
+          Object.keys(context).forEach(function (key) {
+            atlasTracking.setCustomVars(key, context[key]);
+          });
+        }
+
+        window.makeUser = function() {
+            const user = {
+                'user_id': rnTrackVars.userId || '',
+                'user_status': rnTrackVars.userRank,
+                'site_session': null,
+            }
+
+            if (rnTrackVars.nkOpt) {
+                user['nk_opt'] = rnTrackVars.nkOpt;
+            }
+
+            return user;
+        }
+
+        // Init Page data
+        window.sendAtlasPageView = function () {
+            atlasTracking.disableTracking();
+            atlasConfigure();
+            atlasTracking.initPage({
+                user: makeUser(),
+                context: makeContext()
+            });
+
+            // Set R-Nikkei flags
+            atlasTracking.setCustomVars('flags', rnTrackVars.flags);
+            // Set PWA metrics
+            atlasTracking.setCustomVars('pwa', rnTrackVars.pwa);
+            // Set Search info
+            atlasTracking.setCustomVars('search', rnTrackVars.search);
+            // Set published_at info
+            atlasTracking.setCustomVars('published_at', rnTrackVars.printEditionDate);
+
+            // Set RToaster ID
+            var rtoaster_id = atlasTracking.getCookieValue('_rt.uid');
+            if (rtoaster_id) {
+                atlasTracking.setCustomId('rtoaster', rtoaster_id);
+            }
+
+            // Send PV
+            atlasTracking.trackPage();
+
+        };
+
+        if (!rnTrackVars.doNotSendPageViewOnLoad) {
+            sendAtlasPageView();
+        } else {
+            atlasTracking.disableTracking();
+            atlasConfigure();
+        }
+    }
+}());

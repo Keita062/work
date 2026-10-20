@@ -1,0 +1,2 @@
+// Get context data from parent global variable
+var rnTrackVars = window.parent.rnTrackVars || {};

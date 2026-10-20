@@ -1,0 +1,10 @@
+industry,dominant_class,is_target
+サービス業他,2,True
+不動産業,2,False
+卸売業，小売業,2,True
+建設業,2,False
+情報通信業,2,False
+製造業,2,True
+農・林・漁・鉱業,1,False
+運輸業,2,False
+金融・保険業,1,False

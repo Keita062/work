@@ -1,0 +1,50 @@
+ var dacy1 = {};
+ dacy1.getCurrentScript = function(partSrcURL) { if("undefined" === typeof document.currentScript) { var scripts = document.getElementsByTagName('script');
+ for (var i = 0; i < scripts.length; i++)
+ if (scripts[i].src.indexOf( partSrcURL ) > -1) return scripts[i];
+ return undefined;
+ } else {
+ return document.currentScript;
+ }
+ };
+
+dacy1.createFIF = function(width, height) {
+ var iframe = document.createElement('iframe');
+ var fifStyle = "border: 0; width: " + width + "px; height: " + height + "px;";
+ iframe.setAttribute('style', fifStyle);
+ iframe.setAttribute('frameBorder', '0');
+ iframe.setAttribute('scrolling', 'no');
+ iframe.src = "javascript:false";
+ return iframe;
+};
+
+dacy1.showAd = function(width, height, actualAD, impURL) {
+ var iframe = dacy1.createFIF(width, height);
+ var where = dacy1.getCurrentScript(impURL);
+ where.parentNode.insertBefore(iframe, where);
+ var doc = iframe.contentWindow ? iframe.contentWindow.document : iframe.contentDocument;
+
+ actualAD = '<body style="background:transparent;margin:0;"><script>var inDapIF = true;</script>' + actualAD + '</body>';
+
+ if (navigator.userAgent.indexOf('Firefox') !== -1){
+ doc.open('text/html', 'replace');
+ }
+
+ doc.write(actualAD);
+ // Opera non-webkit won't write all inside scripts if closed
+ // this is not good, but important.
+ if ( navigator.userAgent.indexOf('Opera') == -1 ){
+ doc.close();
+ }
+};
+
+var width  = 300,
+ height = 250,
+ adSnippet = '<a href=\"https:\/\/y.one.impact-ad.jp\/clk\/FwTZBwLIuPtA5mghXlPS2idFkC__axi_gCr58PsyYj59pon0ruS85395jcsL5_ABXWJDbeYgT5GhDEv4W6KEzcCYEfFneza9mBotwL6VpqgppQMraswAgL4NcnnLu-NCnQG6fckw3H5fmvsWJveL2URMV2reBkp7CFsuLM9X9dw2m8LWYNULhCZ6Qsn88haI5N8z-pg46wmfEY8as59GX4WZdRTOA-H1jgO4k-0nYiOF4fkyAgedYTUAm0jDmO_KTXO2tpwK1IT1J4PbC7n9LeMPXkvY3qkIZd2e_plgZYEIvmlhPcR-uQmjaSEymhgqLF6dD15ySUc0RG4rDGY-L7JnmeCLF5KILApF-8ewYLlc9R6vyjq9GMmDOM-1_DL7gDSDBG8kzMS3_6PIrm53lt3OQ66T5tfSMEPNMfVCcKu9GiEkBj55L7yu1h6RAp4g1glTdS2_FvD7ZYanWuw3G6drUvw5D02EpGjpLy75fd7nT3eNelZxKnCzyXNQhkkZGwRHTwN3hS-1aD1GLKVW9xg-scnqpzqY2ejcuuHzbXaKQHuv4nIF6B7hf3sAERH14whAt8_-NU4WKX8OmBnOw9YyY3a9xmXDuq_Q_jV5lLVfrDXGcd5P2nl8dalUosiebNpHINH1gtpHIZqmUfCPoCsblA\/\/https:\/\/school.nikkei.co.jp\/special\/tokiaka\/?waad=S0YVy7ic&utm_source=NKdenshiban&utm_medium=banner&utm_content=image&utm_campaign=ds_rec&n_cid=nbsx_ds_ban_non_non_tokiaka\" target=\"_blank\" ><img src=\"https:\/\/img.yo.impact-ad.jp\/img\/3305\/202502\/tokiaka_300×2504b6c4f91c15dc3b4d013dc67d9a7bc75.jpg\" BORDER=\"0\"><\/a>',
+ srcPart   = '/imp?p=45726&w=300&h=250&t=async';
+
+dacy1.showAd(width,height,adSnippet,srcPart);
+
+
+(new Image()).src = "https://s.amazon-adsystem.com/dcm?pid=d3712b9d-6998-4ead-b82d-ef4a3874ea1b&id=cd50983a-2e15-40cc-b27f-b49a45273df7";
+(new Image()).src = "//cm.g.doubleclick.net/pixel?google_nid=yieldone_eb&google_hm=zVCYOi4VQMyyf7SaRSc99w";

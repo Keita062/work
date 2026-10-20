@@ -1,0 +1,25 @@
+// google analytics
+(function(){var a=document,b=a.createElement('script'),c=a.getElementsByTagName('script')[0];b.type='text/javascript',b.src='https://www.googletagmanager.com/gtag/js?id=G-PXS8451SBG',c.parentNode.insertBefore(b,c)})()
+window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('set', 'user_properties', {
+  serial_id: atlasTracking.getCookieValue('NID-Serial-Cookie'),
+});
+gtag('config', 'G-PXS8451SBG', {
+  page_location: rnTrackVars.pageUrl,
+  page_referrer: rnTrackVars.pageReferrer,
+  page_title: rnTrackVars.pageTitle,
+  user_id: atlasTracking.getCookieValue('NID-Serial-Cookie'),
+  article_genre: rnTrackVars.contentGenre,
+  app_flag: rnTrackVars.isWebView || false,
+  content_status: rnTrackVars.contentStatus || 'none',
+  ds_rank: rnTrackVars.userRank,
+  category: rnTrackVars.category.level2.name && rnTrackVars.category.level2.name.substring(3),
+  sub_category: rnTrackVars.category.level3.name && rnTrackVars.category.level3.name.substring(3),
+  is_article: rnTrackVars.app.includes('article'),
+  article_id: rnTrackVars.contentId,
+  n_cid: atlasTracking.getQueryValue('n_cid'),
+  atlas_id: atlasTracking.getCookieValue('atlasId'),
+});
+gtag('config', 'AW-1024704716');

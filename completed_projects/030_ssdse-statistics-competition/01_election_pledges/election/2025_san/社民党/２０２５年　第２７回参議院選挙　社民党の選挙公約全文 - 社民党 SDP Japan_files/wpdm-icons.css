@@ -1,0 +1,82 @@
+@font-face {
+  font-family: 'wpdm-icons';
+  src: url('../font/wpdm-icons.eot?9713993');
+  src: url('../font/wpdm-icons.eot?9713993#iefix') format('embedded-opentype'),
+       url('../font/wpdm-icons.woff2?9713993') format('woff2'),
+       url('../font/wpdm-icons.woff?9713993') format('woff'),
+       url('../font/wpdm-icons.ttf?9713993') format('truetype'),
+       url('../font/wpdm-icons.svg?9713993#wpdm-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'wpdm-icons';
+    src: url('../font/wpdm-icons.svg?9713993#wpdm-icons') format('svg');
+  }
+}
+*/
+[class^="wpdm-"]:before, [class*=" wpdm-"]:before {
+  font-family: "wpdm-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: never;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.wpdm-shopping-cart:before { content: '\e800'; }
+.wpdm-circle-notch:before { content: '\e801'; }
+.wpdm-spinner:before { content: '\e802'; }
+.wpdm-sun:before { content: '\e803'; }
+.wpdm-edit:before { content: '\e804'; }
+.wpdm-eye:before { content: '\e805'; }
+.wpdm-share:before { content: '\e806'; }
+.wpdm-trash:before { content: '\e807'; }
+.wpdm-hdd:before { content: '\e808'; }
+.wpdm-layer-group:before { content: '\e809'; } /* '' */
+.wpdm-paper-plane:before { content: '\e80a'; } /* '' */
+.wpdm-arrow-down:before { content: '\e80b'; } /* '' */
+.wpdm-chat:before { content: '\e80c'; } /* '' */
+.wpdm-file-arrow-down:before { content: '\e80e'; } /* '' */
+.wpdm-pause:before { content: '\e812'; } /* '' */
+.wpdm-play:before { content: '\e813'; } /* '' */
+.wpdm-stop:before { content: '\e815'; } /* '' */
+.wpdm-user:before { content: '\e817'; } /* '' */
+.wpdm-cart-arrow-down:before { content: '\e818'; } /* '' */
+.wpdm-credit-card:before { content: '\e819'; } /* '' */
+.wpdm-parachute-box:before { content: '\e81a'; } /* '' */
+.wpdm-crown:before { content: '\e81b'; } /* '' */
+.wpdm-logout:before { content: '\e81c'; } /* '' */
+.wpdm-user-edit:before { content: '\e81d'; } /* '' */
+.wpdm-circle-down:before { content: '\e81e'; } /* '' */
+.wpdm-envelope-open:before { content: '\f2b6'; } /* '' */

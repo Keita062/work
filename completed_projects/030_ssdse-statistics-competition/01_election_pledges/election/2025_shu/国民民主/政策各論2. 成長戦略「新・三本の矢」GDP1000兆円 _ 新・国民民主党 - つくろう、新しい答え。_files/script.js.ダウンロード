@@ -1,0 +1,145 @@
+// ==============================
+// copy to location.href
+// ==============================
+function copyUrl() {
+	if ( navigator.clipboard ) { navigator.clipboard.writeText(location.href); } else { const element = document.createElement('input'); element.value = location.href; document.body.appendChild(element); element.select(); document.execCommand('copy'); document.body.removeChild(element); }
+	alert('URLをコピーしました。');
+	return false;
+}
+// ==============================
+// share twitter
+// ==============================
+function shareTw(){
+	d=document,
+	e=encodeURIComponent,
+	t=(d.selection)?d.selection.createRange().text:(window.getSelection)?window.getSelection():(d.getSelection)?d.getSelection():'',
+	f='//twitter.com/intent/tweet?text='+e(t+d.title)+'&original_referer'+e(location.href)+'&url='+e(location.href);
+	if(!window.open(f,'','width=500,height=250'))location.href=f;void(0);
+	return false;
+}
+// ==============================
+// share Facebook
+// ==============================
+function shareFb(){
+	d=document,
+	e=encodeURIComponent,
+	t=(d.selection)?d.selection.createRange().text:(window.getSelection)?window.getSelection():(d.getSelection)?d.getSelection():'',
+	f='//www.facebook.com/sharer.php?src=bm&u='+e(location.href)+'&t='+e(t+d.title);
+	if(!window.open(f,'','width=500,height=250'))location.href=f;void(0);
+	return false;
+}
+// ==============================
+// share line
+// ==============================
+function shareLi(){
+	d=document,
+	e=encodeURIComponent,
+	f='//social-plugins.line.me/lineit/share?url='+e(location.href);
+	if(!window.open(f,'','width=500,height=250'))location.href=f;void(0);
+	return false;
+}
+
+
+
+jQuery(function ($) {
+	$('.js-gnav_btn').on('click', function(){
+		$btn = $(this);
+		$menu = $btn.next('.js-gnav_menu');
+    $btn.toggleClass('active');
+		if( $btn.hasClass('active') ){
+			$menu.addClass('active')
+		}else{
+			$menu.removeClass('active')
+		}
+	});
+	$('.gnav .nav_item > a:has( ~ .nav_child_list)').on('click', function(){
+		if ($(window).width() < 768) {
+			$btn = $(this);
+			$menu = $btn.next('.nav_child_list');
+			$btn.toggleClass('active');
+			if( $btn.hasClass('active') ){
+				$menu.addClass('active')
+			}else{
+				$menu.removeClass('active')
+			}
+			return false;
+		} else {
+		}
+	});
+});
+
+// ==============================
+// 特別党員・党員・サポーター Accordion
+// ==============================
+jQuery(function ($) {
+	$('.js-accordion-jak .js-accordion-jak_btn').on('click', function(){
+		$wrap = $(this).closest('.js-accordion-jak_wrap');
+		$this = $(this).parent('.js-accordion-jak');
+		$title = $(this);
+		$contents = $title.next();
+		if( $this.hasClass('open') ){
+			$contents.slideUp();
+			$this.removeClass('open');
+		}else{
+			$wrap.find('.js-accordion-jak.open').removeClass('open').children('button').slideUp();
+			$contents.slideDown();
+			$this.addClass('open');
+		}
+	});
+});
+
+// ==============================
+// 都道府県連・総支部でのお申し込み Dropdown
+// ==============================
+// function dropsort(formName, selectName) {
+// 	var form = document.forms[formName];
+// 	var selectedValue = form[selectName].options[form[selectName].selectedIndex].value;
+	
+// 	if (selectedValue) {
+// 			window.open(selectedValue, '');
+// 	}
+// }
+function dropsort(formName, selectName) {
+	const form = document.forms[formName];
+	const selectedValue = form.elements[selectName].value;
+
+	if (selectedValue) {
+			window.location.href = selectedValue;  // ポップアップウィンドウ防止
+	}
+}
+
+
+// ==============================
+// モーダルウィンドウ
+// ==============================
+//jQuery(function ($) {
+	// ヒアドキュメント
+//	var heredoc = (function () {/*
+//	<table id="modal-wrap"><tbody><tr><td><div id="modal">
+//		<a href="javascript:void(0);" id="modal-close">
+//			<img src="/wp-content/themes/dpfp2023/assets/img/icon_close.svg" alt="閉じる" class="modal-btn">
+//		</a>
+//		<div id="modal-body">
+//			<p id="modal-ttl">第51回衆議院議員総選挙<br>特設サイト公開中！</p>
+//			<p id="modal-banner"><a href="https://election2026.new-kokumin.jp/">
+//				<img src="/wp-content/themes/dpfp2023/assets/img/index/bigbanner_election2026_pc.png" alt="第51回衆議院議員総選挙 特設サイト" class="modal-pc">
+//				<img src="/wp-content/themes/dpfp2023/assets/img/index/bigbanner_election2026_sp.png" alt="第51回衆議院議員総選挙 特設サイト" class="modal-sp">
+//			</a></p>
+//		</div>
+//	</div></td></tr></tbody></table>
+//		*/}).toString().match(/(?:\/\*(?:[\s\S]*?)\*\/)/).pop().replace(/^\/\*/, "").replace(/\*\/$/, "");
+//		jQuery('body').append(heredoc);
+//		jQuery("#modal-close, #modal-wrap").on("click",function(event){
+//			jQuery('#modal-wrap').fadeOut(function(){
+//				jQuery('#modal-wrap').remove();
+//				jQuery('body').removeAttr('style');
+//			});
+//		});
+//		jQuery("#modal-body img").on("click",function(event){ event.stopPropagation(); });
+//		const modal_cookie = 'election2025_new_kokumin_modalwindow';
+//		if( !jQuery.cookie(modal_cookie) ) jQuery.cookie(modal_cookie, '1', { expires: 1/24, path: '/' })
+//		else return;
+//		jQuery("#modal-wrap").fadeIn(function(){
+//			jQuery('body').css('overflow', 'hidden');
+//		});
+//	});

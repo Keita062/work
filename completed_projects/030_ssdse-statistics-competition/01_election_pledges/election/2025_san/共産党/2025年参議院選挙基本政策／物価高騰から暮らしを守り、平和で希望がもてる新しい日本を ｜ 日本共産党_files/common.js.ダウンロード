@@ -1,0 +1,230 @@
+﻿// common
+//---------------------------------------------------------
+$(function () {
+
+	// globalnav
+	$("#gnaviBtn").on("click", function () {
+		$('body').toggleClass('js-menuOpen');
+	});
+
+	// serachBox
+	$('header .utility li.search a').on('click', function () {
+		$('body').toggleClass('js-searchOpen');
+		return false;
+	})
+	$(document).on('click', function (e) {
+		if (!$(e.target).closest('header').length) {
+			$('body').removeClass('js-searchOpen');
+		}
+	})
+
+	// scroll
+	$('a[href^="#"]').on('click', function () {
+		const href = $(this).attr("href");
+		let target = $(href == "#" || href == "" ? "html" : href);
+		if (!target.length) {
+			target = $('a[name="' + href.replace("#", "") + '"]');
+		}
+		if (target.length) {
+			let fixheader = $('header').outerHeight();
+			const position = target.offset().top - fixheader;
+			$("html, body").animate({ scrollTop: position }, 550, "swing");
+			return false;
+		}
+	});
+
+	// 別ページの場合は以下
+	const urlHash = location.hash;
+	if (urlHash) {
+		$('body,html').stop().scrollTop(0);
+		setTimeout(function () {
+			let target = $(urlHash);
+			if (!target.length) {
+				target = $('a[name="' + urlHash.replace("#", "") + '"]');
+			}
+			if (target.length) {
+				let fixheader = $('header').outerHeight();
+				const position = target.offset().top - fixheader;
+				$('body,html').stop().animate({ scrollTop: position }, 550);
+			}
+		}, 100);
+	}
+
+
+	// pagetop,header
+	var topBtn = $('#pagetop');
+	topBtn.hide();
+	$(window).scroll(function () {
+		if ($(this).scrollTop() > 100) {
+			topBtn.fadeIn();
+			$('header').addClass('scr');
+		} else {
+			topBtn.fadeOut();
+			$('header').removeClass('scr');
+		}
+	});
+	topBtn.click(function () {
+		$('body,html').animate({
+			scrollTop: 0
+		}, 500);
+		return false;
+	});
+
+	// tab
+	// active_tab番号の対応は以下。
+	// 国会ウォッチ：0
+	// 頼れる共産党: 1
+	// 政策トピックス: 2
+	const active_tab = 0; // ←アクティブにしたいタブ番号を設定ください
+	$('.tb_container').addClass('hide').eq(active_tab).removeClass('hide');
+	$('.tabbtn > *').removeClass('active').eq(active_tab).addClass('active');
+	$('.tab').each(function () {
+		$(this).on('click', function () {
+			var index = $('.tab').index(this);
+			$('.tab').removeClass('active');
+			$(this).addClass('active');
+			$('.tb_container').addClass('hide');
+			$('.tb_container').eq(index).removeClass('hide');
+		});
+	});
+
+	$('.tab_btn > *').on('click', function () {
+		const parent = $(this).parent();
+		if (!parent.hasClass('link')) {
+			const index = parent.children().index(this);
+			parent.children().removeClass('active');
+			$(this).addClass('active');
+			parent.next('.tab_target').children().hide().eq(index).show();
+		}
+
+	})
+
+
+	//menu
+	$('#menu li.parent .acc').on('click', function () {
+		$(this).toggleClass('close').next('ul').slideToggle('fast');
+	})
+
+	//acc
+	$('.acc01 > dt, .acc02 > dt').on('click', function () {
+		$(this).toggleClass('close').next('dd').slideToggle('fast');
+	})
+
+	//btn_more
+	$('.btn_more > *').on('click', function () {
+		$(this).parent().prev().slideDown('fast');
+		$(this).parent().fadeOut('fast');
+	})
+
+	$('.btn_more_tayori').on('click', function () {
+		$(this).prev('.detail').slideToggle('fast')
+		$(this).toggleClass('close');
+	})
+
+	$('#faq .faq h2').on('click', function () {
+		$(this).next('.answer').slideToggle('fast')
+		$(this).find('.btn_more_faq').toggleClass('close');
+	})
+
+
+	//swiper
+	const swiper01 = new Swiper('.swiper01', {
+		loop: true,
+		slidesPerView: 'auto',
+		mousewheel: true,
+	});
+
+	//gnavi current
+	const nowPath = location.pathname;
+	pathArr = nowPath.split('/');
+	//console.log(pathArr[1]);
+	let lowerFlag = 0;
+	if (pathArr[1]) {
+		$('header .nav_item > a').each(function () {
+			const href = $(this).attr('href');
+			hrefArr = href.split('/');
+			//console.log(hrefArr[3]);
+			if (pathArr[1] === hrefArr[3]) {
+				$(this).addClass('current');
+				lowerFlag = 1
+			}
+		});
+	}
+
+	if (!lowerFlag && $('.main_container').hasClass('home')) {
+		$('header nav a:eq(0)').addClass('current');
+	}
+
+	// magnificPopup
+	$('a.pop').magnificPopup({
+		type: 'image',
+		closeOnContentClick: true,
+		closeBtnInside: false,
+		fixedContentPos: true,
+		mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
+		image: {
+			verticalFit: true
+		}
+	});
+
+	$('a.pop_youtube').magnificPopup({
+		disableOn: 700,
+		type: 'iframe',
+		mainClass: 'mfp-fade',
+		removalDelay: 160,
+		preloader: false,
+		fixedContentPos: false
+	});
+
+	// web_book
+
+	$('.side_book .select_archives').on('change', function () {
+		if ($(this).val() != '') {
+			location.href = $(this).val();
+		}
+	})
+
+
+	$('#web_book.inner_wrp img').each(function (i) {
+		const attrWidth = $(this).attr('width');
+		const attrHeight = $(this).attr('height');
+		if (!attrWidth && attrHeight) {
+			$(this).css('height', attrHeight);
+		}
+	})
+
+	//パンくず調整
+	let breadcrumbs_count = 1;
+	const breadcrumbs_length = $('#breadcrumbs li').length;
+	console.log(breadcrumbs_length);
+	$('#breadcrumbs li').each(function () {
+		if ($(this).text() === '雑誌・書籍' || $(this).text() === 'ダウンロード') {
+			$(this).html('<a href="/activity/">党の活動</a>');
+		}
+		if ($(this).text() === '党本部へのアクセス') {
+			$(this).before('<li><a href="/web_address/">日本共産党事務所の住所</a></li>');
+		}
+		if ($(this).text() === '定期雑誌') {
+			$(this).hide();
+			return true;
+		}
+		if ($(this).text() === '書籍') {
+			if (breadcrumbs_length != (breadcrumbs_count + 1)) {
+				$(this).next().hide();
+			}
+		}
+		breadcrumbs_count++;
+	})
+
+
+});
+
+$(function () {
+	$("#kk_kyositsu section:first-of-type").css("display", "block");
+	$("#kk_kyositsu .tab > li").on("click", function () {
+		$(".current").removeClass("current");
+		$(this).addClass("current");
+		const index = $(this).index();
+		$("#kk_kyositsu section").hide().eq(index).fadeIn(300);
+	});
+});

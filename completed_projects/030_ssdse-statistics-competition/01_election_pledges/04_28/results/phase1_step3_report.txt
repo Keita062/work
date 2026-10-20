@@ -1,0 +1,107 @@
+================================================================================
+Phase 1 Step 3: 言及率による正規化 - 詳細レポート
+================================================================================
+
+【処理方法】
+1. キーワード重複時の処理：各子キーワードを独立してカウント（案A）
+2. キーワード出現形態：前方一致も可能（案B）
+3. ハイアラーキー構築方法：実際の公約テキストから自動抽出（案B）
+
+【政党別統計】
+政党                   全単語数         トピック数       
+--------------------------------------------------------------------------------
+みんなで作る党_参            2,454        4           
+れいわ_衆                7,218        12          
+チームみらい_衆             21,451       12          
+中道_衆                 2,461        12          
+令和新選組_参              7,216        12          
+公明党_参                2,450        4           
+共産党_参                4,909        12          
+参政党_参                2,411        5           
+参政党_衆                19,384       12          
+国民民主_衆               9,475        12          
+国民民主党_参              2,418        9           
+社民党_参                1,088        10          
+立憲民主党_参              2,604        10          
+自民党_参                3,111        11          
+自民党_衆                7,528        12          
+
+【政党別トピック言及率（上位3トピック）】
+
+■ みんなで作る党_参
+  1. Constitution-Politics: 0.0012 (3回)
+  2. Digital-Admin: 0.0012 (3回)
+  3. Education-Childcare: 0.0012 (3回)
+
+■ れいわ_衆
+  1. Labor: 0.0229 (165回)
+  2. Economy-Growth: 0.0172 (124回)
+  3. Regional Development: 0.0166 (120回)
+
+■ チームみらい_衆
+  1. Education-Childcare: 0.0167 (359回)
+  2. Digital-Admin: 0.0162 (348回)
+  3. Regional Development: 0.0080 (172回)
+
+■ 中道_衆
+  1. Constitution-Politics: 0.0223 (55回)
+  2. Social Security: 0.0138 (34回)
+  3. Regional Development: 0.0134 (33回)
+
+■ 令和新選組_参
+  1. Labor: 0.0229 (165回)
+  2. Economy-Growth: 0.0172 (124回)
+  3. Regional Development: 0.0166 (120回)
+
+■ 公明党_参
+  1. Education-Childcare: 0.0016 (4回)
+  2. Tax Reform: 0.0008 (2回)
+  3. Diplomacy-Security: 0.0004 (1回)
+
+■ 共産党_参
+  1. Labor: 0.0141 (69回)
+  2. Education-Childcare: 0.0134 (66回)
+  3. Tax Reform: 0.0132 (65回)
+
+■ 参政党_参
+  1. Diplomacy-Security: 0.0021 (5回)
+  2. Education-Childcare: 0.0021 (5回)
+  3. Agriculture-Food: 0.0004 (1回)
+
+■ 参政党_衆
+  1. Regional Development: 0.0045 (88回)
+  2. Education-Childcare: 0.0044 (85回)
+  3. Energy-Environment: 0.0036 (70回)
+
+■ 国民民主_衆
+  1. Regional Development: 0.0213 (202回)
+  2. Education-Childcare: 0.0138 (131回)
+  3. Labor: 0.0118 (112回)
+
+■ 国民民主党_参
+  1. Education-Childcare: 0.0021 (5回)
+  2. Diplomacy-Security: 0.0012 (3回)
+  3. Social Security: 0.0008 (2回)
+
+■ 社民党_参
+  1. Social Security: 0.0239 (26回)
+  2. Labor: 0.0156 (17回)
+  3. Economy-Growth: 0.0138 (15回)
+
+■ 立憲民主党_参
+  1. Education-Childcare: 0.0038 (10回)
+  2. Diplomacy-Security: 0.0027 (7回)
+  3. Labor: 0.0015 (4回)
+
+■ 自民党_参
+  1. Regional Development: 0.0215 (67回)
+  2. Economy-Growth: 0.0141 (44回)
+  3. Constitution-Politics: 0.0122 (38回)
+
+■ 自民党_衆
+  1. Regional Development: 0.0279 (210回)
+  2. Economy-Growth: 0.0153 (115回)
+  3. Agriculture-Food: 0.0128 (96回)
+
+================================================================================
+処理完了

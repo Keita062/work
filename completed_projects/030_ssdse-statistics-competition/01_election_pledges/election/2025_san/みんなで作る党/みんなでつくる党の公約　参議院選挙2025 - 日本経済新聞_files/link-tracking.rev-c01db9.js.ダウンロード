@@ -1,0 +1,19 @@
+//  Link Tracking
+window.addEventListener("message", function(event) {
+  var data = event.data;
+  if (data.name === 'rnikkei-tracking') {
+    if (data.updateContext) {
+      updateContext();
+    }
+    atlasTracking.trackAction(data.action, data.category, data.events, data.options);
+  } else if (data.name === 'rnikkei-tracking-pv') {
+    sendAtlasPageView();
+  } else if (data.name === 'google-analytics') {
+    gtag('event', data.action, {
+      event_category: data.category,
+      event_label: data.label,
+    })
+  }
+  const targetOrigin = location.protocol + '//' + location.hostname + ':' + location.port;
+  window.parent.postMessage({name: 'rnikkei-tracking-processed', id: data.id}, targetOrigin);
+});
