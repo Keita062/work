@@ -99,6 +99,7 @@ work/
 | 030 | ssdse-statistics-competition（統計データ分析競技） | 完了 |
 | 031 | wakayama-wellbeing-competition（和歌山県ウェルビーイングコンペ） | 進行中（提出済み・発表会待ち） |
 | 032 | signate-anime-competition | 完了 |
+| 033 | GDGoC | 着手 |
 
 ### 案件フォルダ ↔ Context Vault の対応
 
