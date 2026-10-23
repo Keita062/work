@@ -49,6 +49,9 @@ work/
 │   ├── README.md               #   索引（新規追加時は必ず1行追記）
 │   ├── slides/                 #   スライド作成の原則・テンプレート
 │   ├── analysis/                #   データ分析・統計処理のお作法
+│   ├── ai/                      #   AI API（Gemini等）の技術仕様・コスト最適化
+│   ├── docs/                    #   MTGアジェンダ・Googleドキュメント/Drive連携ノウハウ
+│   ├── excel/                   #   Excel（openpyxl等）でのファイル生成・更新の落とし穴
 │   └── snippets/                #   再利用するコード片・プロンプト
 ```
 
